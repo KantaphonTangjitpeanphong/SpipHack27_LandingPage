@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SPIP Hack 2027 — City of Tomorrow</title>
-  <meta name="description" content="SPIP Hack 2027 is the first student-led, cross-school innovation hackathon at Satit Prasarnmit International Programme (SPIP), Bangkok. Theme: City of Tomorrow.">
+  <meta name="description" content="SPIP Hack 2027 is a student-led, cross-school innovation competition at Satit Prasarnmit International Programme (SPIP), Bangkok. Teams of 2–4 identify real-world problems and develop creative, practical solutions. Theme: The City of Tomorrow.">
   <meta name="theme-color" content="#0A0A10">
   <meta name="color-scheme" content="dark">
 
@@ -13,11 +13,11 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SPIP Hack 2027">
   <meta property="og:title" content="SPIP Hack 2027 — City of Tomorrow">
-  <meta property="og:description" content="The first student-led, cross-school innovation hackathon at SPIP, Bangkok. Pitch ideas that make cities healthier, more sustainable and better places to live.">
+  <meta property="og:description" content="A student-led, cross-school innovation competition at SPIP, Bangkok. Build ideas. Solve problems. Shape the future.">
   <meta property="og:image" content="assets/posters/hero-banner-16x9.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SPIP Hack 2027 — City of Tomorrow">
-  <meta name="twitter:description" content="The first student-led, cross-school innovation hackathon at SPIP, Bangkok.">
+  <meta name="twitter:description" content="A student-led, cross-school innovation competition at SPIP, Bangkok. Build ideas. Solve problems. Shape the future.">
   <meta name="twitter:image" content="assets/posters/hero-banner-16x9.png">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0A10'/%3E%3Cpath d='M18 18v28M46 18v28M18 32h28' stroke='white' stroke-width='7' stroke-linecap='square' fill='none'/%3E%3Cpath d='M8 38h48' stroke='%23E8141C' stroke-width='4'/%3E%3Cpath d='M40 50h14' stroke='%232EE6C8' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -25,8 +25,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Kanit:wght@600;700&display=swap">
-  <!-- Decorative marker font, subset to only the hero tag letters -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap&text=HACKTONIDESVRYPGMLU">
 
   <link rel="preload" as="image" href="assets/posters/hero-banner-16x9.webp" type="image/webp" media="(min-width: 768px)">
 
@@ -64,7 +62,6 @@
       /* Type */
       --font-display: "Kanit", "IBM Plex Sans Thai", "Leelawadee UI", "Thonburi", "Sukhumvit Set", "Noto Sans Thai", system-ui, sans-serif;
       --font-body:    "IBM Plex Sans Thai", "Leelawadee UI", "Segoe UI", "Thonburi", "Sukhumvit Set", "Noto Sans Thai", -apple-system, system-ui, sans-serif;
-      --font-marker:  "Permanent Marker", "Segoe Print", "Bradley Hand", cursive;
 
       --fs-xs:   .8125rem;
       --fs-sm:   .9375rem;
@@ -91,7 +88,7 @@
       --maxw: 1200px;
       --gutter: clamp(16px, 4vw, 40px);
       --section-y: clamp(64px, 10vw, 128px);
-      --nav-h: 72px;
+      --nav-h: 76px;
 
       /* Shape, depth, motion */
       --r: 12px;
@@ -100,6 +97,25 @@
       --shadow: 0 20px 48px -24px rgba(0,0,0,.8);
       --ease: cubic-bezier(.2,.7,.2,1);
       --dur: 400ms;
+
+      /* Glass — translucent fill, hairline edge, top highlight, backdrop blur */
+      /* Liquid glass: almost clear, a soft specular sheen from the top-left,
+         a bright rim on the lit edges and a faint inner glow */
+      --glass-fill:
+        radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 55%),
+        linear-gradient(160deg, rgba(255,255,255,.035) 0%, rgba(255,255,255,.01) 100%);
+      --glass-solid:
+        radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 55%),
+        linear-gradient(160deg, rgba(34,28,52,.38) 0%, rgba(14,12,24,.30) 100%);
+      --glass-edge:   rgba(255,255,255,.14);
+      --glass-shine:
+        inset 1px 1px 0 rgba(255,255,255,.28),
+        inset -1px -1px 0 rgba(255,255,255,.07),
+        inset 0 0 28px rgba(255,255,255,.03);
+      --glass-blur:   blur(14px) saturate(190%) brightness(1.08);
+
+      /* Film grain, drawn with an SVG noise filter (no image request) */
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
       /* Faint city-map line texture (inline SVG, drawn not loaded) */
       --map-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' fill='none' stroke='white'%3E%3Cpath stroke-width='2' d='M0 40H320M60 0V320M0 120C80 60 140 220 200 170S290 90 320 120M150 0C170 80 110 150 130 220S160 300 150 320'/%3E%3Cpath stroke-width='1' d='M0 262H320M200 0V320M60 100H150M200 215H320M250 120V262M0 190H60M90 262V320M60 150H130M260 0V40M100 40V100M230 262V320M20 40V120M290 170H320M0 300H60M280 262V300'/%3E%3Ccircle cx='200' cy='262' r='14' stroke-width='1'/%3E%3C/svg%3E");
@@ -125,6 +141,20 @@
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
       overflow-x: hidden;
+    }
+    /* Ambient brand light + grain behind everything — gives the glass something to refract */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        var(--grain),
+        radial-gradient(55vmax 45vmax at 8% 0%, rgba(75,63,120,.62), transparent 65%),
+        radial-gradient(40vmax 36vmax at 96% 38%, rgba(196,68,154,.30), transparent 70%),
+        radial-gradient(50vmax 40vmax at 72% 104%, rgba(242,98,42,.22), transparent 70%),
+        radial-gradient(30vmax 26vmax at 18% 78%, rgba(22,150,138,.14), transparent 70%);
     }
     body.is-locked { overflow: hidden; }
     img, svg, iframe { display: block; max-width: 100%; }
@@ -194,20 +224,8 @@
       font-weight: 600;
       letter-spacing: var(--tracking-eyebrow);
       text-transform: uppercase;
-      color: var(--cyan);
+      color: var(--text-muted);
     }
-    .eyebrow::before {
-      content: "";
-      flex: none;
-      align-self: flex-start;
-      margin-top: .75em;
-      width: 20px;
-      height: 1px;
-      background: currentColor;
-    }
-    .hero-copy .eyebrow::before,
-    .section-head--center .eyebrow::before,
-    .closing .eyebrow::before { display: none; }
     .h-display {
       font-size: var(--fs-2xl);
       font-weight: 700;
@@ -264,26 +282,25 @@
     .btn:active { transform: translateY(1px); }
     .btn--primary { background: var(--cyan); color: var(--on-cyan); }
     .btn--primary:hover { background: #5DF0D8; }
-    .btn--ghost { border-color: var(--line-strong); color: var(--text); }
-    .btn--ghost:hover { border-color: var(--text); }
+    .btn--ghost,
     .btn--grad {
-      border: 1.5px solid transparent;
-      background:
-        linear-gradient(var(--bg), var(--bg)) padding-box,
-        var(--grad-brand) border-box;
+      position: relative;
+      background: var(--glass-fill);
+      border-color: var(--glass-edge);
+      box-shadow: var(--glass-shine);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
       color: var(--text);
     }
-    .btn--grad:hover {
-      background:
-        linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
-        var(--grad-brand) border-box;
-    }
+    .btn--ghost:hover,
+    .btn--grad:hover { background: rgba(255,255,255,.11); }
+    .btn--grad { --ring: 1.5px; border-color: transparent; }
     .btn--sm { min-height: 40px; padding: 0 var(--s-2); font-size: var(--fs-xs); }
     .btn[aria-disabled="true"] {
-      border-color: var(--line-strong);
       color: var(--text-muted);
       cursor: not-allowed;
     }
+    .btn[aria-disabled="true"]:hover { background: var(--glass-fill); }
 
     /* Tooltip */
     .has-tip { position: relative; }
@@ -294,10 +311,12 @@
       width: max-content;
       max-width: 240px;
       padding: var(--s-1) 12px;
-      background: var(--surface-2);
-      border: 1px solid var(--line);
+      background: var(--glass-solid);
+      border: 1px solid var(--glass-edge);
       border-radius: var(--r-sm);
-      box-shadow: var(--shadow);
+      box-shadow: var(--glass-shine), var(--shadow);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
       font-size: var(--fs-xs);
       line-height: 1.5;
       color: var(--text);
@@ -329,8 +348,6 @@
     .cross::after  { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-.5px); }
     .cross--tl { top: var(--s-3); left: var(--s-3); }
     .cross--tr { top: var(--s-3); right: var(--s-3); }
-    .cross--bl { bottom: var(--s-3); left: var(--s-3); }
-    .cross--br { bottom: var(--s-3); right: var(--s-3); }
 
     /* Map texture layer */
     .map-texture {
@@ -345,21 +362,43 @@
       mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 75%);
     }
 
-    /* Gradient frame (thin, like the info posters' outlines) */
-    .frame-grad {
-      border: 1.5px solid transparent;
+    /* Glass surface */
+    .glass,
+    .card {
+      background: var(--glass-fill);
+      border: 1px solid var(--glass-edge);
       border-radius: var(--r);
-      background:
-        linear-gradient(var(--surface), var(--surface)) padding-box,
-        var(--grad-brand) border-box;
+      box-shadow: var(--glass-shine), var(--shadow);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
     }
 
-    /* Card */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--line);
+    /* Gradient frame (thin, like the info posters' outlines) — glass inside a brand-gradient ring */
+    .frame-grad {
+      --ring: 1.5px;
+      position: relative;
+      background: var(--glass-fill);
       border-radius: var(--r);
+      box-shadow: var(--glass-shine), var(--shadow);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
     }
+    /* Shared gradient ring: a masked pseudo-element, so the fill can stay translucent */
+    .frame-grad::before,
+    .btn--grad::before,
+    .lead[aria-expanded="true"]::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      padding: var(--ring, 1.5px);
+      border-radius: inherit;
+      background: var(--grad-brand);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+      pointer-events: none;
+    }
+    .frame-grad::before { inset: 0; }
 
     /* Avatar */
     .avatar {
@@ -383,27 +422,32 @@
       z-index: 50;
       height: var(--nav-h);
     }
-    /* backdrop on a pseudo-element so the fixed mobile overlay isn't trapped by backdrop-filter */
-    .site-header::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(10,10,16,.85);
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-      opacity: 0;
-      transition: opacity .3s var(--ease);
-    }
-    .site-header.is-scrolled::before { opacity: 1; }
     .nav-inner {
       position: relative;
+      z-index: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: var(--s-3);
       height: 100%;
     }
+    /* Floating glass pill; on a pseudo-element so the fixed mobile overlay isn't trapped by backdrop-filter */
+    .nav-inner::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 6px max(8px, calc(var(--gutter) - 20px));
+      border-radius: var(--r-pill);
+      background: var(--glass-solid);
+      border: 1px solid var(--glass-edge);
+      box-shadow: var(--glass-shine), 0 16px 40px -20px rgba(0,0,0,.9);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity .35s var(--ease), transform .35s var(--ease);
+    }
+    .site-header.is-scrolled .nav-inner::before { opacity: 1; transform: none; }
     .brand {
       position: relative;
       z-index: 2;
@@ -483,7 +527,6 @@
       padding-top: calc(var(--nav-h) + var(--s-3));
       padding-bottom: var(--section-y);
     }
-    .hero .cross--tl, .hero .cross--tr { top: calc(var(--nav-h) + var(--s-1)); }
     .hero-banner {
       position: relative;
       max-width: var(--maxw);
@@ -498,11 +541,20 @@
       filter: blur(72px);
       opacity: .45;
     }
+    /* Thin glass bezel around the banner */
+    .hero-banner picture {
+      display: block;
+      padding: 6px;
+      border-radius: calc(var(--r) + 4px);
+      background: var(--glass-fill);
+      border: 1px solid var(--glass-edge);
+      box-shadow: var(--glass-shine), var(--shadow);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+    }
     .hero-banner img {
       width: 100%;
       border-radius: var(--r);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
     }
     .hero-copy {
       max-width: 760px;
@@ -586,33 +638,16 @@
       color: var(--cyan);
     }
 
-    .hero-tags {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      font-family: var(--font-marker);
-      font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
-      color: #fff;
-      opacity: .07;
-      text-transform: uppercase;
-    }
-    .hero-tags span { position: absolute; white-space: nowrap; }
-    .hero-tags span:nth-child(1) { top: 58%; left: 3%;  transform: rotate(-8deg); }
-    .hero-tags span:nth-child(2) { top: 66%; right: 6%; transform: rotate(-12deg); }
-    .hero-tags span:nth-child(3) { top: 76%; left: 9%;  transform: rotate(-6deg); }
-    .hero-tags span:nth-child(4) { top: 57%; right: 2%; transform: rotate(-18deg); }
-    .hero-tags span:nth-child(5) { top: 88%; left: 4%;  transform: rotate(10deg); }
-    .hero-tags span:nth-child(6) { top: 84%; right: 9%; transform: rotate(-14deg); }
 
     /* ---------- 5.2 Poster carousel ---------- */
     .carousel {
       display: grid;
       grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
-      gap: clamp(32px, 6vw, 96px);
-      align-items: center;
+      gap: clamp(24px, 4vw, 48px);
+      align-items: stretch;
     }
     .carousel__stage {
+      align-self: start;
       position: relative;
       padding: 6px;
       touch-action: pan-y;
@@ -622,7 +657,7 @@
       aspect-ratio: 3 / 4;
       border-radius: 8px;
       overflow: hidden;
-      background: var(--bg);
+      background: rgba(0,0,0,.35);
     }
     .carousel__posters picture,
     .carousel__posters img {
@@ -664,7 +699,13 @@
     @keyframes sweepRight { from { left: 100%; opacity: 1; } to { left: 0; opacity: 0; } }
     @keyframes sweepLeft  { from { left: 0; opacity: 1; } to { left: 100%; opacity: 0; } }
 
-    .carousel__body { min-width: 0; }
+    .carousel__body {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: clamp(24px, 3.5vw, 44px);
+    }
+    .carousel__body [data-carousel-live] { flex: 1 0 auto; }
     .carousel__count {
       font-family: var(--font-display);
       font-size: var(--fs-sm);
@@ -673,7 +714,7 @@
       font-variant-numeric: tabular-nums;
     }
     .carousel__count b { color: var(--text); font-weight: 600; }
-    .slide-panel { margin-top: var(--s-3); min-height: 300px; }
+    .slide-panel { margin-top: var(--s-3); }
     .slide-panel.is-entering { animation: panelSwipe .6s var(--ease) both; }
     @keyframes panelSwipe {
       from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 40px)); }
@@ -712,7 +753,7 @@
       top: .8em;
       width: 8px;
       height: 1px;
-      background: var(--cyan);
+      background: var(--line-strong);
     }
     .slide-panel__note { font-size: var(--fs-sm); }
 
@@ -722,33 +763,43 @@
       gap: var(--s-2);
       margin-top: var(--s-4);
     }
+    .carousel__buttons {
+      display: flex;
+      flex: none;
+      gap: var(--s-1);
+    }
     .icon-btn {
       display: inline-grid;
       place-items: center;
       width: 44px;
       height: 44px;
       flex: none;
-      border: 1px solid var(--line-strong);
+      border: 1px solid var(--glass-edge);
       border-radius: 50%;
+      background: var(--glass-fill);
+      box-shadow: var(--glass-shine);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
       color: var(--text);
       transition: border-color .2s var(--ease), background-color .2s var(--ease);
     }
-    .icon-btn:hover { border-color: var(--text); background: rgba(255,255,255,.04); }
+    .icon-btn:hover { border-color: var(--line-strong); background: rgba(255,255,255,.11); }
     .carousel__dots {
       display: flex;
-      gap: 4px;
-      margin-inline: var(--s-1);
+      flex: 1 1 auto;
+      min-width: 0;
     }
     .dot {
       position: relative;
-      width: 28px;
+      flex: 0 1 32px;
+      min-width: 14px;
       height: 44px;
     }
     .dot::before {
       content: "";
       position: absolute;
-      left: 2px;
-      right: 2px;
+      left: 3px;
+      right: 3px;
       top: 50%;
       height: 3px;
       margin-top: -1.5px;
@@ -757,7 +808,6 @@
       transition: background-color .3s var(--ease);
     }
     .dot[aria-current="true"]::before { background: var(--cyan); }
-    .carousel__toggle { margin-left: auto; }
     .carousel__toggle .icon-play { display: none; }
     .carousel.is-paused-by-user .carousel__toggle .icon-play { display: block; }
     .carousel.is-paused-by-user .carousel__toggle .icon-pause { display: none; }
@@ -785,20 +835,20 @@
       gap: clamp(32px, 5vw, 72px);
       align-items: start;
     }
+    .steps { padding: var(--s-1) clamp(20px, 3vw, 36px); }
     .step {
       display: grid;
       grid-template-columns: 56px 1fr;
       gap: var(--s-2);
       padding-block: var(--s-3);
-      border-top: 1px solid var(--line);
     }
-    .step:last-child { border-bottom: 1px solid var(--line); }
+    .step + .step { border-top: 1px solid var(--line); }
     .step__num {
       font-family: var(--font-display);
       font-weight: 600;
       font-size: var(--fs-lg);
       line-height: 1.2;
-      color: var(--cyan);
+      color: var(--text-muted);
       font-variant-numeric: tabular-nums;
     }
     .step h3 {
@@ -870,23 +920,137 @@
       grid-template-columns: 1fr 1fr;
       gap: var(--s-2);
     }
-    .round1__next {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px var(--s-2);
-      align-items: baseline;
-      margin-top: var(--s-4);
-      padding: var(--s-2) var(--s-3);
-      border: 1px dashed var(--line-strong);
-      border-radius: var(--r);
+    .step p + p { margin-top: var(--s-1); }
+    .step__note { font-size: var(--fs-sm); font-style: italic; }
+    .challenges {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-1);
+      margin-top: var(--s-2);
+    }
+    .challenges li {
+      padding: 12px var(--s-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: rgba(255,255,255,.03);
+      font-size: var(--fs-sm);
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+    .challenges strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: var(--fs-xs);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .checklist,
+    .criteria {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px var(--s-3);
+      margin-top: 12px;
       font-size: var(--fs-sm);
       color: var(--text-muted);
     }
-    .round1__next b {
-      flex: none;
-      font-size: var(--fs-xs);
-      letter-spacing: .12em;
+    .checklist li,
+    .criteria li {
+      position: relative;
+      padding-left: 22px;
+    }
+    .checklist li::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: .45em;
+      width: 10px;
+      height: 6px;
+      border-left: 1.75px solid var(--text-muted);
+      border-bottom: 1.75px solid var(--text-muted);
+      transform: rotate(-45deg);
+    }
+    .criteria li::before {
+      content: "20%";
+      position: absolute;
+      left: 0;
+      top: .25em;
+      font-size: .625rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .criteria li { padding-left: 34px; }
+    .dates { margin: var(--s-1) 0 0; }
+    .dates div {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--s-2);
+      padding-block: 10px;
+    }
+    .dates div + div { border-top: 1px solid var(--line); }
+    .dates dt { color: var(--text-muted); font-size: var(--fs-sm); }
+    .dates dd { margin: 0; font-family: var(--font-display); font-weight: 600; text-align: right; }
+
+    .round2 {
+      margin-top: var(--s-4);
+      padding: clamp(24px, 3.5vw, 40px);
+    }
+    .round2__lead {
+      margin-top: var(--s-1);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: var(--fs-lg);
+      line-height: 1.3;
+    }
+    .round2__steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--s-3);
+      margin-top: var(--s-3);
+      counter-reset: r2;
+    }
+    .round2__steps li {
+      padding-top: var(--s-2);
+      border-top: 1px solid var(--line-strong);
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+      counter-increment: r2;
+    }
+    .round2__steps b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .round2__steps b::before {
+      content: "0" counter(r2) "  ";
+      color: var(--text-muted);
+      font-weight: 500;
+      white-space: pre;
+    }
+
+    .perks { margin-top: var(--s-8); }
+    .perks__title {
+      font-size: var(--fs-lg);
       text-transform: uppercase;
+      letter-spacing: var(--tracking-display);
+    }
+    .perks__list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--s-2);
+      margin-top: var(--s-3);
+    }
+    .perks__list li {
+      padding: var(--s-3) var(--s-2);
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+    }
+    .perks__list b {
+      display: block;
+      margin-bottom: 4px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: var(--fs-md);
+      line-height: 1.25;
       color: var(--text);
     }
 
@@ -904,17 +1068,15 @@
     .map {
       position: relative;
       aspect-ratio: 4 / 3;
-      border-radius: var(--r);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.14);
-      background: var(--surface);
-      box-shadow: var(--shadow);
+      padding: 6px;
     }
     .map iframe {
       width: 100%;
       height: 100%;
       border: 0;
+      border-radius: var(--r-sm);
     }
+    .venue__details { padding: clamp(24px, 3.5vw, 44px); }
     .venue__name {
       font-size: var(--fs-lg);
       text-transform: none;
@@ -929,7 +1091,7 @@
       border-top: 1px solid var(--line);
     }
     .venue__list li:last-child { border-bottom: 1px solid var(--line); }
-    .venue__list .icon { margin-top: 3px; color: var(--cyan); }
+    .venue__list .icon { margin-top: 3px; color: var(--text-muted); }
     .venue__term {
       display: block;
       font-size: var(--fs-xs);
@@ -977,9 +1139,10 @@
       width: clamp(240px, 24vw, 300px);
       height: 100%;
       padding: 12px;
-      background: var(--surface);
-      border: 1px solid var(--line);
+      background: var(--glass-fill);
+      border: 1px solid var(--glass-edge);
       border-radius: var(--r);
+      box-shadow: var(--glass-shine);
       transition: border-color .25s var(--ease);
     }
     a.sponsor:hover { border-color: var(--line-strong); }
@@ -988,7 +1151,7 @@
       place-items: center;
       aspect-ratio: 3 / 2;
       border-radius: var(--r-sm);
-      background: var(--bg);
+      background: rgba(0,0,0,.28);
       color: var(--text-muted);
       font-size: var(--fs-xs);
       letter-spacing: .06em;
@@ -1067,26 +1230,30 @@
       align-items: end;
     }
     .lead {
+      --card-r: 20px;
+      --card-pad: 10px;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: stretch;
       width: 100%;
-      padding: 12px 12px var(--s-3);
+      padding: var(--card-pad) var(--card-pad) var(--s-3);
       text-align: center;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--r);
+      background: var(--glass-fill);
+      border: 1px solid var(--glass-edge);
+      border-radius: var(--card-r);
+      box-shadow: var(--glass-shine), var(--shadow);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
       transition: border-color .25s var(--ease), background-color .25s var(--ease), transform .3s var(--ease);
     }
     .lead:hover { border-color: var(--line-strong); transform: translateY(-4px); }
     .lead[aria-expanded="true"] {
-      border: 4px solid transparent;
-      padding: 9px 9px 21px;
-      background:
-        linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
-        var(--grad-brand) border-box;
+      --ring: 4px;
+      border-color: transparent;
+      background: var(--glass-solid);
       box-shadow:
-        0 0 0 1px rgba(196,68,154,.35),
+        var(--glass-shine),
         0 18px 48px -12px rgba(196,68,154,.55),
         0 0 64px -8px rgba(242,98,42,.35);
       transform: translateY(-6px);
@@ -1097,6 +1264,15 @@
     .lead[data-lead="lead"] { grid-column: 2; grid-row: 1; }
     .lead[data-lead="pr"]   { grid-column: 3; grid-row: 1; }
     .lead__role-short { display: none; }
+    /* Concentric corners: photo radius = card radius − card padding */
+    .lead__photo,
+    .member__photo {
+      display: block;
+      overflow: hidden;
+      border-radius: calc(var(--card-r) - var(--card-pad));
+    }
+    .lead__photo > .avatar,
+    .member__photo > .avatar { border-radius: 0; }
     .lead__photo { width: 100%; }
     .lead__role {
       margin-top: var(--s-3);
@@ -1104,7 +1280,7 @@
       font-weight: 600;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: var(--cyan);
+      color: var(--text-muted);
     }
     .lead__name {
       margin-top: 4px;
@@ -1167,8 +1343,11 @@
       margin-top: var(--s-3);
     }
     .member {
+      --card-r: 16px;
+      --card-pad: 8px;
       width: clamp(200px, 21vw, 280px);
-      padding: 12px 12px var(--s-2);
+      padding: var(--card-pad) var(--card-pad) var(--s-2);
+      border-radius: var(--card-r);
       text-align: center;
     }
     .team-group--multi .member { width: clamp(150px, 12.5vw, 200px); }
@@ -1219,7 +1398,8 @@
 
     .site-footer {
       padding-block: var(--s-8) var(--s-4);
-      border-top: 1px solid var(--line);
+      border-top: 1px solid var(--glass-edge);
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0) 60%);
       font-size: var(--fs-sm);
     }
     .footer-grid {
@@ -1275,9 +1455,9 @@
     /* Scroll progress bar under the navbar */
     .scroll-progress {
       position: absolute;
+      top: 0;
       left: 0;
       right: 0;
-      bottom: -1px;
       height: 2px;
       background: var(--grad-brand);
       transform: scaleX(var(--progress, 0));
@@ -1306,7 +1486,9 @@
         justify-content: center;
         gap: var(--s-5);
         padding: var(--nav-h) var(--gutter) var(--s-5);
-        background: var(--bg);
+        background: rgba(10,10,16,.55);
+        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        backdrop-filter: blur(32px) saturate(180%);
         opacity: 0;
         visibility: hidden;
         transition: opacity .3s var(--ease), visibility .3s;
@@ -1354,13 +1536,15 @@
       .carousel__stage { max-width: 440px; width: 100%; margin-inline: auto; }
       .slide-panel { min-height: 0; }
       .venue__grid, .round1 { grid-template-columns: minmax(0, 1fr); }
+      .round2__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .perks__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .perks__list li:first-child { grid-column: 1 / -1; }
       .round1__aside { position: static; }
       .venue__details { order: -1; }
     }
 
     @media (max-width: 767px) {
       :root { --nav-h: 64px; }
-      .hero-tags { display: none; }
       .hero-copy { margin-top: var(--s-5); }
       .countdown__tiles { gap: 2px; }
       .countdown__sep { font-size: 1.5rem; padding-top: 14px; }
@@ -1371,7 +1555,7 @@
         gap: var(--s-1);
         align-items: center;
       }
-      .lead { padding: 6px 6px var(--s-2); }
+      .lead { --card-r: 14px; --card-pad: 6px; padding-bottom: var(--s-2); }
       .lead--center { padding-bottom: var(--s-3); }
       .lead__role-full {
         position: absolute;
@@ -1381,16 +1565,17 @@
         white-space: nowrap;
       }
       .lead__role-short { display: inline; white-space: nowrap; }
-      .lead[aria-expanded="true"] { border-width: 3px; padding: 4px 4px 14px; transform: translateY(-4px); }
-      .lead--center[aria-expanded="true"] { padding-bottom: 22px; }
+      .lead[aria-expanded="true"] { --ring: 3px; transform: translateY(-4px); }
       .brand img { height: 32px; }
       .lead__role { margin-top: 12px; font-size: .625rem; letter-spacing: .06em; }
       .lead__name { font-size: var(--fs-sm); }
       .lead__hint { display: none; }
       .members { gap: var(--s-1); }
-      .member, .team-group--multi .member { width: calc(50% - 4px); padding: 8px 8px var(--s-2); }
+      .member, .team-group--multi .member { width: calc(50% - 4px); }
       .member__name { font-size: var(--fs-sm); }
       .fact-row { grid-template-columns: 1fr; }
+      .challenges, .checklist, .criteria { grid-template-columns: minmax(0, 1fr); }
+      .carousel__body, .venue__details { padding: var(--s-3) var(--s-2); }
       .step { grid-template-columns: 40px 1fr; }
       .member__role { font-size: var(--fs-xs); }
       .marquee-wrap { grid-template-columns: minmax(0, 1fr); }
@@ -1400,9 +1585,6 @@
 
     @media (max-width: 400px) {
       .countdown__unit { font-size: .5625rem; letter-spacing: .08em; }
-      .carousel__controls { gap: var(--s-1); }
-      .carousel__dots { margin-inline: 0; gap: 0; }
-      .dot { width: 22px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1442,7 +1624,8 @@
         </ul>
         <div class="has-tip">
           <button class="btn btn--sm btn--ghost" type="button" aria-disabled="true" aria-describedby="register-tip" data-disabled>Register — Coming Soon</button>
-          <span class="tip" id="register-tip" role="tooltip">Registration opens soon — follow @spip.hack</span>
+          <!-- ★ PASTE REGISTRATION FORM LINK: turn this button into <a class="btn btn--sm btn--primary" href="FORM-URL">Register</a> -->
+          <span class="tip" id="register-tip" role="tooltip">Registration opens soon — closes 13 Feb 2027. Follow @spip.hack</span>
         </div>
       </nav>
     </div>
@@ -1457,11 +1640,6 @@
       <!-- 1. Hero + countdown -->
       <section class="hero" id="home" aria-labelledby="hero-title">
         <div class="map-texture" aria-hidden="true"></div>
-        <div class="hero-tags" aria-hidden="true">
-          <span>Hackathon</span><span>Ideas</span><span>Innovation</span><span>Creativity</span><span>Pitching</span><span>Competition</span>
-        </div>
-        <span class="cross cross--tl" aria-hidden="true"></span>
-        <span class="cross cross--tr" aria-hidden="true"></span>
 
         <div class="container">
           <div class="hero-banner">
@@ -1475,10 +1653,10 @@
           </div>
 
           <div class="hero-copy">
-            <p class="eyebrow">1st SPIP Hack · Cross-school innovation hackathon</p>
+            <p class="eyebrow">1st SPIP Hack · Student-led cross-school innovation competition</p>
             <h1 class="h-display" id="hero-title"><span class="visually-hidden">SPIP Hack 2027 — </span>City of Tomorrow</h1>
             <p class="hero-thai" lang="th">เมืองแห่งอนาคต</p>
-            <p class="hero-sub">How can we use innovation to make cities healthier, more sustainable, and better places to live?</p>
+            <p class="hero-sub">Build ideas. Solve problems. Shape the future. Teams of 2–4 students take on real-world problems in the city of tomorrow — have a problem you care about? Start here.</p>
 
             <div class="countdown" id="countdown" role="timer" aria-label="Time remaining until the Innovation Final, in days, hours, minutes and seconds">
               <div class="countdown__tiles" data-countdown-tiles>
@@ -1491,7 +1669,7 @@
                 <div class="countdown__tile"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__unit">SS</span></div>
               </div>
               <p class="countdown__live" data-countdown-live hidden>The Innovation Final is live!</p>
-              <p class="countdown__label">Innovation Final · March 2027 · Date TBA</p>
+              <p class="countdown__label">Countdown to the Innovation Final · 6 March 2027<br>Registration closes 13 February 2027</p>
             </div>
 
             <div class="hero-cta">
@@ -1548,7 +1726,7 @@
               </div>
             </div>
 
-            <div class="carousel__body">
+            <div class="carousel__body glass">
               <p class="carousel__count" aria-hidden="true"><b data-carousel-current>01</b> / 05</p>
 
               <div data-carousel-live aria-live="off" aria-atomic="true">
@@ -1556,8 +1734,8 @@
                   <p class="slide-panel__kicker">Introducing</p>
                   <h3>What is SPIP Hack?</h3>
                   <div class="slide-panel__content">
-                    <p>SPIP's <strong>first-ever student-led hackathon</strong> — a <strong>cross-school innovation pitching competition</strong>.</p>
-                    <p>Theme: <strong><em>City of Tomorrow</em></strong>.</p>
+                    <p>SPIP Hack is a <strong>student-led, cross-school innovation competition</strong> where students work in teams to <strong>identify real-world problems</strong> and develop <strong>creative, practical solutions</strong>.</p>
+                    <p>Theme: <strong><em>The City of Tomorrow</em></strong>.</p>
                   </div>
                 </div>
 
@@ -1565,10 +1743,10 @@
                   <p class="slide-panel__kicker">Basic Run-down</p>
                   <h3>SPIP Hack</h3>
                   <div class="slide-panel__content">
-                    <p>A <strong>student-led</strong> hackathon split into <strong>2 rounds</strong>:</p>
+                    <p>SPIP Hack 2027 is split into <strong>2 rounds</strong>:</p>
                     <ul>
-                      <li>An <strong>Online</strong> Preliminary round</li>
-                      <li>An <strong>On-Site</strong> Finalist Pitching round</li>
+                      <li><strong>Round 1 — Idea Submission</strong>, online</li>
+                      <li><strong>Round 2 — Innovation Final</strong>, on-site</li>
                     </ul>
                     <p>Held at Satit Prasarnmit International Programme (SPIP), <strong>in English</strong>.</p>
                   </div>
@@ -1578,16 +1756,16 @@
                   <p class="slide-panel__kicker">Basic Run-down</p>
                   <h3>Rounds</h3>
                   <div class="slide-panel__content">
-                    <p><strong>Preliminary</strong> <em>(Online)</em></p>
+                    <p><strong>Round 1 — Idea Submission</strong> <em>(Online)</em></p>
                     <ul>
-                      <li>Teams submit their proposals</li>
-                      <li>Judged blindly by SPIP judges</li>
+                      <li>Teams submit a proposal and a short video pitch</li>
+                      <li>Judged blindly by SPIP judges — top 10 selected</li>
                     </ul>
-                    <p><strong>Pitching</strong> <em>(On-Site)</em></p>
+                    <p><strong>Round 2 — Innovation Final</strong> <em>(On-Site)</em></p>
                     <ul>
-                      <li>10 selected finalist teams</li>
-                      <li>Live pitching presentation</li>
-                      <li>Judged by external judges</li>
+                      <li>Mentor feedback, then refine your idea</li>
+                      <li>5-min pitch + 5-min Q&amp;A</li>
+                      <li>Judged by external professionals &amp; judges</li>
                     </ul>
                     <p class="slide-panel__note">Participants and winners receive certificates.</p>
                   </div>
@@ -1607,8 +1785,9 @@
                   <h3>Teams</h3>
                   <div class="slide-panel__content">
                     <ul>
-                      <li><strong>2–4 members</strong> per team</li>
-                      <li>Members from <strong>multiple schools</strong> are allowed</li>
+                      <li><strong>2–4 members</strong> per team, <strong>Year 9 / Grade 8 / M.2 and above</strong></li>
+                      <li>No specific subject background required</li>
+                      <li>Cross-school teams are <strong>encouraged</strong></li>
                       <li>Open to <strong>any school</strong>, max <strong>3 teams per school</strong></li>
                       <li>A multi-school team counts towards the quota of <strong>both</strong> schools</li>
                     </ul>
@@ -1617,9 +1796,6 @@
               </div>
 
               <div class="carousel__controls">
-                <button class="icon-btn" type="button" data-carousel-prev aria-label="Previous slide">
-                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-                </button>
                 <div class="carousel__dots" data-carousel-dots>
                   <button class="dot" type="button" aria-label="Show slide 1: What is SPIP Hack?" aria-current="true"></button>
                   <button class="dot" type="button" aria-label="Show slide 2: SPIP Hack run-down"></button>
@@ -1627,13 +1803,18 @@
                   <button class="dot" type="button" aria-label="Show slide 4: Hackathon"></button>
                   <button class="dot" type="button" aria-label="Show slide 5: Teams"></button>
                 </div>
-                <button class="icon-btn" type="button" data-carousel-next aria-label="Next slide">
-                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-                </button>
-                <button class="icon-btn carousel__toggle" type="button" data-carousel-toggle aria-label="Pause automatic slide show">
-                  <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
-                  <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>
-                </button>
+                <div class="carousel__buttons">
+                  <button class="icon-btn" type="button" data-carousel-prev aria-label="Previous slide">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+                  </button>
+                  <button class="icon-btn" type="button" data-carousel-next aria-label="Next slide">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                  </button>
+                  <button class="icon-btn carousel__toggle" type="button" data-carousel-toggle aria-label="Pause automatic slide show">
+                    <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+                    <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>
+                  </button>
+                </div>
               </div>
               <div class="carousel__progress" data-carousel-progress aria-hidden="true"><span></span></div>
             </div>
@@ -1641,92 +1822,141 @@
         </div>
       </section>
 
-      <!-- 3. Round 1 — the online preliminary (what every contestant does first) -->
+      <!-- 3. Round 1 — Idea Submission (what every contestant does first) -->
       <section class="section section--tight" id="rounds" aria-labelledby="rounds-title">
         <div class="container">
           <div class="section-head" data-reveal>
-            <p class="eyebrow">Round 1 · Online Preliminary</p>
-            <h2 class="h-section" id="rounds-title">Every team starts here</h2>
-            <p>Form a team, take on the theme, and submit your proposal online — no travel needed. The strongest 10 proposals earn a place at the on-site final.</p>
+            <p class="eyebrow">Round 1 · Idea Submission · Online</p>
+            <h2 class="h-section" id="rounds-title">From idea to innovation</h2>
+            <p>Every team starts here. Form a team, pick a challenge, and submit your idea online — no travel needed. The top 10 teams go through to the Innovation Final at SPIP.</p>
           </div>
 
           <div class="round1">
-            <ol class="steps" data-reveal-group>
+            <ol class="steps glass" data-reveal-group>
               <li class="step" data-reveal>
                 <span class="step__num" aria-hidden="true">01</span>
                 <div>
                   <h3>Form your team</h3>
-                  <p><strong>2–4 members</strong> per team. Teammates can come from <strong>different schools</strong>. Each school can enter up to <strong>3 teams</strong> — a multi-school team counts towards both schools' quota.</p>
+                  <p><strong>2–4 students</strong>, <strong>Year 9 / Grade 8 / M.2 and above</strong>. No specific subject background is required. Open to international, Thai, bilingual / EP, demonstration and other eligible secondary schools.</p>
+                  <p><strong>Cross-school teams are encouraged</strong> — bring together different skills, perspectives and experiences. Each school can enter up to <strong>3 teams</strong>; a multi-school team counts towards both schools' quota.</p>
                 </div>
               </li>
               <li class="step" data-reveal>
                 <span class="step__num" aria-hidden="true">02</span>
                 <div>
-                  <h3>Take on the theme</h3>
-                  <p>This year's theme is <strong>City of Tomorrow</strong>. Your team answers one question:</p>
-                  <blockquote>How can we use innovation to make cities healthier, more sustainable, and better places to live?</blockquote>
+                  <h3>Pick your challenge</h3>
+                  <p>The theme is <strong>The City of Tomorrow</strong>. Choose one area — or combine ideas, or invent your own.</p>
+                  <ul class="challenges">
+                    <li><strong>Health &amp; Wellbeing</strong>How can we make cities healthier and improve quality of life?</li>
+                    <li><strong>Sustainability &amp; Environment</strong>How can we reduce environmental impact and use resources more responsibly?</li>
+                    <li><strong>Mobility &amp; Urban Living</strong>How can we make it easier, safer, and better to live and move around cities?</li>
+                    <li><strong>Future Technology</strong>How can emerging technology help solve real-world urban problems?</li>
+                  </ul>
                 </div>
               </li>
               <li class="step" data-reveal>
                 <span class="step__num" aria-hidden="true">03</span>
                 <div>
-                  <h3>Submit your proposal online</h3>
-                  <p>Write up your idea as a proposal and submit it online, in English. The submission format and deadline will be announced when registration opens — follow <a class="text-link-inline" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">@spip.hack<span class="visually-hidden"> (opens in a new tab)</span></a> so you don't miss it.</p>
+                  <h3>Submit your idea</h3>
+                  <p>Submit online via Google Forms, in English. Your submission covers:</p>
+                  <ul class="checklist">
+                    <li>Team &amp; school info</li>
+                    <li>Problem statement</li>
+                    <li>Why the problem matters</li>
+                    <li>Proposed solution</li>
+                    <li>Intended users / beneficiaries</li>
+                    <li>Basic implementation concept</li>
+                    <li>Potential impact</li>
+                    <li>3–5 minute video pitch</li>
+                  </ul>
+                  <p class="step__note">We're looking for promising ideas and strong reasoning, not finished businesses.</p>
                 </div>
               </li>
               <li class="step" data-reveal>
                 <span class="step__num" aria-hidden="true">04</span>
                 <div>
-                  <h3>Blind judging</h3>
-                  <p>Proposals are <strong>judged blindly by SPIP judges</strong> — judges don't see team or school names, so only the idea counts. The <strong>top 10 teams</strong> advance to the final.</p>
+                  <h3>Get selected</h3>
+                  <p>Ideas are <strong>judged blindly by SPIP judges</strong> — judges don't see team or school names. The <strong>top 10 teams</strong> go through to the Innovation Final. Each criterion is worth 20%:</p>
+                  <ul class="criteria">
+                    <li>Problem significance &amp; understanding</li>
+                    <li>Innovation &amp; originality</li>
+                    <li>Feasibility</li>
+                    <li>Potential impact</li>
+                    <li>Communication &amp; proposal quality</li>
+                  </ul>
                 </div>
               </li>
             </ol>
 
-            <aside class="round1__aside" aria-label="Round 1 at a glance" data-reveal-group>
+            <aside class="round1__aside" aria-label="SPIP Hack at a glance" data-reveal-group>
               <div class="fact frame-grad" data-reveal>
                 <span class="fact__kicker">Theme</span>
-                <span class="fact__num">City of Tomorrow</span>
+                <span class="fact__num">The City of Tomorrow</span>
                 <span class="fact__label" lang="th">เมืองแห่งอนาคต</span>
+              </div>
+              <div class="fact card" data-reveal>
+                <span class="fact__kicker">Key dates</span>
+                <dl class="dates">
+                  <div><dt>Registration closes</dt><dd>13 February 2027</dd></div>
+                  <div><dt>Innovation Final</dt><dd>6 March 2027</dd></div>
+                </dl>
               </div>
               <div class="fact-row">
                 <div class="fact card" data-reveal>
-                  <span class="fact__kicker">Team size</span>
+                  <span class="fact__kicker">Who</span>
                   <span class="fact__num">2–4</span>
-                  <span class="fact__label">members, multi-school OK</span>
+                  <span class="fact__label">students per team, Year 9 / G8 / M.2+</span>
                 </div>
                 <div class="fact card" data-reveal>
-                  <span class="fact__kicker">Format</span>
+                  <span class="fact__kicker">Round 1</span>
                   <span class="fact__num">Online</span>
-                  <span class="fact__label">proposal, in English</span>
+                  <span class="fact__label">proposal + 3–5 min video</span>
                 </div>
               </div>
               <div class="fact card" data-reveal>
-                <span class="fact__kicker">Potential prize pool</span>
+                <span class="fact__kicker">The stakes</span>
                 <span class="fact__num">฿10,000</span>
-                <span class="fact__label">for the top 3 teams, plus certificates for every participant</span>
-                <span class="fact__meta">1st ฿5,000 · 2nd ฿3,000 · 3rd ฿2,000 <span class="fact__tag">Proposed</span></span>
+                <span class="fact__label">in prizes, plus certificates for every participant</span>
+                <span class="fact__meta">1st ฿5,000 · 2nd ฿3,000 · 3rd ฿2,000</span>
               </div>
             </aside>
           </div>
 
-          <p class="round1__next" data-reveal><b>Then · Round 2</b> The top 10 teams pitch live to external judges at SPIP — the Innovation Final, March 2027.</p>
+          <div class="round2 glass" data-reveal>
+            <p class="eyebrow">Then · Round 2 · Innovation Final · 6 March 2027 at SPIP</p>
+            <p class="round2__lead">The top 10 teams pitch their ideas to external professionals and judges.</p>
+            <ol class="round2__steps">
+              <li><b>Keynote</b>Learn from researchers, professionals and entrepreneurs.</li>
+              <li><b>Mentor feedback</b>Targeted advice from SPIP teachers and mentors.</li>
+              <li><b>Refinement</b>Improve your solution, prototype, evidence and presentation.</li>
+              <li><b>Final pitch</b>5-minute pitch + 5-minute Q&amp;A.</li>
+            </ol>
+          </div>
+
+          <div class="perks" data-reveal-group>
+            <h3 class="perks__title" data-reveal>More than a competition</h3>
+            <ul class="perks__list">
+              <li class="card" data-reveal><b>Turn an idea into a solution</b>Work on a problem that matters.</li>
+              <li class="card" data-reveal><b>Develop real skills</b>Research, critical thinking, problem solving.</li>
+              <li class="card" data-reveal><b>Get feedback</b>Structured mentorship.</li>
+              <li class="card" data-reveal><b>Experience</b>An expert judging panel.</li>
+              <li class="card" data-reveal><b>Connect</b>Cross-school networking.</li>
+            </ul>
+          </div>
         </div>
       </section>
 
       <!-- 4. Hosted at SPIP -->
       <section class="section venue" id="venue" aria-labelledby="venue-title">
         <div class="map-texture" aria-hidden="true"></div>
-        <span class="cross cross--tl" aria-hidden="true"></span>
-        <span class="cross cross--br" aria-hidden="true"></span>
         <div class="container venue__grid">
-          <div class="map" data-reveal>
+          <div class="map glass" data-reveal>
             <iframe src="https://www.google.com/maps?q=Satit+Prasarnmit+International+Programme,+Bangkok&amp;output=embed"
                     title="Map showing Satit Prasarnmit International Programme, Bangkok"
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
 
-          <div class="venue__details" data-reveal>
+          <div class="venue__details glass" data-reveal>
             <p class="eyebrow">Venue</p>
             <h2 class="h-section" id="venue-title">Hosted at SPIP</h2>
             <p class="mt-3 venue__name h-section">Satit Prasarnmit International Programme (SPIP)</p>
@@ -1826,7 +2056,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a class="brand brand--footer" href="#/" aria-label="SPIP Hack 2027 — home"><picture><source type="image/webp" srcset="assets/logo/spip-hack-logo.webp"><img src="assets/logo/spip-hack-logo.png" width="800" height="230" alt="SPIP Hack 2027" loading="lazy" decoding="async"></picture></a>
-          <p>The first student-led, cross-school innovation hackathon at Satit Prasarnmit International Programme, Bangkok.</p>
+          <p>A student-led, cross-school innovation competition at Satit Prasarnmit International Programme, Bangkok. Build ideas. Solve problems. Shape the future.</p>
         </div>
 
         <div class="footer-col">
@@ -1855,7 +2085,7 @@
           <h3>Quick links</h3>
           <ul>
             <li><a href="#/event">The event</a></li>
-            <li><a href="#/rounds">Round 1</a></li>
+            <li><a href="#/rounds">How it works</a></li>
             <li><a href="#/venue">Venue</a></li>
             <li><a href="#/partners">Partners</a></li>
             <li><a href="#/about">About us</a></li>
@@ -1872,7 +2102,7 @@
     "use strict";
 
     // ▼▼▼ ★ EDIT EVENT DATE HERE (Bangkok time, UTC+7) ▼▼▼
-    const EVENT_DATE = "2027-03-13T08:00:00+07:00"; // PLACEHOLDER — event day is TBD (a weekend in March 2027)
+    const EVENT_DATE = "2027-03-06T08:00:00+07:00"; // Innovation Final, 6 March 2027 (start time 08:00 is a placeholder)
 
     /* ================================================================
        ★★★ ADD SPONSOR LOGOS HERE ★★★
@@ -2294,7 +2524,7 @@
           <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stop-color="#4B3F78"/><stop offset=".5" stop-color="#C4449A"/><stop offset="1" stop-color="#F2622A"/>
           </linearGradient>
-          <clipPath id="${id}c"><rect width="120" height="120" rx="8"/></clipPath>
+          <clipPath id="${id}c"><rect width="120" height="120"/></clipPath>
         </defs>
         <g clip-path="url(#${id}c)">
           <rect width="120" height="120" fill="#1E1A2B"/>
