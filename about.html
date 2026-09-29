@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us — SPIP Hack 2027</title>
+  <meta name="description" content="Meet the student team organising SPIP Hack 2027 at Satit Prasarnmit International Programme (SPIP), Bangkok.">
+  <meta name="theme-color" content="#0A0A10">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Open Graph / Twitter. Social platforms need absolute URLs:
+       ★ SET SITE URL — once hosted, replace the relative image path below with the full URL -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SPIP Hack 2027">
+  <meta property="og:title" content="SPIP Hack 2027 — City of Tomorrow">
+  <meta property="og:description" content="The first student-led, cross-school innovation hackathon at SPIP, Bangkok. Pitch ideas that make cities healthier, more sustainable and better places to live.">
+  <meta property="og:image" content="assets/posters/hero-banner-16x9.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SPIP Hack 2027 — City of Tomorrow">
+  <meta name="twitter:description" content="The first student-led, cross-school innovation hackathon at SPIP, Bangkok.">
+  <meta name="twitter:image" content="assets/posters/hero-banner-16x9.png">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0A10'/%3E%3Cpath d='M18 18v28M46 18v28M18 32h28' stroke='white' stroke-width='7' stroke-linecap='square' fill='none'/%3E%3Cpath d='M8 38h48' stroke='%23E8141C' stroke-width='4'/%3E%3Cpath d='M40 50h14' stroke='%232EE6C8' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Kanit:wght@600;700&display=swap">
+
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-view="about">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- ============================ NAVBAR ============================ -->
+  <header class="site-header" id="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="SPIP Hack 2027 — home"><picture><source type="image/webp" srcset="assets/logo/spip-hack-logo.webp"><img src="assets/logo/spip-hack-logo.png" width="800" height="230" alt="SPIP Hack 2027" fetchpriority="high"></picture></a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <svg class="icon icon-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon icon-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+
+      <nav class="nav-menu" id="nav-menu" aria-label="Main">
+        <ul class="nav-links">
+          <li><a href="index.html" data-nav="home">Home</a></li>
+          <li><a href="index.html#event" data-nav="event">Event</a></li>
+          <li><a href="index.html#rounds" data-nav="rounds">Rounds</a></li>
+          <li><a href="index.html#venue" data-nav="venue">Venue</a></li>
+          <li><a href="index.html#partners" data-nav="partners">Partners</a></li>
+          <li><a href="about.html" data-nav="about">About Us</a></li>
+        </ul>
+        <div class="has-tip">
+          <button class="btn btn--sm btn--ghost" type="button" aria-disabled="true" aria-describedby="register-tip" data-disabled>Register — Coming Soon</button>
+          <span class="tip" id="register-tip" role="tooltip">Registration opens soon — follow @spip.hack</span>
+        </div>
+      </nav>
+    </div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+
+    <!-- ======================== ABOUT US PAGE ======================== -->
+      <section class="page-head" aria-labelledby="about-title">
+        <div class="map-texture" aria-hidden="true"></div>
+        <div class="container container--wide">
+          <p class="eyebrow">About us</p>
+          <h1 class="h-display" id="about-title" tabindex="-1">The team behind SPIP Hack</h1>
+          <p>SPIP Hack is organised entirely by students at Satit Prasarnmit International Programme. These are the people running your competition — select a lead to meet their team.</p>
+        </div>
+      </section>
+
+      <section class="section" id="team" aria-labelledby="team-title">
+        <div class="container container--wide">
+          <h2 class="visually-hidden" id="team-title">Organising team</h2>
+          <div class="leads" data-team-leads></div>
+          <p class="leads-help" data-team-help>Showing the secretaries — tap a lead to see their team.</p>
+          <div class="team-panel" id="team-panel" data-team-panel aria-live="polite">
+            <div class="team-panel__inner" data-team-panel-inner></div>
+          </div>
+        </div>
+      </section>
+
+  </main>
+
+  <!-- ============================ FOOTER ============================ -->
+  <section class="closing" aria-labelledby="closing-title">
+    <span class="cross cross--tl" aria-hidden="true"></span>
+    <span class="cross cross--tr" aria-hidden="true"></span>
+    <div class="container">
+      <p class="eyebrow">SPIP Hack 2027</p>
+      <h2 id="closing-title">Let's build the City of Tomorrow.</h2>
+      <a class="btn btn--grad" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">
+        <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+        Follow @spip.hack for updates
+        <span class="visually-hidden">(opens in a new tab)</span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand brand--footer" href="index.html" aria-label="SPIP Hack 2027 — home"><picture><source type="image/webp" srcset="assets/logo/spip-hack-logo.webp"><img src="assets/logo/spip-hack-logo.png" width="800" height="230" alt="SPIP Hack 2027" loading="lazy" decoding="async"></picture></a>
+          <p>The first student-led, cross-school innovation hackathon at Satit Prasarnmit International Programme, Bangkok.</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>Contact us</h3>
+          <ul>
+            <li>
+              <a href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+                @spip.hack<span class="visually-hidden"> on Instagram (opens in a new tab)</span>
+              </a>
+            </li>
+            <li>
+              <!-- ★ ADD EVENT EMAIL ★ — replace the span below with:
+                   <a href="mailto:hello@example.com">hello@example.com</a> -->
+              <span class="muted">Email — coming soon</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Venue</h3>
+          <address>SPIP, 4th floor Mini Theatre<br>176 Sukhumvit 23, Wattana<br>Bangkok 10110</address>
+        </div>
+
+        <div class="footer-col">
+          <h3>Quick links</h3>
+          <ul>
+            <li><a href="index.html#event">The event</a></li>
+            <li><a href="index.html#rounds">Round 1</a></li>
+            <li><a href="index.html#venue">Venue</a></li>
+            <li><a href="index.html#partners">Partners</a></li>
+            <li><a href="about.html">About us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="footer-bottom">© 2027 SPIP Hack · A student-led initiative at Satit Prasarnmit International Programme</p>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/team.js"></script>
+</body>
+</html>
