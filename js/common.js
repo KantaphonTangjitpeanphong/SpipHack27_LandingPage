@@ -1,6 +1,6 @@
 /* =================================================================
    Shared code for every SPIP Hack page: helpers, navbar,
-   scroll progress bar and scroll-reveal animations.
+   scroll progress bar, scroll-reveal animations and liquid glass.
    Load this BEFORE the page's own script (home.js / team.js).
    ================================================================= */
 "use strict";
@@ -114,4 +114,54 @@ function initReveal() {
     });
   }, { threshold: .12, rootMargin: "0px 0px -40px 0px" });
   $$("[data-reveal]").forEach((el) => io.observe(el));
+}
+
+/* ---------- Liquid glass ---------- */
+// Surfaces that carry the moving specular highlight (.…::after in style.css)
+const GLASS_SEL = ".glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary, " +
+  ".icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture";
+
+function initLiquidGlass() {
+  const root = document.documentElement;
+
+  // Refraction: Chromium is the only engine that renders an SVG filter
+  // inside backdrop-filter; everyone else keeps the plain blurred glass.
+  const isChromium = !!(navigator.userAgentData && navigator.userAgentData.brands
+    .some((b) => /Chromium/.test(b.brand)));
+  const reducedTransparency = window.matchMedia("(prefers-reduced-transparency: reduce)").matches;
+  if (isChromium && !reducedTransparency) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("width", "0");
+    svg.setAttribute("height", "0");
+    svg.style.position = "absolute";
+    // Low-frequency noise nudges the blurred backdrop around, so what's
+    // behind the glass looks bent by a thick, slightly uneven lens
+    svg.innerHTML = `<filter id="lg-refract" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency=".006 .009" numOctaves="2" seed="7" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="28" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>`;
+    document.body.appendChild(svg);
+    root.classList.add("lg-refract");
+  }
+
+  // Specular highlight follows the pointer across whichever glass surface
+  // it's over (mouse / pen only; skipped when motion is reduced)
+  if (isReduced() || !window.matchMedia("(hover: hover)").matches) return;
+  let el = null, x = 0, y = 0, queued = false;
+  function paint() {
+    queued = false;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", ((x - r.left) / r.width * 100).toFixed(1) + "%");
+    el.style.setProperty("--my", ((y - r.top) / r.height * 100).toFixed(1) + "%");
+  }
+  document.addEventListener("pointermove", (e) => {
+    const next = e.target instanceof Element ? e.target.closest(GLASS_SEL) : null;
+    if (el && el !== next) { el.style.removeProperty("--mx"); el.style.removeProperty("--my"); }
+    el = next;
+    x = e.clientX;
+    y = e.clientY;
+    if (el && !queued) { queued = true; requestAnimationFrame(paint); }
+  }, { passive: true });
 }
