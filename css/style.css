@@ -1180,6 +1180,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   width: 100%;
   padding: 12px 12px var(--s-3);
   text-align: center;
+  container-type: inline-size;
   background: var(--glass-fill);
   border: 1px solid var(--glass-edge);
   border-radius: var(--r);
@@ -1214,11 +1215,24 @@ body[data-view="about"] .container { --maxw: 1400px; }
   text-transform: uppercase;
   color: var(--text-muted);
 }
+/* Names and roles shrink with their card (cqi = % of card width) and, as a
+   last resort, break mid-word so long surnames never spill past the border */
+.lead__role,
+.lead__name,
+.member__name,
+.member__role {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 .lead__name {
   margin-top: 4px;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--fs-lg);
+  font-size: clamp(.75rem, 9cqi, var(--fs-lg));
   line-height: 1.2;
 }
 .lead__hint {
@@ -1278,6 +1292,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   width: clamp(200px, 21vw, 280px);
   padding: 12px 12px var(--s-2);
   text-align: center;
+  container-type: inline-size;
 }
 .team-group--multi .member { width: clamp(150px, 12.5vw, 200px); }
 .member__photo { width: 100%; }
@@ -1285,9 +1300,11 @@ body[data-view="about"] .container { --maxw: 1400px; }
   margin-top: var(--s-2);
   font-weight: 600;
   font-size: var(--fs-md);
+  font-size: clamp(.75rem, 9cqi, var(--fs-md));
 }
 .member__role {
   font-size: var(--fs-sm);
+  font-size: clamp(.6875rem, 8.5cqi, var(--fs-sm));
   color: var(--text-muted);
 }
 
@@ -1482,7 +1499,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   .hero-cta .btn { flex: 1 1 200px; }
   .cross { display: none; }
   .leads {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
     gap: var(--s-1);
     align-items: center;
   }
@@ -1495,19 +1512,19 @@ body[data-view="about"] .container { --maxw: 1400px; }
     clip: rect(0 0 0 0);
     white-space: nowrap;
   }
-  .lead__role-short { display: inline; white-space: nowrap; }
+  .lead__role-short { display: inline; }
   .lead[aria-expanded="true"] { --ring: 3px; transform: translateY(-4px); }
   .brand img { height: 32px; }
-  .lead__role { margin-top: 12px; font-size: .625rem; letter-spacing: .06em; }
-  .lead__name { font-size: var(--fs-sm); }
+  .lead__role { margin-top: 12px; font-size: .625rem; font-size: clamp(.5625rem, 10cqi, .625rem); letter-spacing: .06em; }
+  .lead__name { font-size: var(--fs-sm); font-size: clamp(.5625rem, 9.5cqi, var(--fs-sm)); }
   .lead__hint { display: none; }
   .members { gap: var(--s-1); }
   .member, .team-group--multi .member { width: calc(50% - 4px); padding: 8px 8px var(--s-2); }
-  .member__name { font-size: var(--fs-sm); }
+  .member__name { font-size: var(--fs-sm); font-size: clamp(.75rem, 9cqi, var(--fs-sm)); }
   .fact-row { grid-template-columns: 1fr; }
   .carousel__body, .venue__details { padding: var(--s-3) var(--s-2); }
   .step { grid-template-columns: 40px 1fr; }
-  .member__role { font-size: var(--fs-xs); }
+  .member__role { font-size: var(--fs-xs); font-size: clamp(.6875rem, 8.5cqi, var(--fs-xs)); }
   .marquee-wrap { grid-template-columns: minmax(0, 1fr); }
   .marquee-wrap .icon-btn { display: none; }
   .footer-grid { grid-template-columns: 1fr; gap: var(--s-4); }
