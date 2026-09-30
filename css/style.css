@@ -60,29 +60,38 @@
   --section-y: clamp(64px, 10vw, 128px);
   --nav-h: 76px;
 
-  /* Shape, depth, motion */
-  --r: 12px;
-  --r-sm: 8px;
+  /* Shape, depth, motion — generous, concentric radii (inner = outer − padding) */
+  --r: 24px;
+  --r-sm: 14px;
   --r-pill: 999px;
-  --shadow: 0 20px 48px -24px rgba(0,0,0,.8);
+  --shadow:
+    0 28px 64px -30px rgba(0,0,0,.85),
+    0 2px 10px -4px rgba(0,0,0,.35);
   --ease: cubic-bezier(.2,.7,.2,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
   --dur: 400ms;
 
-  /* Glass — translucent fill, hairline edge, top highlight, backdrop blur */
-  /* Liquid glass: almost clear, a soft specular sheen from the top-left,
-     a bright rim on the lit edges and a faint inner glow */
+  /* Liquid glass (after Apple's 2025 material): a nearly clear lens that
+     blurs + saturates what's behind it, bright specular rims on the lit
+     edges, a soft caustic glow inside, and a highlight that follows the
+     pointer (see .lg::after). Chromium also bends light at the edges
+     through an SVG displacement filter (html.lg-refract, js/common.js). */
   --glass-fill:
-    radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 55%),
-    linear-gradient(160deg, rgba(255,255,255,.035) 0%, rgba(255,255,255,.01) 100%);
+    linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.035) 42%, rgba(255,255,255,.02) 70%, rgba(255,255,255,.06) 100%);
   --glass-solid:
-    radial-gradient(130% 90% at 0% 0%, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 55%),
-    linear-gradient(160deg, rgba(34,28,52,.38) 0%, rgba(14,12,24,.30) 100%);
-  --glass-edge:   rgba(255,255,255,.14);
+    linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 50%),
+    linear-gradient(180deg, rgba(38,32,60,.46) 0%, rgba(16,14,28,.40) 100%);
+  --glass-hover:
+    linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.06) 50%, rgba(255,255,255,.09) 100%);
+  --glass-edge:   rgba(255,255,255,.16);
   --glass-shine:
-    inset 1px 1px 0 rgba(255,255,255,.28),
-    inset -1px -1px 0 rgba(255,255,255,.07),
-    inset 0 0 28px rgba(255,255,255,.03);
-  --glass-blur:   blur(14px) saturate(190%) brightness(1.08);
+    inset 0 1px 0 rgba(255,255,255,.50),
+    inset 0 -1px 0 rgba(255,255,255,.12),
+    inset 1px 0 0 rgba(255,255,255,.14),
+    inset -1px 0 0 rgba(255,255,255,.06),
+    inset 0 14px 28px -18px rgba(255,255,255,.28),
+    inset 0 -16px 28px -20px rgba(255,255,255,.14);
+  --glass-blur:   blur(22px) saturate(185%) brightness(1.1);
 
   /* Film grain, drawn with an SVG noise filter (no image request) */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -121,10 +130,21 @@ body::before {
   pointer-events: none;
   background:
     var(--grain),
-    radial-gradient(55vmax 45vmax at 8% 0%, rgba(75,63,120,.62), transparent 65%),
-    radial-gradient(40vmax 36vmax at 96% 38%, rgba(196,68,154,.30), transparent 70%),
-    radial-gradient(50vmax 40vmax at 72% 104%, rgba(242,98,42,.22), transparent 70%),
-    radial-gradient(30vmax 26vmax at 18% 78%, rgba(22,150,138,.14), transparent 70%);
+    radial-gradient(55vmax 45vmax at 8% 0%, rgba(75,63,120,.70), transparent 65%),
+    radial-gradient(40vmax 36vmax at 96% 38%, rgba(196,68,154,.38), transparent 70%),
+    radial-gradient(50vmax 40vmax at 72% 104%, rgba(242,98,42,.28), transparent 70%),
+    radial-gradient(30vmax 26vmax at 18% 78%, rgba(46,230,200,.16), transparent 70%);
+}
+
+/* Pointer position inside a glass surface — registered so the
+   specular highlight glides instead of jumping */
+@property --mx { syntax: "<percentage>"; inherits: false; initial-value: 30%; }
+@property --my { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+
+/* Chromium only (it's the one engine that renders SVG filters in
+   backdrop-filter): bend the blurred backdrop at the edges like a lens */
+html.lg-refract {
+  --glass-blur: url(#lg-refract) blur(20px) saturate(185%) brightness(1.1);
 }
 body.is-locked { overflow: hidden; }
 img, svg, iframe { display: block; max-width: 100%; }
@@ -247,30 +267,47 @@ main:focus { outline: none; }
   font-size: var(--fs-sm);
   line-height: 1;
   white-space: nowrap;
-  transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+  transition: background .25s var(--ease), border-color .2s var(--ease), color .2s var(--ease), box-shadow .25s var(--ease), transform .35s var(--ease-spring);
 }
-.btn:active { transform: translateY(1px); }
-.btn--primary { background: var(--cyan); color: var(--on-cyan); }
-.btn--primary:hover { background: #5DF0D8; }
+/* Glass controls swell slightly under the finger, like a drop of liquid */
+.btn:hover { transform: scale(1.03); }
+.btn:active { transform: scale(.96); transition-duration: .12s; }
+/* Tinted glass — the cyan is a translucent dye, not a flat fill */
+.btn--primary {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.30) 0%, rgba(255,255,255,0) 55%),
+    rgba(46,230,200,.82);
+  border-color: rgba(255,255,255,.35);
+  box-shadow: var(--glass-shine), 0 12px 32px -12px rgba(46,230,200,.6);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  color: var(--on-cyan);
+}
+.btn--primary:hover {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,0) 55%),
+    rgba(93,240,216,.88);
+  box-shadow: var(--glass-shine), 0 16px 40px -12px rgba(46,230,200,.75);
+}
 .btn--ghost,
 .btn--grad {
   position: relative;
   background: var(--glass-fill);
   border-color: var(--glass-edge);
-  box-shadow: var(--glass-shine);
+  box-shadow: var(--glass-shine), 0 10px 28px -16px rgba(0,0,0,.8);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   color: var(--text);
 }
 .btn--ghost:hover,
-.btn--grad:hover { background: rgba(255,255,255,.11); }
+.btn--grad:hover { background: var(--glass-hover); }
 .btn--grad { --ring: 1.5px; border-color: transparent; }
 .btn--sm { min-height: 40px; padding: 0 var(--s-2); font-size: var(--fs-xs); }
 .btn[aria-disabled="true"] {
   color: var(--text-muted);
   cursor: not-allowed;
 }
-.btn[aria-disabled="true"]:hover { background: var(--glass-fill); }
+.btn[aria-disabled="true"]:hover { background: var(--glass-fill); transform: none; }
 
 /* Tooltip */
 .has-tip { position: relative; }
@@ -343,6 +380,32 @@ main:focus { outline: none; }
   backdrop-filter: var(--glass-blur);
 }
 
+/* Specular highlight shared by every liquid-glass surface. It sits under
+   the content (z-index -1 inside the surface's own stacking context) and
+   drifts toward the pointer; --mx / --my are set by js/common.js. */
+.glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
+.icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture {
+  position: relative;
+  isolation: isolate;
+}
+.glass::after, .card::after, .frame-grad::after, .btn--ghost::after,
+.btn--grad::after, .btn--primary::after, .icon-btn::after, .lead::after,
+.sponsor::after, .countdown__tile::after, .hero-banner picture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(80% 60% at var(--mx) var(--my), rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 65%),
+    radial-gradient(60% 40% at calc(100% - var(--mx)) calc(100% - var(--my)), rgba(255,255,255,.05) 0%, rgba(255,255,255,0) 70%);
+  opacity: .75;
+  transition: opacity .4s var(--ease), --mx .6s var(--ease), --my .6s var(--ease);
+}
+:is(.glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
+    .icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture):hover::after { opacity: 1; }
+
 /* Gradient frame (thin, like the info posters' outlines) — glass inside a brand-gradient ring */
 .frame-grad {
   --ring: 1.5px;
@@ -374,7 +437,7 @@ main:focus { outline: none; }
 .avatar {
   width: 100%;
   aspect-ratio: 1;
-  border-radius: var(--r-sm);
+  border-radius: calc(var(--r) - 12px); /* concentric with the 12px-padded card */
   object-fit: cover;
   background: var(--surface-2);
 }
@@ -408,16 +471,18 @@ main:focus { outline: none; }
   z-index: -1;
   inset: 6px max(8px, calc(var(--gutter) - 20px));
   border-radius: var(--r-pill);
-  background: var(--glass-solid);
+  background: var(--glass-fill);
   border: 1px solid var(--glass-edge);
-  box-shadow: var(--glass-shine), 0 16px 40px -20px rgba(0,0,0,.9);
+  box-shadow: var(--glass-shine), 0 10px 30px -22px rgba(0,0,0,.6);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity .35s var(--ease), transform .35s var(--ease);
+  transition: background .35s var(--ease), box-shadow .35s var(--ease), inset .35s var(--ease);
 }
-.site-header.is-scrolled .nav-inner::before { opacity: 1; transform: none; }
+/* Once content scrolls under it the capsule gets a little denser and lifts */
+.site-header.is-scrolled .nav-inner::before {
+  background: var(--glass-solid);
+  box-shadow: var(--glass-shine), 0 18px 44px -18px rgba(0,0,0,.9);
+}
 .brand {
   position: relative;
   z-index: 2;
@@ -465,6 +530,21 @@ main:focus { outline: none; }
 .nav-links a:hover,
 .nav-links a.is-active { color: var(--text); }
 .nav-links a.is-active::after { transform: scaleX(1); }
+/* Desktop: the current link sits in its own small glass capsule */
+@media (min-width: 1080px) {
+  .nav-links { gap: 4px; }
+  .nav-links a {
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    transition: color .2s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .nav-links a::after { display: none; }
+  .nav-links a:hover { background: rgba(255,255,255,.06); }
+  .nav-links a.is-active {
+    background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.08), 0 4px 14px -6px rgba(0,0,0,.6);
+  }
+}
 
 .nav-toggle {
   position: relative;
@@ -515,7 +595,7 @@ main:focus { outline: none; }
 .hero-banner picture {
   display: block;
   padding: 6px;
-  border-radius: calc(var(--r) + 4px);
+  border-radius: calc(var(--r) + 6px);
   background: var(--glass-fill);
   border: 1px solid var(--glass-edge);
   box-shadow: var(--glass-shine), var(--shadow);
@@ -573,7 +653,13 @@ main:focus { outline: none; }
 }
 @keyframes blink { 50% { opacity: .35; } }
 .countdown__tile {
-  padding: var(--s-2) 0;
+  padding: var(--s-2) 0 12px;
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r);
+  box-shadow: var(--glass-shine), var(--shadow);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
 }
 .countdown__num {
   display: block;
@@ -625,7 +711,7 @@ main:focus { outline: none; }
 .carousel__posters {
   position: relative;
   aspect-ratio: 3 / 4;
-  border-radius: 8px;
+  border-radius: calc(var(--r) - 6px);
   overflow: hidden;
   background: rgba(0,0,0,.35);
 }
@@ -751,9 +837,10 @@ main:focus { outline: none; }
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   color: var(--text);
-  transition: border-color .2s var(--ease), background-color .2s var(--ease);
+  transition: border-color .2s var(--ease), background .25s var(--ease), transform .35s var(--ease-spring);
 }
-.icon-btn:hover { border-color: var(--line-strong); background: rgba(255,255,255,.11); }
+.icon-btn:hover { border-color: var(--line-strong); background: var(--glass-hover); transform: scale(1.08); }
+.icon-btn:active { transform: scale(.92); transition-duration: .12s; }
 .carousel__dots {
   display: flex;
   flex: 1 1 auto;
@@ -777,7 +864,7 @@ main:focus { outline: none; }
   background: var(--line-strong);
   transition: background-color .3s var(--ease);
 }
-.dot[aria-current="true"]::before { background: var(--cyan); }
+.dot[aria-current="true"]::before { background: var(--cyan); box-shadow: 0 0 12px rgba(46,230,200,.6); }
 .carousel__toggle .icon-play { display: none; }
 .carousel.is-paused-by-user .carousel__toggle .icon-play { display: block; }
 .carousel.is-paused-by-user .carousel__toggle .icon-pause { display: none; }
@@ -928,7 +1015,7 @@ main:focus { outline: none; }
   width: 100%;
   height: 100%;
   border: 0;
-  border-radius: var(--r-sm);
+  border-radius: calc(var(--r) - 6px);
 }
 .venue__details { padding: clamp(24px, 3.5vw, 44px); }
 .venue__name {
@@ -997,14 +1084,16 @@ main:focus { outline: none; }
   border: 1px solid var(--glass-edge);
   border-radius: var(--r);
   box-shadow: var(--glass-shine);
-  transition: border-color .25s var(--ease);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  transition: border-color .25s var(--ease), background .25s var(--ease);
 }
-a.sponsor:hover { border-color: var(--line-strong); }
+a.sponsor:hover { border-color: var(--line-strong); background: var(--glass-hover); }
 .sponsor__logo {
   display: grid;
   place-items: center;
   aspect-ratio: 3 / 2;
-  border-radius: var(--r-sm);
+  border-radius: calc(var(--r) - 12px);
   background: rgba(0,0,0,.28);
   color: var(--text-muted);
   font-size: var(--fs-xs);
@@ -1239,7 +1328,10 @@ body[data-view="about"] .container { --maxw: 1400px; }
 .site-footer {
   padding-block: var(--s-8) var(--s-4);
   border-top: 1px solid var(--glass-edge);
-  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0) 60%);
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.01) 60%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   font-size: var(--fs-sm);
 }
 .footer-grid {
@@ -1326,9 +1418,11 @@ body[data-view="about"] .container { --maxw: 1400px; }
     justify-content: center;
     gap: var(--s-5);
     padding: var(--nav-h) var(--gutter) var(--s-5);
-    background: rgba(10,10,16,.55);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    backdrop-filter: blur(32px) saturate(180%);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 40%),
+      rgba(14,12,24,.42);
+    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
+    backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
     opacity: 0;
     visibility: hidden;
     transition: opacity .3s var(--ease), visibility .3s;
@@ -1421,6 +1515,24 @@ body[data-view="about"] .container { --maxw: 1400px; }
 
 @media (max-width: 400px) {
   .countdown__unit { font-size: .5625rem; letter-spacing: .08em; }
+}
+
+/* Reduce Transparency: swap the clear glass for a frosted, near-opaque
+   material with no refraction or moving highlight (as Apple's setting does) */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-fill:  linear-gradient(180deg, #221D33, #1A1628);
+    --glass-solid: linear-gradient(180deg, #221D33, #1A1628);
+    --glass-hover: linear-gradient(180deg, #2B2540, #211C32);
+    --glass-blur:  none;
+  }
+  .glass::after, .card::after, .frame-grad::after, .btn--ghost::after,
+  .btn--grad::after, .btn--primary::after, .icon-btn::after, .lead::after,
+  .sponsor::after, .countdown__tile::after, .hero-banner picture::after { display: none; }
+  .btn--primary { background: var(--cyan); }
+}
+@media (prefers-reduced-transparency: reduce) and (max-width: 1079px) {
+  .nav-menu { background: var(--bg); }
 }
 
 @media (prefers-reduced-motion: reduce) {

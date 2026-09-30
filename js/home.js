@@ -320,6 +320,7 @@
 
   /* ---------- Boot ---------- */
   initNav();
+  initLiquidGlass();
   setActiveNav("home");
   initCountdown();
   initCarousel();
