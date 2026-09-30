@@ -14,7 +14,7 @@
     leads: [
       // short: label used on phones, where space is tight
       { id: "ops",  name: "Guts Tangjitpeanphong", role: "Head of Operations", short: "Head of Ops", photo: "assets/team/Guts.jpg" },
-      { id: "lead", name: "Moshi Jearanaiphaisarn", role: "Team Lead",          short: "Team Lead",   photo: "assets/team/Moshi Y12.jpg" },
+      { id: "lead", name: "Moshi Jearanaiphaisan", role: "Team Lead",          short: "Team Lead",   photo: "assets/team/Moshi Y12.png" },
       { id: "pr",   name: "Ja Pachsong", role: "Head of PR",         short: "Head of PR",  photo: "assets/team/Ja.jpg" },
     ],
     secretaries: [
