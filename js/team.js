@@ -14,12 +14,12 @@
     leads: [
       // short: label used on phones, where space is tight
       { id: "ops", name: "Guts Tangjitpeanphong", role: "Head of Operations", short: "Head of Ops", photo: "assets/team/Guts.jpg" },
-      { id: "lead", name: "Moshi Jearanaiphaisan", role: "Team Lead", short: "Team Lead", photo: "assets/team/Moshi Y12.png" },
+      { id: "lead", name: "Moshi Jearanaiphaisan", role: "Team Lead", short: "Team Lead", photo: "assets/team/Moshi.png" },
       { id: "pr", name: "Ja Pachsong", role: "Head of PR", short: "Head of PR", photo: "assets/team/Ja.jpg" },
     ],
     secretaries: [
-      { name: "Phoom Pornlertphitiyakul", role: "Secretary", photo: "assets/team/Phoom Year 12.png" },
-      { name: "Pan Chemnasiri", role: "Secretary", photo: "assets/team/Pan Year 12.jpg" },
+      { name: "Phoom Pornlertphitiyakul", role: "Secretary", photo: "assets/team/Phoom.png" },
+      { name: "Pan Chemnasiri", role: "Secretary", photo: "assets/team/Pan.jpg" },
     ],
     groups: {
       ops: [
@@ -41,14 +41,14 @@
       lead: [
         {
           title: "Curriculum Planning", members: [
-            { name: "Aimer Sookprasert", role: "Curriculum Planning", photo: "assets/team/Aimer year12.jpg" },
+            { name: "Aimer Sookprasert", role: "Curriculum Planning", photo: "assets/team/Aimer.jpg" },
             { name: "Nemo Jentaweepornkul", role: "Curriculum Planning", photo: "assets/team/Nemo.png" },
           ]
         },
         {
           title: "Resources", members: [
             { name: "Putter Siripraiwan", role: "Resources", photo: "assets/team/Putter.jpg" },
-            { name: "Korn Chanyasan", role: "Resources", photo: "assets/team/Korn y9.png" },
+            { name: "Korn Chanyasan", role: "Resources", photo: "assets/team/Korn.png" },
           ]
         },
       ],
