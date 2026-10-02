@@ -144,6 +144,7 @@
 
     function update(animate) {
       $$(".lead", leadsEl).forEach((b) => b.setAttribute("aria-expanded", String(b.dataset.lead === selected)));
+      panel.dataset.team = selected || ""; // lets the CSS zoom the team out from this head
       const lead = TEAM.leads.find((l) => l.id === selected);
       help.textContent = lead
         ? `Showing the ${lead.role}'s team — tap again to return to the secretaries.`
