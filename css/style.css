@@ -1585,6 +1585,20 @@ body[data-view="about"] .container { --maxw: 1400px; }
 }
 .faq-item__body > * + * { margin-top: var(--s-1); }
 .faq-item__body .fact__tag { margin: 0 2px 0 0; }
+.faq-item__body li {
+  position: relative;
+  padding-left: 20px;
+}
+.faq-item__body li + li { margin-top: 4px; }
+.faq-item__body li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .8em;
+  width: 8px;
+  height: 1px;
+  background: var(--line-strong);
+}
 /* Smooth open/close where the browser can animate to auto height */
 @supports (interpolate-size: allow-keywords) {
   .faq-item { interpolate-size: allow-keywords; }
