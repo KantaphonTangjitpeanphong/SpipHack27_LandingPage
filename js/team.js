@@ -28,12 +28,12 @@
             { name: "Kenta Takizawa", role: "Logistics", photo: "assets/team/KentaY10.jpg" },
             { name: "Cooper Tangsuriyapaisan", role: "Logistics", photo: "assets/team/Cooper10.jpg" },
             { name: "Name Surname", role: "Logistics", photo: "" },
+            { name: "Name Surname", role: "Logistics", photo: "" },
           ]
         },
         {
           title: "Finance", members: [
             { name: "Get Limbupasiriporn", role: "Finance", photo: "" },
-            { name: "Name Surname", role: "Finance", photo: "" },
             { name: "Name Surname", role: "Finance", photo: "" },
           ]
         },

@@ -1295,6 +1295,14 @@ body[data-view="about"] .container { --maxw: 1400px; }
   container-type: inline-size;
 }
 .team-group--multi .member { width: clamp(150px, 12.5vw, 200px); }
+/* A four-person group wraps 2 + 2 rather than leaving one card alone on a row */
+@media (min-width: 768px) {
+  .team-group--multi .members:has(> .member:nth-child(4):last-child) {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+  }
+}
 .member__photo { width: 100%; }
 .member__name {
   margin-top: var(--s-2);
