@@ -15,7 +15,7 @@
   }
 
   // ▼▼▼ ★ EDIT EVENT DATE HERE (Bangkok time, UTC+7) ▼▼▼
-  const EVENT_DATE = "2027-03-13T08:00:00+07:00"; // PLACEHOLDER — event day is TBD (a weekend in March 2027)
+  const EVENT_DATE = "2027-03-06T08:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (6–7 Mar 2027, Participant Rulebook v3); start time TBC
 
   /* ================================================================
      ★★★ ADD SPONSOR LOGOS HERE ★★★

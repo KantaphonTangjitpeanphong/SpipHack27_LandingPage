@@ -88,7 +88,7 @@
             <p class="hero-thai" lang="th">เมืองแห่งอนาคต</p>
             <p class="hero-sub">How can we use innovation to make cities healthier, more sustainable, and better places to live?</p>
 
-            <div class="countdown" id="countdown" role="timer" aria-label="Time remaining until the Innovation Final, in days, hours, minutes and seconds">
+            <div class="countdown" id="countdown" role="timer" aria-label="Time remaining until the Hackathon, in days, hours, minutes and seconds">
               <div class="countdown__tiles" data-countdown-tiles>
                 <div class="countdown__tile"><span class="countdown__num" data-unit="days">--</span><span class="countdown__unit">DD</span></div>
                 <span class="countdown__sep" aria-hidden="true">:</span>
@@ -98,8 +98,9 @@
                 <span class="countdown__sep" aria-hidden="true">:</span>
                 <div class="countdown__tile"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__unit">SS</span></div>
               </div>
-              <p class="countdown__live" data-countdown-live hidden>The Innovation Final is live!</p>
-              <p class="countdown__label">Innovation Final · March 2027 · Date TBA</p>
+              <p class="countdown__live" data-countdown-live hidden>The Hackathon is live!</p>
+              <!-- ★ Dates follow Participant Rulebook v3 (tentative). Update together with EVENT_DATE in js/home.js -->
+              <p class="countdown__label">Hackathon · 6–7 March 2027 (tentative)</p>
             </div>
 
             <div class="hero-cta">
@@ -127,6 +128,11 @@
 
           <div class="carousel" id="carousel" aria-roledescription="carousel" aria-label="SPIP Hack information posters" role="region" data-reveal>
             <div class="carousel__stage frame-grad">
+              <!-- ★ POSTERS NEED RE-EXPORTING ★ — 02, 03 and 05 still show the original poster facts
+                   (online preliminary + pitching round, 10 finalists, blind judging by SPIP judges,
+                   external judges, max 3 teams per school, multi-school quota), which Participant
+                   Rulebook v3 replaces. The alt text describes the images as they are, so update it
+                   when the new posters go in. The slide panels below already follow the rulebook. -->
               <div class="carousel__posters" data-carousel-stage>
                 <picture class="poster is-active">
                   <source type="image/webp" srcset="assets/posters/01-what-is-spip-hack.webp">
@@ -173,10 +179,10 @@
                   <p class="slide-panel__kicker">Basic Run-down</p>
                   <h3>SPIP Hack</h3>
                   <div class="slide-panel__content">
-                    <p>A <strong>student-led</strong> hackathon split into <strong>2 rounds</strong>:</p>
+                    <p>A <strong>student-led</strong> hackathon split into <strong>2 stages</strong>:</p>
                     <ul>
-                      <li>An <strong>Online</strong> Preliminary round</li>
-                      <li>An <strong>On-Site</strong> Finalist Pitching round</li>
+                      <li>The <strong>Pre-Hack</strong>: idea submission, <strong>online</strong></li>
+                      <li>The <strong>Hackathon</strong>: a two-day, <strong>on-site</strong> innovation event for finalists</li>
                     </ul>
                     <p>Held at Satit Prasarnmit International Programme (SPIP), <strong>in English</strong>.</p>
                   </div>
@@ -186,16 +192,16 @@
                   <p class="slide-panel__kicker">Basic Run-down</p>
                   <h3>Rounds</h3>
                   <div class="slide-panel__content">
-                    <p><strong>Preliminary</strong> <em>(Online)</em></p>
+                    <p><strong>Pre-Hack</strong> <em>(Online)</em></p>
                     <ul>
-                      <li>Teams submit their proposals</li>
-                      <li>Judged blindly by SPIP judges</li>
+                      <li>Teams submit an initial proposal</li>
+                      <li>Scored by a panel of judges, with school affiliation hidden</li>
                     </ul>
-                    <p><strong>Pitching</strong> <em>(On-Site)</em></p>
+                    <p><strong>Hackathon</strong> <em>(On-Site, two days)</em></p>
                     <ul>
-                      <li>10 selected finalist teams</li>
-                      <li>Live pitching presentation</li>
-                      <li>Judged by external judges</li>
+                      <li>Target of 15 finalist teams</li>
+                      <li>Day 1: mentoring and building, ending in Project Lock</li>
+                      <li>Day 2: presentations, Q&amp;A, judging and awards</li>
                     </ul>
                     <p class="slide-panel__note">Participants and winners receive certificates.</p>
                   </div>
@@ -216,9 +222,9 @@
                   <div class="slide-panel__content">
                     <ul>
                       <li><strong>2–4 members</strong> per team</li>
-                      <li>Members from <strong>multiple schools</strong> are allowed</li>
-                      <li>Open to <strong>any school</strong>, max <strong>3 teams per school</strong></li>
-                      <li>A multi-school team counts towards the quota of <strong>both</strong> schools</li>
+                      <li>Members from <strong>multiple schools</strong> and year groups are allowed</li>
+                      <li>Open to students in <strong>Year 9 / Grade 8 / M.2 or above</strong> at international, bilingual, English-program or Thai secondary schools</li>
+                      <li>Up to <strong>3 teams from the same school</strong> can qualify for the Hackathon</li>
                     </ul>
                   </div>
                 </div>
@@ -251,13 +257,15 @@
         </div>
       </section>
 
-      <!-- 3. Round 1 — the online preliminary (what every contestant does first) -->
+      <!-- 3. Round 1 — the Pre-Hack (what every contestant does first). Facts follow
+           Participant Rulebook v3, a working draft subject to school approval; keep in step
+           with faq.html and rubric.html. -->
       <section class="section section--tight" id="rounds" aria-labelledby="rounds-title">
         <div class="container">
           <div class="section-head" data-reveal>
-            <p class="eyebrow">Round 1 · Online Preliminary</p>
+            <p class="eyebrow">Round 1 · Pre-Hack · Idea Submission</p>
             <h2 class="h-section" id="rounds-title">Every team starts here</h2>
-            <p>Form a team, take on the theme, and submit your proposal online — no travel needed. The strongest 10 proposals earn a place at the on-site final.</p>
+            <p>Form a team, take on the theme, and submit your proposal online — no travel needed. The highest-ranked proposals earn a place at the two-day Hackathon at SPIP.</p>
           </div>
 
           <div class="round1">
@@ -266,7 +274,7 @@
                 <span class="step__num" aria-hidden="true">01</span>
                 <div>
                   <h3>Form your team</h3>
-                  <p><strong>2–4 members</strong> per team. Teammates can come from <strong>different schools</strong>. Each school can enter up to <strong>3 teams</strong> — a multi-school team counts towards both schools' quota.</p>
+                  <p><strong>2–4 members</strong> per team, open to students in <strong>Year 9 / Grade 8 / M.2 or above</strong> at an international, bilingual, English-program or Thai secondary school. Teammates can come from <strong>different schools</strong> and year groups.</p>
                 </div>
               </li>
               <li class="step" data-reveal>
@@ -281,14 +289,14 @@
                 <span class="step__num" aria-hidden="true">03</span>
                 <div>
                   <h3>Submit your proposal online</h3>
-                  <p>Write up your idea as a proposal and submit it online, in English. The submission format and deadline will be announced when registration opens — follow <a class="text-link-inline" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">@spip.hack<span class="visually-hidden"> (opens in a new tab)</span></a> so you don't miss it.</p>
+                  <p>Write up your idea as an initial proposal and submit it online, in English, by <strong>13 February 2027</strong> (tentative). Submission details will be announced when registration opens — follow <a class="text-link-inline" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">@spip.hack<span class="visually-hidden"> (opens in a new tab)</span></a> so you don't miss it.</p>
                 </div>
               </li>
               <li class="step" data-reveal>
                 <span class="step__num" aria-hidden="true">04</span>
                 <div>
-                  <h3>Blind judging</h3>
-                  <p>Proposals are <strong>judged blindly by SPIP judges</strong> — judges don't see team or school names, so only the idea counts. The <strong>top 10 teams</strong> advance to the final. See the <a class="text-link-inline" href="rubric.html">judging rubric</a> for what judges look for.</p>
+                  <h3>Judging &amp; selection</h3>
+                  <p>A panel of judges scores every eligible proposal with the same <a class="text-link-inline" href="rubric.html#round-1">Pre-Hack rubric</a>, and <strong>judges don't see which school you're from</strong> while they score. Proposals are ranked, with a target of <strong>15 finalist teams</strong> (the number may be adjusted). Up to <strong>3 teams from the same school</strong> can qualify — a limit applied only after ranking. Finalists are announced on 21 February 2027 (tentative) — see <a class="text-link-inline" href="rubric.html#selection-title">how they're chosen</a>.</p>
                 </div>
               </li>
             </ol>
@@ -320,7 +328,7 @@
             </aside>
           </div>
 
-          <p class="round1__next glass" data-reveal><b>Then · Round 2</b> The top 10 teams pitch live to external judges at SPIP — the Innovation Final, March 2027.</p>
+          <p class="round1__next glass" data-reveal><b>Then · Round 2</b> Finalists spend two days on-site at SPIP for the Hackathon, 6–7 March 2027 (tentative): mentoring and building on Day 1, ending in Project Lock, then presentations, Q&amp;A, judging and awards on Day 2.</p>
         </div>
       </section>
 
