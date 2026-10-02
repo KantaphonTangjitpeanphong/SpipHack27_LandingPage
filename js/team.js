@@ -14,12 +14,12 @@
     leads: [
       // short: label used on phones, where space is tight
       { id: "ops", name: "Guts Tangjitpeanphong", role: "Head of Operations", short: "Head of Ops", photo: "assets/team/Guts.jpg" },
-      { id: "lead", name: "Moshi Jearanaiphaisan", role: "Team Lead", short: "Team Lead", photo: "assets/team/Moshi Y12.png" },
+      { id: "lead", name: "Moshi Jearanaiphaisan", role: "Team Lead", short: "Team Lead", photo: "assets/team/Moshi.png" },
       { id: "pr", name: "Ja Pachsong", role: "Head of PR", short: "Head of PR", photo: "assets/team/Ja.jpg" },
     ],
     secretaries: [
-      { name: "Phoom Pornlertphitiyakul", role: "Secretary", photo: "assets/team/Phoom Year 12.png" },
-      { name: "Pan Chemnasiri", role: "Secretary", photo: "assets/team/Pan Year 12.jpg" },
+      { name: "Phoom Pornlertphitiyakul", role: "Secretary", photo: "assets/team/Phoom.png" },
+      { name: "Pan Chemnasiri", role: "Secretary", photo: "assets/team/Pan.jpg" },
     ],
     groups: {
       ops: [
@@ -27,44 +27,44 @@
           title: "Logistics", members: [
             { name: "Kenta Takizawa", role: "Logistics", photo: "assets/team/KentaY10.jpg" },
             { name: "Cooper Tangsuriyapaisan", role: "Logistics", photo: "assets/team/Cooper10.jpg" },
-            { name: "Name Surname", role: "Logistics", photo: "" },
-            { name: "Name Surname", role: "Logistics", photo: "" },
+            { name: "Pam Direkwattanachai", role: "Logistics", photo: "assets/team/Pam.jpg" },
+            { name: "Cookie Kraikabkaew", role: "Logistics", photo: "assets/team/Cookie.png" },
           ]
         },
         {
           title: "Finance", members: [
-            { name: "Get Limbupasiriporn", role: "Finance", photo: "" },
-            { name: "Name Surname", role: "Finance", photo: "" },
+            { name: "Get Limbupasiriporn", role: "Finance", photo: "assets/team/GetY10.jpg" },
+            { name: "Lee Srichaikul", role: "Finance", photo: "assets/team/Lee.jpg" },
           ]
         },
       ],
       lead: [
         {
           title: "Curriculum Planning", members: [
-            { name: "Aimer Sookprasert", role: "Curriculum Planning", photo: "assets/team/Aimer year12.jpg" },
-            { name: "Name Surname", role: "Curriculum Planning", photo: "" },
+            { name: "Aimer Sookprasert", role: "Curriculum Planning", photo: "assets/team/Aimer.jpg" },
+            { name: "Nemo Jentaweepornkul", role: "Curriculum Planning", photo: "assets/team/Nemo.png" },
           ]
         },
         {
           title: "Resources", members: [
-            { name: "Putter Siripraiwan", role: "Resources", photo: "" },
-            { name: "Name Surname", role: "Resources", photo: "" },
+            { name: "Putter Siripraiwan", role: "Resources", photo: "assets/team/Putter.jpg" },
+            { name: "Korn Chanyasan", role: "Resources", photo: "assets/team/Korn.png" },
           ]
         },
       ],
       pr: [
         {
           title: "Marketing", members: [
-            { name: "Love Chitsophon", role: "Marketing", photo: "" },
-            { name: "Name Surname", role: "Marketing", photo: "" },
-            { name: "Name Surname", role: "Marketing", photo: "" },
+            { name: "Love Chitsophon", role: "Marketing", photo: "assets/team/Love.jpg" },
+            { name: "Win Sukapiriya", role: "Marketing", photo: "assets/team/Win.jpg" },
+            { name: "Peter Kriengkomol", role: "Marketing", photo: "assets/team/Peter.png" },
           ]
         },
         {
           title: "Communications", members: [
-            { name: "Marco Thanadsarng", role: "Communications", photo: "assets/team/Marco.jpg" },
+            { name: "Marco Thanadsarng", role: "Communications", photo: "assets/team/Marco.png" },
             { name: "BamBam Techathanachuen", role: "Communications", photo: "assets/team/Bambam.jpg" },
-            { name: "Nott Chookul", role: "Communications", photo: "" },
+            { name: "Nott Chookul", role: "Communications", photo: "assets/team/Nott.jpg" },
           ]
         },
       ],
@@ -144,6 +144,7 @@
 
     function update(animate) {
       $$(".lead", leadsEl).forEach((b) => b.setAttribute("aria-expanded", String(b.dataset.lead === selected)));
+      panel.dataset.team = selected || ""; // lets the CSS zoom the team out from this head
       const lead = TEAM.leads.find((l) => l.id === selected);
       help.textContent = lead
         ? `Showing the ${lead.role}'s team — tap again to return to the secretaries.`

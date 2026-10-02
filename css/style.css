@@ -776,8 +776,8 @@ main:focus { outline: none; }
   from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 40px)); }
   to   { opacity: 1; transform: none; }
 }
-@keyframes panelIn {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes panelZoom {
+  from { opacity: 0; transform: scale(.92); }
   to   { opacity: 1; transform: none; }
 }
 .slide-panel__kicker {
@@ -1187,7 +1187,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   box-shadow: var(--glass-shine), var(--shadow);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  transition: border-color .25s var(--ease), background-color .25s var(--ease), transform .3s var(--ease);
+  transition: border-color .25s var(--ease), background-color .25s var(--ease), transform .45s var(--ease-spring);
 }
 .lead:hover { border-color: var(--line-strong); transform: translateY(-4px); }
 .lead[aria-expanded="true"] {
@@ -1198,8 +1198,12 @@ body[data-view="about"] .container { --maxw: 1400px; }
     var(--glass-shine),
     0 18px 48px -12px rgba(196,68,154,.55),
     0 0 64px -8px rgba(242,98,42,.35);
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.06);
+  z-index: 1;
 }
+/* Zoom: the picked head steps forward while the other two step back */
+.leads:has([aria-expanded="true"]) .lead:not([aria-expanded="true"]) { transform: scale(.94); }
+.leads:has([aria-expanded="true"]) .lead:not([aria-expanded="true"]):hover { transform: translateY(-4px) scale(.94); }
 .lead[aria-expanded="true"] .lead__role { color: var(--text); }
 .lead[aria-expanded="true"] .lead__hint { color: var(--text); }
 .lead[data-lead="ops"]  { grid-column: 1; grid-row: 1; }
@@ -1263,8 +1267,12 @@ body[data-view="about"] .container { --maxw: 1400px; }
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr));
   gap: var(--s-6) var(--s-5);
   padding: var(--s-1) 2px var(--s-2);
+  transform-origin: 50% 0;
 }
-.team-panel__inner.is-entering { animation: panelIn .45s var(--ease) both; }
+/* The team zooms out from the head that was picked (column centres of .leads) */
+.team-panel[data-team="ops"] .team-panel__inner { transform-origin: 16% 0; }
+.team-panel[data-team="pr"]  .team-panel__inner { transform-origin: 84% 0; }
+.team-panel__inner.is-entering { animation: panelZoom .5s var(--ease) both; }
 .team-group__title {
   display: flex;
   align-items: center;
@@ -1824,7 +1832,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
     white-space: nowrap;
   }
   .lead__role-short { display: inline; }
-  .lead[aria-expanded="true"] { --ring: 3px; transform: translateY(-4px); }
+  .lead[aria-expanded="true"] { --ring: 3px; transform: translateY(-4px) scale(1.06); }
   .brand img { height: 32px; }
   .lead__role { margin-top: 12px; font-size: .625rem; font-size: clamp(.5625rem, 10cqi, .625rem); letter-spacing: .06em; }
   .lead__name { font-size: var(--fs-sm); font-size: clamp(.5625rem, 9.5cqi, var(--fs-sm)); }
