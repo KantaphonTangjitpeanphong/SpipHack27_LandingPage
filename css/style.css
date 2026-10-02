@@ -1419,6 +1419,8 @@ body[data-view="about"] .container { --maxw: 1400px; }
 .rubric-weights span:nth-child(3) { --seg: var(--orange); }
 .rubric-weights span:nth-child(4) { --seg: var(--teal); }
 .rubric-weights span:nth-child(5) { --seg: var(--cyan); }
+.rubric-weights span:nth-child(6) { --seg: var(--red); }
+.rubric-weights span:nth-child(7) { --seg: var(--text-muted); }
 
 .criteria { display: grid; gap: var(--s-2); }
 .criterion { padding: var(--s-3); }
@@ -1463,7 +1465,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
 }
 .criterion__bar span {
   display: block;
-  width: calc(var(--w) * 4); /* largest criterion (25 pts) fills the track */
+  width: calc(var(--w) * 10 / 3); /* largest criterion (30 pts) fills the track */
   max-width: 100%;
   height: 100%;
   border-radius: inherit;
