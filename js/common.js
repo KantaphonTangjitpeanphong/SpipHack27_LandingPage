@@ -17,12 +17,12 @@ function escapeHTML(str) {
 }
 
 /* ---------- Nav ---------- */
-// Highlight a navbar link. key = "home" | "event" | "rounds" | "venue" | "partners" | "about"
+// Highlight a navbar link. key = "home" | "event" | "rounds" | "venue" | "partners" | "rubric" | "faq" | "about"
 function setActiveNav(key) {
   $$(".nav-links a").forEach((a) => {
     const active = a.dataset.nav === key;
     a.classList.toggle("is-active", active);
-    if (active) a.setAttribute("aria-current", key === "about" ? "page" : "true");
+    if (active) a.setAttribute("aria-current", ["about", "rubric", "faq"].includes(key) ? "page" : "true");
     else a.removeAttribute("aria-current");
   });
 }
@@ -31,7 +31,7 @@ function initNav() {
   const header = $("#site-header");
   const toggle = $(".nav-toggle", header);
   const menu = $("#nav-menu");
-  const desktop = window.matchMedia("(min-width: 1080px)");
+  const desktop = window.matchMedia("(min-width: 1200px)");
 
   const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 8);
   onScroll();
