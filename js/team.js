@@ -27,14 +27,14 @@
           title: "Logistics", members: [
             { name: "Kenta Takizawa", role: "Logistics", photo: "assets/team/KentaY10.jpg" },
             { name: "Cooper Tangsuriyapaisan", role: "Logistics", photo: "assets/team/Cooper10.jpg" },
-            { name: "Name Surname", role: "Logistics", photo: "" },
-            { name: "Name Surname", role: "Logistics", photo: "" },
+            { name: "Pam Direkwattanachai", role: "Logistics", photo: "assets/team/Pam.jpg" },
+            { name: "Cookie Kraikabkaew", role: "Logistics", photo: "assets/team/Cookie.png" },
           ]
         },
         {
           title: "Finance", members: [
-            { name: "Get Limbupasiriporn", role: "Finance", photo: "" },
-            { name: "Name Surname", role: "Finance", photo: "" },
+            { name: "Get Limbupasiriporn", role: "Finance", photo: "assets/team/GetY10.jpg" },
+            { name: "Lee Srichaikul", role: "Finance", photo: "assets/team/Lee.jpg" },
           ]
         },
       ],
@@ -42,29 +42,29 @@
         {
           title: "Curriculum Planning", members: [
             { name: "Aimer Sookprasert", role: "Curriculum Planning", photo: "assets/team/Aimer year12.jpg" },
-            { name: "Name Surname", role: "Curriculum Planning", photo: "" },
+            { name: "Nemo Jentaweepornkul", role: "Curriculum Planning", photo: "assets/team/Nemo.png" },
           ]
         },
         {
           title: "Resources", members: [
-            { name: "Putter Siripraiwan", role: "Resources", photo: "" },
-            { name: "Name Surname", role: "Resources", photo: "" },
+            { name: "Putter Siripraiwan", role: "Resources", photo: "assets/team/Putter.jpg" },
+            { name: "Korn Chanyasan", role: "Resources", photo: "assets/team/Korn y9.png" },
           ]
         },
       ],
       pr: [
         {
           title: "Marketing", members: [
-            { name: "Love Chitsophon", role: "Marketing", photo: "" },
-            { name: "Name Surname", role: "Marketing", photo: "" },
-            { name: "Name Surname", role: "Marketing", photo: "" },
+            { name: "Love Chitsophon", role: "Marketing", photo: "assets/team/Love.jpg" },
+            { name: "Win Sukapiriya", role: "Marketing", photo: "assets/team/Win.jpg" },
+            { name: "Peter Kriengkomol", role: "Marketing", photo: "assets/team/Peter.png" },
           ]
         },
         {
           title: "Communications", members: [
-            { name: "Marco Thanadsarng", role: "Communications", photo: "assets/team/Marco.jpg" },
+            { name: "Marco Thanadsarng", role: "Communications", photo: "assets/team/Marco.png" },
             { name: "BamBam Techathanachuen", role: "Communications", photo: "assets/team/Bambam.jpg" },
-            { name: "Nott Chookul", role: "Communications", photo: "" },
+            { name: "Nott Chookul", role: "Communications", photo: "assets/team/Nott.jpg" },
           ]
         },
       ],
