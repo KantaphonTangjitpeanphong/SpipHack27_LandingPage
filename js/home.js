@@ -292,11 +292,12 @@
     const spy = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setActiveNav(entry.target.id);
+          // The themes section is part of "Event" in the navbar
+          setActiveNav(entry.target.id === "themes" ? "event" : entry.target.id);
         }
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    ["home", "event", "rounds", "venue", "partners"].forEach((id) => spy.observe(document.getElementById(id)));
+    ["home", "event", "themes", "rounds", "venue", "partners"].forEach((id) => spy.observe(document.getElementById(id)));
   }
 
   /* ---------- Hero parallax ---------- */
