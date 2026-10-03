@@ -117,9 +117,10 @@ function initReveal() {
 }
 
 /* ---------- Liquid glass ---------- */
-// Surfaces that carry the moving specular highlight (.…::after in style.css)
+// Surfaces whose rim glint and specular highlight follow the pointer
+// (their ::before / ::after in style.css; .nav-inner's pill is its pseudos)
 const GLASS_SEL = ".glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary, " +
-  ".icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture";
+  ".icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .nav-inner";
 
 function initLiquidGlass() {
   const root = document.documentElement;

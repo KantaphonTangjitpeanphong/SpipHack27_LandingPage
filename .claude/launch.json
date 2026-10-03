@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-c", "import os,sys; os.chdir('/private/tmp/claude-501/-Users-kantaphon-Documents-SpipHack27-LandingPage/706ee6c0-3273-4e79-b266-40dffd65f9c9/scratchpad/site'); sys.argv=['http.server','5173']; import runpy; runpy.run_module('http.server', run_name='__main__')"],
+      "port": 5173
+    }
+  ]
+}
