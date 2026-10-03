@@ -1881,11 +1881,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
     white-space: nowrap;
   }
   .lead__role-short { display: inline; }
-<<<<<<< Updated upstream
-  .lead[aria-expanded="true"] { --ring: 3px; transform: translateY(-4px) scale(1.06); }
-=======
   .lead[aria-expanded="true"] { transform: translateY(-4px); }
->>>>>>> Stashed changes
   .brand img { height: 32px; }
   .lead__role { margin-top: 12px; font-size: .625rem; font-size: clamp(.5625rem, 10cqi, .625rem); letter-spacing: .06em; }
   .lead__name { font-size: var(--fs-sm); font-size: clamp(.5625rem, 9.5cqi, var(--fs-sm)); }
