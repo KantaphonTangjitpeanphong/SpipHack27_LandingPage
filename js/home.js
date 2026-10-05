@@ -1,7 +1,7 @@
 /* =================================================================
    Home page (index.html): countdown, poster carousel,
-   partners marquee, section highlight and hero parallax.
-   Needs js/common.js loaded first.
+   partners marquee and hero parallax.
+   Needs js/common.js and js/sponsors-data.js loaded first.
    ================================================================= */
 (function () {
   "use strict";
@@ -17,21 +17,7 @@
   // ▼▼▼ ★ EDIT EVENT DATE HERE (Bangkok time, UTC+7) ▼▼▼
   const EVENT_DATE = "2027-03-06T08:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (6–7 Mar 2027, Participant Rulebook v3); start time TBC
 
-  /* ================================================================
-     ★★★ ADD SPONSOR LOGOS HERE ★★★
-     1. Put the logo file in  assets/sponsors/   (PNG/SVG, transparent bg, ~600px wide)
-     2. Fill in name + logo path below. Leave logo: "" to show a blank tile.
-     3. about: ONE short line — what the brand is + what it values
-        (e.g. "Thai clean-energy company committed to greener, healthier cities.")
-     ================================================================ */
-  const SPONSORS = [
-    { name: "Sponsor 1", logo: "", url: "", about: "" },   // e.g. logo: "assets/sponsors/acme.svg"
-    { name: "Sponsor 2", logo: "", url: "", about: "" },
-    { name: "Sponsor 3", logo: "", url: "", about: "" },
-    { name: "Sponsor 4", logo: "", url: "", about: "" },
-    { name: "Sponsor 5", logo: "", url: "", about: "" },
-    { name: "Sponsor 6", logo: "", url: "", about: "" },
-  ];
+  // ★ Sponsor logos, names and descriptions are edited in js/sponsors-data.js
 
   /* ---------- Countdown ---------- */
   function initCountdown() {
@@ -186,10 +172,7 @@
       const logo = s.logo
         ? `<div class="sponsor__logo"><img src="${escapeHTML(s.logo)}" alt="${clone ? "" : escapeHTML(s.name) + " logo"}" loading="lazy" decoding="async"></div>`
         : `<div class="sponsor__logo sponsor__logo--empty" aria-hidden="true">Sponsor logo</div>`;
-      const about = s.about
-        ? `<p class="sponsor__about">${escapeHTML(s.about)}</p>`
-        : `<p class="sponsor__about sponsor__about--empty">One line on who they are and what they value.</p>`;
-      const inner = `${logo}<p class="sponsor__name">${escapeHTML(s.name)}</p>${about}`;
+      const inner = `${logo}<p class="sponsor__name">${escapeHTML(s.name)}</p>`;
       const cls = "sponsor";
       const tile = s.url
         ? `<a class="${cls}" href="${escapeHTML(s.url)}" target="_blank" rel="noopener noreferrer"${tab}>${inner}</a>`
@@ -286,20 +269,6 @@
     reducedMotion.addEventListener("change", () => { stop(); offset = 0; build(); start(); });
   }
 
-  /* ---------- Navbar highlight follows the section on screen ---------- */
-  function initScrollSpy() {
-    // Scroll-spy for section highlight
-    const spy = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // The themes section is part of "Event" in the navbar
-          setActiveNav(entry.target.id === "themes" ? "event" : entry.target.id);
-        }
-      });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    ["home", "event", "themes", "rounds", "venue", "partners"].forEach((id) => spy.observe(document.getElementById(id)));
-  }
-
   /* ---------- Hero parallax ---------- */
   function initParallax() {
     const banner = $(".hero-banner");
@@ -327,7 +296,6 @@
   initCarousel();
   initPartners();
   initReveal();
-  initScrollSpy();
   initScrollProgress();
   initParallax();
 })();

@@ -80,13 +80,13 @@
      bends light at the edges through an SVG displacement filter
      (html.lg-refract, js/common.js). */
   --glass-fill:
-    linear-gradient(180deg, rgba(255,255,255,.045) 0%, rgba(255,255,255,.012) 45%, rgba(255,255,255,.008) 75%, rgba(255,255,255,.025) 100%);
+    linear-gradient(180deg, rgba(255,255,255,.028) 0%, rgba(255,255,255,.006) 45%, rgba(255,255,255,.003) 75%, rgba(255,255,255,.014) 100%);
   /* Denser, darker glass for surfaces text scrolls underneath (scrolled nav, tooltips) */
   --glass-solid:
-    linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,0) 50%),
-    linear-gradient(180deg, rgba(38,32,60,.42) 0%, rgba(16,14,28,.36) 100%);
+    linear-gradient(180deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,0) 50%),
+    linear-gradient(180deg, rgba(38,32,60,.26) 0%, rgba(16,14,28,.2) 100%);
   --glass-hover:
-    linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.025) 50%, rgba(255,255,255,.045) 100%);
+    linear-gradient(180deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.015) 50%, rgba(255,255,255,.03) 100%);
   /* Rim at rest: light along the top edge that's gone by a third of the way
      down, and a faint internal reflection on the bottom edge */
   --glass-rim:
@@ -98,8 +98,8 @@
     inset 0 18px 30px -24px rgba(255,255,255,.14),
     inset 0 -14px 26px -22px rgba(255,255,255,.05);
   /* Light blur, no brightness lift (that's what turns dark glass milky) */
-  --glass-blur:       blur(9px) saturate(160%);
-  --glass-blur-thick: blur(20px) saturate(170%);
+  --glass-blur:       blur(5px) saturate(150%);
+  --glass-blur-thick: blur(14px) saturate(160%);
 
   /* Film grain, drawn with an SVG noise filter (no image request) */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -153,8 +153,8 @@ body::before {
 /* Chromium only (it's the one engine that renders SVG filters in
    backdrop-filter): bend the blurred backdrop at the edges like a lens */
 html.lg-refract {
-  --glass-blur:       url(#lg-refract) blur(8px) saturate(160%);
-  --glass-blur-thick: url(#lg-refract) blur(18px) saturate(170%);
+  --glass-blur:       url(#lg-refract) blur(4px) saturate(150%);
+  --glass-blur-thick: url(#lg-refract) blur(12px) saturate(160%);
 }
 body.is-locked { overflow: hidden; }
 img, svg, iframe { display: block; max-width: 100%; }
@@ -933,10 +933,11 @@ main:focus { outline: none; }
 @keyframes progress { to { transform: scaleX(1); } }
 
 /* ---------- 5.2b Themes ---------- */
-/* Four equal colour cards under the City of Tomorrow banner. The face is a vivid
-   gradient with an icon and title; on hover / keyboard focus it crossfades to
-   a dark glass panel tinted with the card's colour and the card's question
-   slides in. Touch and narrow screens skip the swap and always show the text. */
+/* Four equal glass cards under the City of Tomorrow banner, each only faintly
+   tinted with its own colour: a soft glow under the top edge, a coloured rim
+   at the far corner and a tinted icon. On hover / keyboard focus the icon
+   folds away and the card's question slides in. Touch and narrow screens
+   skip the swap and always show the text. */
 .themes { isolation: isolate; }
 /* Faint city-grid behind the cards, fading out toward the edges */
 .themes::before {
@@ -977,9 +978,12 @@ main:focus { outline: none; }
 .themes__item { display: block; }
 
 .theme {
-  --t-a: #FF2A6D;                 /* the card's main colour (glow, tint) */
-  --t-text: #FF7AA2;              /* title colour once the panel is open */
-  --t-face: linear-gradient(135deg, #FF1F6B 0%, #E11D63 48%, #9D1457 100%);
+  --t-a: #FF2A6D;                 /* the card's colour (tint, glow, rim) */
+  --t-text: #FF7AA2;              /* accent text: icon, number, title once open */
+  /* Rim: the usual light along the top, plus the card's colour caught at the far corner */
+  --glass-rim:
+    linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 32%),
+    linear-gradient(315deg, color-mix(in srgb, var(--t-a) 45%, transparent) 0%, transparent 45%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -989,27 +993,32 @@ main:focus { outline: none; }
   text-align: center;
   border: 1px solid transparent;
   border-radius: var(--r);
-  background: #1B1727;            /* fallback for browsers without color-mix */
-  background: color-mix(in srgb, var(--t-a) 14%, rgb(18 15 30));
-  box-shadow: var(--shadow);
+  background: var(--glass-fill);  /* fallback for browsers without color-mix */
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--t-a) 6%, transparent), color-mix(in srgb, var(--t-a) 2%, transparent)),
+    var(--glass-fill);
+  box-shadow: var(--glass-shine), var(--shadow);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
 }
 .theme:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
-.theme--green    { --t-a: #2EE6C8; --t-text: #5CF2D2; --t-face: linear-gradient(135deg, #3FD9AE 0%, #1FAE8C 48%, #0E6F66 100%); }
-.theme--mobility { --t-a: #A56FE0; --t-text: #CFAAFF; --t-face: linear-gradient(135deg, #B27FE8 0%, #8E5BD0 50%, #5F3DA8 100%); }
-.theme--tech     { --t-a: #FF6A1A; --t-text: #FFA062; --t-face: linear-gradient(135deg, #FF6A1A 0%, #F4402E 50%, #D3195F 100%); }
+.theme--green    { --t-a: #2EE6C8; --t-text: #5CF2D2; }
+.theme--mobility { --t-a: #A56FE0; --t-text: #CFAAFF; }
+.theme--tech     { --t-a: #FF6A1A; --t-text: #FFA062; }
 
-/* The colour face (sits under the rim and glow, above the dark panel) */
+/* The card's colour: a soft glow pooling under the top edge (sits under the
+   rim and specular highlight) */
 .theme__bg {
   position: absolute;
   inset: 0;
   z-index: -2;
   border-radius: inherit;
-  background: var(--t-face);
+  background: radial-gradient(90% 70% at 50% 0%, color-mix(in srgb, var(--t-a) 18%, transparent), transparent 70%);
 }
 .theme__idx,
 .theme__plus {
   position: absolute;
-  color: rgba(255,255,255,.78);
+  color: rgba(255,255,255,.55);
   pointer-events: none;
 }
 .theme__idx {
@@ -1028,28 +1037,30 @@ main:focus { outline: none; }
   width: 56px;
   height: 56px;
   margin-bottom: 12px;
-  border: 1.5px solid rgba(255,255,255,.4);
+  border: 1px solid color-mix(in srgb, var(--t-a) 40%, transparent);
   border-radius: 50%;
-  background: rgba(255,255,255,.1);
-  color: #fff;
+  background: color-mix(in srgb, var(--t-a) 12%, transparent);
+  box-shadow:
+    inset 0 8px 14px -10px rgba(255,255,255,.35),
+    0 0 24px -6px color-mix(in srgb, var(--t-a) 45%, transparent);
+  color: var(--t-text);
 }
 .theme__icon .icon { width: 26px; height: 26px; }
 .theme__title {
   font-size: var(--fs-lg);
   font-weight: 600;
   line-height: 1.15;
-  text-shadow: 0 1px 14px rgba(0,0,0,.28);
 }
-/* Static (touch / narrow): the text always shows, on a darkened plate so it
-   stays readable on every colour */
+/* Static (touch / narrow): the text always shows, on a faint inner pane */
 .theme__more {
   margin-top: 12px;
   padding: 12px 16px;
   border-radius: var(--r-sm);
-  background: rgba(8,6,16,.3);
+  background: rgba(255,255,255,.03);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
 }
-.theme__q { font-size: var(--fs-sm); line-height: 1.5; color: #fff; }
-.theme__eg { margin-top: 8px; font-size: var(--fs-xs); line-height: 1.5; color: rgba(255,255,255,.82); }
+.theme__q { font-size: var(--fs-sm); line-height: 1.5; color: var(--text); }
+.theme__eg { margin-top: 8px; font-size: var(--fs-xs); line-height: 1.5; color: var(--text-muted); }
 
 .themes__foot {
   display: flex;
@@ -1080,16 +1091,17 @@ main:focus { outline: none; }
   }
 }
 
-/* Mouse / trackpad on a tablet or larger: face swaps to the tinted panel.
-   Card height is fixed (min-height fits the open state) so nothing shifts. */
+/* Mouse / trackpad on a tablet or larger: the icon folds away, the glow
+   brightens and the question slides in. Card height is fixed (min-height
+   fits the open state) so nothing shifts. */
 @media (hover: hover) and (min-width: 720px) {
   .theme {
     min-height: 270px;
     transition: box-shadow .45s var(--ease);
   }
-  .theme__bg { transition: opacity .45s var(--ease); }
+  .theme__bg { opacity: .75; transition: opacity .45s var(--ease); }
   .theme__plus { display: block; }
-  .theme__idx, .theme__plus { transition: opacity .3s var(--ease); }
+  .theme__idx, .theme__plus { transition: opacity .3s var(--ease), color .3s var(--ease); }
   .theme__icon {
     box-sizing: border-box;
     max-height: 56px;
@@ -1102,20 +1114,19 @@ main:focus { outline: none; }
     margin-top: 0;
     padding: 0;
     background: none;
+    box-shadow: none;
     opacity: 0;
     transition: grid-template-rows .45s var(--ease), margin .45s var(--ease), opacity .35s var(--ease);
   }
   .theme__more > div { min-height: 0; overflow: hidden; }
-  .theme__q { color: var(--text); }
-  .theme__eg { color: var(--text-muted); }
 
   .theme:is(:hover, :focus-visible) {
     box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--t-a) 75%, transparent),
-      0 22px 54px -20px color-mix(in srgb, var(--t-a) 65%, transparent),
+      var(--glass-shine),
+      0 22px 54px -24px color-mix(in srgb, var(--t-a) 50%, transparent),
       var(--shadow);
   }
-  .theme:is(:hover, :focus-visible) .theme__bg,
+  .theme:is(:hover, :focus-visible) .theme__bg { opacity: 1; }
   .theme:is(:hover, :focus-visible) .theme__plus { opacity: 0; }
   .theme:is(:hover, :focus-visible) .theme__idx { color: var(--t-text); }
   .theme:is(:hover, :focus-visible) .theme__icon {
@@ -1125,7 +1136,7 @@ main:focus { outline: none; }
     opacity: 0;
     transform: scale(.6);
   }
-  .theme:is(:hover, :focus-visible) .theme__title { color: var(--t-text); text-shadow: none; }
+  .theme:is(:hover, :focus-visible) .theme__title { color: var(--t-text); }
   .theme:is(:hover, :focus-visible) .theme__more {
     grid-template-rows: 1fr;
     margin-top: 12px;
@@ -1327,7 +1338,7 @@ main:focus { outline: none; }
   flex-direction: column;
   width: clamp(240px, 24vw, 300px);
   height: 100%;
-  padding: 12px;
+  padding: 12px 12px var(--s-2);
   background: var(--glass-fill);
   border: 1px solid transparent;
   border-radius: var(--r);
@@ -1342,7 +1353,7 @@ a.sponsor:hover { background: var(--glass-hover); }
   place-items: center;
   aspect-ratio: 3 / 2;
   border-radius: calc(var(--r) - 12px);
-  background: rgba(0,0,0,.28);
+  background: rgba(0,0,0,.16);
   color: var(--text-muted);
   font-size: var(--fs-xs);
   letter-spacing: .06em;
@@ -1395,6 +1406,48 @@ a.sponsor:hover { background: var(--glass-hover); }
 @media (max-width: 599px) {
   .marquee-wrap.is-static .marquee__track { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
 }
+
+.partners__more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--s-5);
+}
+.partners__more + .partners__cta { margin-top: var(--s-3); }
+
+/* ---------- 5.5b Sponsors page ---------- */
+.sponsors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: var(--s-3);
+}
+.sponsors-grid .sponsor {
+  width: 100%;
+  box-shadow: var(--glass-shine), var(--shadow);
+}
+.sponsors-grid .sponsor__name { font-size: var(--fs-lg); }
+.sponsors-grid .sponsor__about { flex: 1 0 auto; margin-top: var(--s-1); }
+.sponsor__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--s-2);
+  padding-inline: 4px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--cyan);
+}
+a.sponsor:hover .sponsor__link { text-decoration: underline; text-underline-offset: 4px; }
+.sponsors-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+  margin-top: var(--s-8);
+  padding: clamp(24px, 3.5vw, 44px);
+}
+.sponsors-cta > div { flex: 1 1 420px; max-width: 640px; }
+.sponsors-cta > div > p:last-child { margin-top: var(--s-2); color: var(--text-muted); }
 
 /* ---------- 5.6 About ---------- */
 .page-head {
@@ -1917,7 +1970,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   /* Top edge: light along the glass slab that fades out toward both ends */
   background:
     linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.16) 50%, rgba(255,255,255,0)) top / 100% 1px no-repeat,
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.01) 60%);
+    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005) 60%);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   font-size: var(--fs-sm);
@@ -2007,10 +2060,10 @@ body[data-view="about"] .container { --maxw: 1400px; }
     gap: var(--s-5);
     padding: var(--nav-h) var(--gutter) var(--s-5);
     background:
-      linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 40%),
-      rgba(14,12,24,.42);
-    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
-    backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
+      linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0) 40%),
+      rgba(14,12,24,.3);
+    -webkit-backdrop-filter: blur(32px) saturate(190%) brightness(1.05);
+    backdrop-filter: blur(32px) saturate(190%) brightness(1.05);
     opacity: 0;
     visibility: hidden;
     transition: opacity .3s var(--ease), visibility .3s;

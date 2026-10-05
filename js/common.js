@@ -1,7 +1,7 @@
 /* =================================================================
    Shared code for every SPIP Hack page: helpers, navbar,
    scroll progress bar, scroll-reveal animations and liquid glass.
-   Load this BEFORE the page's own script (home.js / team.js).
+   Load this BEFORE the page's own script (home.js / team.js / info.js / sponsors.js).
    ================================================================= */
 "use strict";
 
@@ -17,12 +17,12 @@ function escapeHTML(str) {
 }
 
 /* ---------- Nav ---------- */
-// Highlight a navbar link. key = "home" | "event" | "rounds" | "venue" | "partners" | "rubric" | "faq" | "about"
+// Highlight a navbar link. key = "home" | "sponsors" | "rubric" | "faq" | "about"
 function setActiveNav(key) {
   $$(".nav-links a").forEach((a) => {
     const active = a.dataset.nav === key;
     a.classList.toggle("is-active", active);
-    if (active) a.setAttribute("aria-current", ["about", "rubric", "faq"].includes(key) ? "page" : "true");
+    if (active) a.setAttribute("aria-current", "page");
     else a.removeAttribute("aria-current");
   });
 }
