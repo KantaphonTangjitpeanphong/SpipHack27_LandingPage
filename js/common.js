@@ -120,7 +120,7 @@ function initReveal() {
 // Surfaces whose rim glint and specular highlight follow the pointer
 // (their ::before / ::after in style.css; .nav-inner's pill is its pseudos)
 const GLASS_SEL = ".glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary, " +
-  ".icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme, .nav-inner";
+  ".icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme__card, .nav-inner";
 
 function initLiquidGlass() {
   const root = document.documentElement;

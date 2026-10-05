@@ -394,7 +394,7 @@ main:focus { outline: none; }
    js/common.js tracks it. The reset here stops a surface inheriting the
    pointer position of the glass it's nested in. */
 .glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
-.icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme {
+.icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme__card {
   --mx: 30%;
   --my: 0%;
   position: relative;
@@ -405,7 +405,7 @@ main:focus { outline: none; }
    along the rest, so the glass reads as a lens, not an outlined box. */
 .glass::before, .card::before, .frame-grad::before, .btn--ghost::before,
 .btn--grad::before, .btn--primary::before, .icon-btn::before, .lead::before,
-.sponsor::before, .countdown__tile::before, .hero-banner picture::before, .theme::before, .tip::before {
+.sponsor::before, .countdown__tile::before, .hero-banner picture::before, .theme__card::before, .tip::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -424,7 +424,7 @@ main:focus { outline: none; }
 }
 .glass::after, .card::after, .frame-grad::after, .btn--ghost::after,
 .btn--grad::after, .btn--primary::after, .icon-btn::after, .lead::after,
-.sponsor::after, .countdown__tile::after, .hero-banner picture::after, .theme::after {
+.sponsor::after, .countdown__tile::after, .hero-banner picture::after, .theme__card::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -438,9 +438,9 @@ main:focus { outline: none; }
   transition: opacity .4s var(--ease);
 }
 :is(.glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
-    .icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme):hover::before,
+    .icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme__card):hover::before,
 :is(.glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
-    .icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme):hover::after { opacity: 1; }
+    .icon-btn, .lead, .sponsor, .countdown__tile, .hero-banner picture, .theme__card):hover::after { opacity: 1; }
 
 /* Brand-lit glass (the info posters' gradient outlines, reimagined): no
    ring, just the rim picking up the event's magenta/orange light at the
@@ -933,11 +933,11 @@ main:focus { outline: none; }
 @keyframes progress { to { transform: scaleX(1); } }
 
 /* ---------- 5.2b Themes ---------- */
-/* Four equal glass cards under the City of Tomorrow banner, each only faintly
-   tinted with its own colour: a soft glow under the top edge, a coloured rim
-   at the far corner and a tinted icon. On hover / keyboard focus the icon
-   folds away and the card's question slides in. Touch and narrow screens
-   skip the swap and always show the text. */
+/* Four equal glass flashcards under the City of Tomorrow banner, each only
+   faintly tinted with its own colour: a soft glow under the top edge, a
+   coloured rim at the far corner and a tinted icon. The front shows the
+   topic; hover makes the card lean toward the pointer, and a click / tap
+   (js/home.js) turns it over to the question and example areas. */
 .themes { isolation: isolate; }
 /* Faint city-grid behind the cards, fading out toward the edges */
 .themes::before {
@@ -979,18 +979,29 @@ main:focus { outline: none; }
 
 .theme {
   --t-a: #FF2A6D;                 /* the card's colour (tint, glow, rim) */
-  --t-text: #FF7AA2;              /* accent text: icon, number, title once open */
+  --t-text: #FF7AA2;              /* accent text: icon, number, kicker, hint */
+  --turn: .7s;                    /* flip duration; the faces swap halfway through */
   /* Rim: the usual light along the top, plus the card's colour caught at the far corner */
   --glass-rim:
     linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 32%),
     linear-gradient(315deg, color-mix(in srgb, var(--t-a) 45%, transparent) 0%, transparent 45%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: block;
   height: 100%;
-  padding: var(--s-5) var(--s-3);
-  text-align: center;
+  perspective: 1600px;            /* depth for the tilt and the flip */
+  -webkit-tap-highlight-color: transparent;
+}
+.theme--green    { --t-a: #2EE6C8; --t-text: #5CF2D2; }
+.theme--mobility { --t-a: #A56FE0; --t-text: #CFAAFF; }
+.theme--tech     { --t-a: #FF6A1A; --t-text: #FFA062; }
+
+/* The glass card itself. It's what tilts (transform, set from --rx / --ry by
+   js/home.js) and what turns over (the rotate / scale animation below); the
+   two faces sit in the same grid cell, so the card is always as tall as its
+   taller face and nothing jumps when it flips. */
+.theme__card {
+  display: grid;
+  height: 100%;
+  min-height: 220px;
   border: 1px solid transparent;
   border-radius: var(--r);
   background: var(--glass-fill);  /* fallback for browsers without color-mix */
@@ -1000,37 +1011,76 @@ main:focus { outline: none; }
   box-shadow: var(--glass-shine), var(--shadow);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
+  transform: translateY(var(--lift, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .6s var(--ease), box-shadow .45s var(--ease);
+  cursor: pointer;
 }
-.theme:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
-.theme--green    { --t-a: #2EE6C8; --t-text: #5CF2D2; }
-.theme--mobility { --t-a: #A56FE0; --t-text: #CFAAFF; }
-.theme--tech     { --t-a: #FF6A1A; --t-text: #FFA062; }
+/* Keyboard focus lands on the title button; ring the whole card instead */
+.theme:has(.theme__toggle:focus-visible) .theme__card { outline: 2px solid var(--cyan); outline-offset: 4px; }
+@supports selector(:has(a)) {
+  .theme__toggle:focus-visible { outline: none; }
+}
 
 /* The card's colour: a soft glow pooling under the top edge (sits under the
-   rim and specular highlight) */
+   rim and specular highlight); brightens on hover and on the back */
 .theme__bg {
   position: absolute;
   inset: 0;
   z-index: -2;
   border-radius: inherit;
   background: radial-gradient(90% 70% at 50% 0%, color-mix(in srgb, var(--t-a) 18%, transparent), transparent 70%);
+  opacity: .75;
+  transition: opacity .45s var(--ease);
 }
-.theme__idx,
-.theme__plus {
-  position: absolute;
-  color: rgba(255,255,255,.55);
-  pointer-events: none;
+
+.theme__face {
+  grid-area: 1 / 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-6) var(--s-3);
+  text-align: center;
+  /* Swap at the halfway point of the turn, when the card is edge-on */
+  transition: opacity 0s linear calc(var(--turn) / 2), visibility 0s linear calc(var(--turn) / 2);
 }
+/* The front stays in the accessibility tree (it holds the toggle button);
+   the back is hidden from everyone until the card is flipped */
+.theme__back { opacity: 0; visibility: hidden; }
+.theme.is-flipped .theme__front,
+.no-js .theme:is(:hover, :focus-within) .theme__front { opacity: 0; }
+.theme.is-flipped .theme__back,
+.no-js .theme:is(:hover, :focus-within) .theme__back { opacity: 1; visibility: visible; }
+.theme.is-flipped .theme__bg { opacity: 1; }
+
 .theme__idx {
+  position: absolute;
   top: var(--s-2);
   left: var(--s-3);
   font-family: var(--font-display);
   font-size: .75rem;
   font-weight: 600;
   letter-spacing: var(--tracking-eyebrow);
+  color: rgba(255,255,255,.55);
 }
-.theme__plus { display: none; right: var(--s-2); bottom: var(--s-2); } /* only hints at the hover swap, so hover mode turns it on */
+.theme__back .theme__idx { color: var(--t-text); }
+.theme__hint {
+  position: absolute;
+  right: var(--s-3);
+  bottom: var(--s-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-muted);
+  transition: color .3s var(--ease);
+}
+.theme__hint .icon { transition: rotate .6s var(--ease); }
+.theme__hint-mouse { display: none; }
 
+/* Front: icon and topic */
 .theme__icon {
   display: grid;
   place-items: center;
@@ -1044,6 +1094,7 @@ main:focus { outline: none; }
     inset 0 8px 14px -10px rgba(255,255,255,.35),
     0 0 24px -6px color-mix(in srgb, var(--t-a) 45%, transparent);
   color: var(--t-text);
+  transition: transform .45s var(--ease-spring), box-shadow .45s var(--ease);
 }
 .theme__icon .icon { width: 26px; height: 26px; }
 .theme__title {
@@ -1051,16 +1102,59 @@ main:focus { outline: none; }
   font-weight: 600;
   line-height: 1.15;
 }
-/* Static (touch / narrow): the text always shows, on a faint inner pane */
-.theme__more {
-  margin-top: 12px;
-  padding: 12px 16px;
-  border-radius: var(--r-sm);
-  background: rgba(255,255,255,.03);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+.theme__toggle { text-align: inherit; }
+
+/* Back: the question and example areas */
+.theme__kicker {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--t-text);
 }
-.theme__q { font-size: var(--fs-sm); line-height: 1.5; color: var(--text); }
-.theme__eg { margin-top: 8px; font-size: var(--fs-xs); line-height: 1.5; color: var(--text-muted); }
+.theme__q {
+  max-width: 34ch;
+  margin-top: var(--s-1);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text);
+}
+.theme__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  max-width: 46ch;
+  margin-top: var(--s-2);
+}
+.theme__tags li {
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--t-a) 12%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* The turn: edge-on at the halfway point (where the faces swap), lifting a
+   little, then settling with a small overshoot. Flipping back turns the
+   other way. */
+.theme.is-turning .theme__card { animation: themeTurnBack var(--turn) both; }
+.theme.is-turning.is-flipped .theme__card { animation-name: themeTurn; }
+@keyframes themeTurn {
+  0%     { rotate: y 0deg;   scale: 1;    animation-timing-function: cubic-bezier(.55,0,.9,.45); }
+  50%    { rotate: y 90deg;  scale: 1.04; }
+  50.01% { rotate: y -90deg; scale: 1.04; animation-timing-function: cubic-bezier(.15,.7,.35,1.12); }
+  100%   { rotate: y 0deg;   scale: 1; }
+}
+@keyframes themeTurnBack {
+  0%     { rotate: y 0deg;   scale: 1;    animation-timing-function: cubic-bezier(.55,0,.9,.45); }
+  50%    { rotate: y -90deg; scale: 1.04; }
+  50.01% { rotate: y 90deg;  scale: 1.04; animation-timing-function: cubic-bezier(.15,.7,.35,1.12); }
+  100%   { rotate: y 0deg;   scale: 1; }
+}
 
 .themes__foot {
   display: flex;
@@ -1082,6 +1176,7 @@ main:focus { outline: none; }
     grid-auto-rows: 1fr;
     gap: var(--s-3);
   }
+  .theme__card { min-height: 270px; }
 }
 @media (min-width: 900px) {
   .themes__head {
@@ -1091,57 +1186,28 @@ main:focus { outline: none; }
   }
 }
 
-/* Mouse / trackpad on a tablet or larger: the icon folds away, the glow
-   brightens and the question slides in. Card height is fixed (min-height
-   fits the open state) so nothing shifts. */
-@media (hover: hover) and (min-width: 720px) {
-  .theme {
-    min-height: 270px;
-    transition: box-shadow .45s var(--ease);
-  }
-  .theme__bg { opacity: .75; transition: opacity .45s var(--ease); }
-  .theme__plus { display: block; }
-  .theme__idx, .theme__plus { transition: opacity .3s var(--ease), color .3s var(--ease); }
-  .theme__icon {
-    box-sizing: border-box;
-    max-height: 56px;
-    transition: max-height .45s var(--ease), margin .45s var(--ease), opacity .3s var(--ease), transform .45s var(--ease);
-  }
-  .theme__title { transition: color .35s var(--ease); }
-  .theme__more {
-    display: grid;
-    grid-template-rows: 0fr;
-    margin-top: 0;
-    padding: 0;
-    background: none;
-    box-shadow: none;
-    opacity: 0;
-    transition: grid-template-rows .45s var(--ease), margin .45s var(--ease), opacity .35s var(--ease);
-  }
-  .theme__more > div { min-height: 0; overflow: hidden; }
-
-  .theme:is(:hover, :focus-visible) {
+/* Mouse / trackpad: the card lifts and leans toward the pointer (js/home.js
+   sets --rx / --ry), its colour glows brighter and the icon perks up */
+@media (hover: hover) {
+  .theme__hint-mouse { display: inline; }
+  .theme__hint-touch { display: none; }
+  .theme:hover { --lift: -6px; }
+  .theme.is-tilting .theme__card { transition: transform .12s linear, box-shadow .45s var(--ease); }
+  .theme:hover .theme__card {
     box-shadow:
       var(--glass-shine),
-      0 22px 54px -24px color-mix(in srgb, var(--t-a) 50%, transparent),
+      0 26px 60px -26px color-mix(in srgb, var(--t-a) 55%, transparent),
       var(--shadow);
   }
-  .theme:is(:hover, :focus-visible) .theme__bg { opacity: 1; }
-  .theme:is(:hover, :focus-visible) .theme__plus { opacity: 0; }
-  .theme:is(:hover, :focus-visible) .theme__idx { color: var(--t-text); }
-  .theme:is(:hover, :focus-visible) .theme__icon {
-    max-height: 0;
-    margin-bottom: 0;
-    border-width: 0;
-    opacity: 0;
-    transform: scale(.6);
+  .theme:hover .theme__bg { opacity: 1; }
+  .theme:hover .theme__icon {
+    transform: scale(1.08) rotate(-6deg);
+    box-shadow:
+      inset 0 8px 14px -10px rgba(255,255,255,.35),
+      0 0 30px -4px color-mix(in srgb, var(--t-a) 65%, transparent);
   }
-  .theme:is(:hover, :focus-visible) .theme__title { color: var(--t-text); }
-  .theme:is(:hover, :focus-visible) .theme__more {
-    grid-template-rows: 1fr;
-    margin-top: 12px;
-    opacity: 1;
-  }
+  .theme:hover .theme__hint { color: var(--t-text); }
+  .theme:hover .theme__hint .icon { rotate: 180deg; }
 }
 
 /* ---------- 5.3 Round 1 ---------- */
@@ -2185,7 +2251,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   }
   .glass::after, .card::after, .frame-grad::after, .btn--ghost::after,
   .btn--grad::after, .btn--primary::after, .icon-btn::after, .lead::after,
-  .sponsor::after, .countdown__tile::after, .hero-banner picture::after, .theme::after { display: none; }
+  .sponsor::after, .countdown__tile::after, .hero-banner picture::after, .theme__card::after { display: none; }
   .btn--primary { background: var(--cyan); }
 }
 @media (prefers-reduced-transparency: reduce) and (max-width: 1199px) {
@@ -2202,4 +2268,5 @@ body[data-view="about"] .container { --maxw: 1400px; }
   .js [data-reveal] { opacity: 1; transform: none; }
   .hero-banner { transform: none; }
   .countdown__sep { animation: none; }
+  .theme__face { transition-delay: 0s !important; } /* no turn, so swap the faces straight away */
 }
