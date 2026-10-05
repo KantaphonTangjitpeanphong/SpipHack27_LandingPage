@@ -1,6 +1,6 @@
 /* =================================================================
-   Home page (index.html): countdown, poster carousel,
-   partners marquee and hero parallax.
+   Home page (index.html): countdown, poster carousel, theme
+   flashcards, partners marquee and hero parallax.
    Needs js/common.js and js/sponsors-data.js loaded first.
    ================================================================= */
 (function () {
@@ -159,6 +159,55 @@
     reducedMotion.addEventListener("change", schedule);
   }
 
+  /* ---------- Theme flashcards ---------- */
+  // Click / tap anywhere on a card (or Enter / Space on its title button)
+  // turns it over; with a mouse it also leans toward the pointer.
+  function initThemeCards() {
+    const TILT = 8; // max lean, degrees
+    const canTilt = window.matchMedia("(hover: hover)").matches;
+
+    $$(".theme").forEach((card) => {
+      const inner = $(".theme__card", card);
+      const toggle = $(".theme__toggle", card);
+
+      card.addEventListener("click", () => {
+        if (card.classList.contains("is-turning")) return; // let the turn finish
+        const flipped = !card.classList.contains("is-flipped");
+        card.classList.toggle("is-flipped", flipped);
+        toggle.setAttribute("aria-expanded", String(flipped));
+        if (!isReduced()) card.classList.add("is-turning");
+      });
+      const turned = (e) => { if (e.target === inner) card.classList.remove("is-turning"); };
+      inner.addEventListener("animationend", turned);
+      inner.addEventListener("animationcancel", turned);
+
+      if (!canTilt) return;
+      let raf = 0, px = 0, py = 0;
+      function lean() {
+        raf = 0;
+        const r = card.getBoundingClientRect();
+        const x = (px - r.left) / (r.width || 1) - .5;
+        const y = (py - r.top) / (r.height || 1) - .5;
+        card.style.setProperty("--ry", (x * TILT * 2).toFixed(2) + "deg");
+        card.style.setProperty("--rx", (-y * TILT * 2).toFixed(2) + "deg");
+      }
+      card.addEventListener("pointermove", (e) => {
+        if (e.pointerType === "touch" || isReduced()) return;
+        px = e.clientX;
+        py = e.clientY;
+        card.classList.add("is-tilting");
+        if (!raf) raf = requestAnimationFrame(lean);
+      });
+      card.addEventListener("pointerleave", () => {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        card.classList.remove("is-tilting");
+        card.style.removeProperty("--rx");
+        card.style.removeProperty("--ry");
+      });
+    });
+  }
+
   /* ---------- Partners marquee ---------- */
   function initPartners() {
     const wrap = $("[data-marquee]");
@@ -294,6 +343,7 @@
   setActiveNav("home");
   initCountdown();
   initCarousel();
+  initThemeCards();
   initPartners();
   initReveal();
   initScrollProgress();
