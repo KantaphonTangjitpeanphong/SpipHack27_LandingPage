@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>About Us — SPIP Hack 2027</title>
-  <meta name="description" content="Meet the student team organising SPIP Hack 2027 at Satit Prasarnmit International Programme (SPIP), Bangkok.">
+  <title>Sponsors — SPIP Hack 2027</title>
+  <meta name="description" content="The organisations supporting SPIP Hack 2027, the student-led, cross-school innovation hackathon at Satit Prasarnmit International Programme (SPIP), Bangkok.">
   <meta name="theme-color" content="#0A0A10">
   <meta name="color-scheme" content="dark">
 
@@ -29,7 +29,7 @@
 
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-view="about">
+<body data-view="sponsors">
   <a class="skip-link" href="#main-content">Skip to content</a>
 
   <!-- ============================ NAVBAR ============================ -->
@@ -61,23 +61,33 @@
 
   <main id="main-content" tabindex="-1">
 
-    <!-- ======================== ABOUT US PAGE ======================== -->
-      <section class="page-head" aria-labelledby="about-title">
+    <!-- ======================== SPONSORS PAGE ======================== -->
+      <section class="page-head" aria-labelledby="sponsors-title">
         <div class="map-texture" aria-hidden="true"></div>
-        <div class="container container--wide">
-          <p class="eyebrow">About us</p>
-          <h1 class="h-display" id="about-title" tabindex="-1">The team behind SPIP Hack</h1>
-          <p>SPIP Hack is organised entirely by students at Satit Prasarnmit International Programme. These are the people running your competition — select a lead to meet their team.</p>
+        <div class="container">
+          <p class="eyebrow">Supported by</p>
+          <h1 class="h-display" id="sponsors-title">Our Sponsors</h1>
+          <p>SPIP Hack 2027 is made possible by the organisations below. Here's who they are and what they stand for.</p>
         </div>
       </section>
 
-      <section class="section" id="team" aria-labelledby="team-title">
-        <div class="container container--wide">
-          <h2 class="visually-hidden" id="team-title">Organising team</h2>
-          <div class="leads" data-team-leads></div>
-          <p class="leads-help" data-team-help>Showing the secretaries — tap a lead to see their team.</p>
-          <div class="team-panel" id="team-panel" data-team-panel aria-live="polite">
-            <div class="team-panel__inner" data-team-panel-inner></div>
+      <section class="section section--tight" id="sponsors" aria-labelledby="sponsors-list-title">
+        <div class="container">
+          <h2 class="visually-hidden" id="sponsors-list-title">Sponsor list</h2>
+          <!-- ★ Sponsors are listed in js/sponsors-data.js; js/sponsors.js draws a card for each -->
+          <ul class="sponsors-grid" data-sponsors-grid data-reveal-group></ul>
+
+          <div class="sponsors-cta glass" data-reveal>
+            <div>
+              <p class="eyebrow">Partner with us</p>
+              <h2 class="h-section">Support the City of Tomorrow</h2>
+              <p>Interested in backing SPIP Hack 2027? Get in touch and we'll tell you how your organisation can be involved.</p>
+            </div>
+            <a class="btn btn--grad" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+              Message @spip.hack
+              <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
           </div>
         </div>
       </section>
@@ -148,6 +158,7 @@
   </footer>
 
   <script src="js/common.js"></script>
-  <script src="js/team.js"></script>
+  <script src="js/sponsors-data.js"></script>
+  <script src="js/sponsors.js"></script>
 </body>
 </html>
