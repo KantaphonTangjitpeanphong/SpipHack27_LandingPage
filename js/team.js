@@ -26,9 +26,8 @@
         {
           title: "Logistics", members: [
             { name: "Kenta Takizawa", role: "Logistics", photo: "assets/team/KentaY10.jpg" },
-            { name: "Cooper Tangsuriyapaisan", role: "Logistics", photo: "assets/team/Cooper10.jpg" },
             { name: "Pam Direkwattanachai", role: "Logistics", photo: "assets/team/Pam.jpg" },
-            { name: "Cookie Kraikabkaew", role: "Logistics", photo: "assets/team/Cookie.png" },
+            { name: "Cookie Kraikabkaew", role: "Logistics", photo: "assets/team/cookie.png" },
           ]
         },
         {
@@ -47,7 +46,7 @@
         },
         {
           title: "Resources", members: [
-            { name: "Putter Siripraiwan", role: "Resources", photo: "assets/team/Putter.jpg" },
+            { name: "Putter Siripraiwan", role: "Resources", photo: "assets/team/Putter.JPG" },
             { name: "Korn Chanyasan", role: "Resources", photo: "assets/team/Korn.png" },
           ]
         },
@@ -55,7 +54,7 @@
       pr: [
         {
           title: "Marketing", members: [
-            { name: "Love Chitsophon", role: "Marketing", photo: "assets/team/Love.jpg" },
+            { name: "Love Chitsophon", role: "Marketing", photo: "assets/team/Love.JPG" },
             { name: "Win Sukapiriya", role: "Marketing", photo: "assets/team/Win.jpg" },
             { name: "Peter Kriengkomol", role: "Marketing", photo: "assets/team/Peter.png" },
           ]
