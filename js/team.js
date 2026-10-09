@@ -14,7 +14,7 @@
     leads: [
       // short: label used on phones, where space is tight
       { id: "ops", name: "Guts Tangjitpeanphong", role: "Head of Operations", short: "Head of Ops", photo: "assets/team/Guts.jpg" },
-      { id: "lead", name: "Moshi Jearanaiphaisan", role: "Team Lead", short: "Team Lead", photo: "assets/team/Moshi.png" },
+      { id: "lead", name: "Moshi Jearanaiphaisan", role: "Team Lead", short: "Team Lead", photo: "assets/team/Moshi.jpg" },
       { id: "pr", name: "Ja Pachsong", role: "Head of PR", short: "Head of PR", photo: "assets/team/Ja.jpg" },
     ],
     secretaries: [
@@ -61,7 +61,7 @@
         },
         {
           title: "Communications", members: [
-            { name: "Marco Thanadsarng", role: "Communications", photo: "assets/team/Marco.png" },
+            { name: "Marco Thanadsarng", role: "Communications", photo: "assets/team/Marco.jpg" },
             { name: "BamBam Techathanachuen", role: "Communications", photo: "assets/team/Bambam.jpg" },
             { name: "Nott Chookul", role: "Communications", photo: "assets/team/Nott.jpg" },
           ]
