@@ -58,6 +58,7 @@
             { name: "Love Chitsophon", role: "Marketing", photo: "assets/team/Love.JPG" },
             { name: "Win Sukapiriya", role: "Marketing", photo: "assets/team/Win.jpg" },
             { name: "Peter Kriengkomol", role: "Marketing", photo: "assets/team/Peter.png" },
+            { name: "Namsai Kamlangmark", role: "Marketing", photo: "assets/team/Namsai.jpg" },
           ]
         },
         {
