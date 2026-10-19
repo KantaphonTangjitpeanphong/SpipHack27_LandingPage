@@ -28,13 +28,13 @@
             { name: "Kenta Takizawa", role: "Logistics", photo: "assets/team/KentaY10.jpg" },
             { name: "Pam Direkwattanachai", role: "Logistics", photo: "assets/team/Pam.jpg" },
             { name: "Cookie Kraikabkaew", role: "Logistics", photo: "assets/team/cookie.png" },
-            { name: "TBA", role: "Logistics", photo: "" },
+            { name: "Mimi Suriyayothin", role: "Logistics", photo: "assets/team/Mimi.jpg" },
           ]
         },
         {
           title: "Finance", members: [
             { name: "Get Limbupasiriporn", role: "Finance", photo: "assets/team/GetY10.jpg" },
-            { name: "TBA", role: "Finance", photo: "" },
+            { name: "Cooper Tangsuriyapaisan", role: "Finance", photo: "assets/team/Cooper10.jpg" },
           ]
         },
       ],
