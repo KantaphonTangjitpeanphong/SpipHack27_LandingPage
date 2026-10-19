@@ -28,12 +28,13 @@
             { name: "Kenta Takizawa", role: "Logistics", photo: "assets/team/KentaY10.jpg" },
             { name: "Pam Direkwattanachai", role: "Logistics", photo: "assets/team/Pam.jpg" },
             { name: "Cookie Kraikabkaew", role: "Logistics", photo: "assets/team/cookie.png" },
+            { name: "Mimi Suriyayothin", role: "Logistics", photo: "assets/team/Mimi.jpg" },
           ]
         },
         {
           title: "Finance", members: [
             { name: "Get Limbupasiriporn", role: "Finance", photo: "assets/team/GetY10.jpg" },
-            { name: "Lee Srichaikul", role: "Finance", photo: "assets/team/Lee.jpg" },
+            { name: "Cooper Tangsuriyapaisan", role: "Finance", photo: "assets/team/Cooper10.jpg" },
           ]
         },
       ],
@@ -57,6 +58,7 @@
             { name: "Love Chitsophon", role: "Marketing", photo: "assets/team/Love.JPG" },
             { name: "Win Sukapiriya", role: "Marketing", photo: "assets/team/Win.jpg" },
             { name: "Peter Kriengkomol", role: "Marketing", photo: "assets/team/Peter.png" },
+            { name: "Namsai Kamlangmark", role: "Marketing", photo: "assets/team/Namsai.jpg" },
           ]
         },
         {
