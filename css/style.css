@@ -470,6 +470,78 @@ main:focus { outline: none; }
   background: var(--surface-2);
 }
 
+/* Notify-me form (index.html hero and footer; js/notify.js). The card is a
+   .glass surface and the button a .btn--primary, so they match the page. */
+.notify-form {
+  --notify-error: #FF8A8F; /* light enough to read as small text on the glass */
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 460px;
+  margin: var(--s-5) auto 0;
+  padding: var(--s-3);
+  text-align: left;
+}
+.no-js .notify-form { display: none; } /* it can only send with JavaScript */
+.notify-form__title {
+  font-size: var(--fs-md);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance; /* no lone last word */
+}
+/* A recessed glass well. The edge stays visible (about 3:1) so the field reads as one. */
+.notify-form__input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--s-3);
+  border: 1px solid rgba(255,255,255,.34);
+  border-radius: var(--r-pill);
+  background: rgba(10,10,16,.35);
+  box-shadow: inset 0 2px 8px -4px rgba(0,0,0,.6);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-base); /* 16px or more stops iOS zooming in on focus */
+  transition: border-color .2s var(--ease);
+}
+.notify-form__input::placeholder { color: var(--text-muted); opacity: 1; }
+.notify-form__input:hover { border-color: rgba(255,255,255,.48); }
+.notify-form__input:focus-visible { outline-offset: 2px; border-radius: var(--r-pill); }
+.notify-form__input[aria-invalid="true"] { border-color: var(--notify-error); }
+/* Keep browser autofill dark instead of a pale yellow or blue block */
+.notify-form__input:-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: inset 0 0 0 100px var(--surface-2);
+  caret-color: var(--text);
+}
+.notify-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.notify-consent input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0; /* centres the box on the first line of text */
+  accent-color: var(--cyan);
+  cursor: pointer;
+}
+.notify-consent input[aria-invalid="true"] { outline: 2px solid var(--notify-error); outline-offset: 2px; }
+.notify-form__submit { width: 100%; }
+.notify-form__submit:disabled { opacity: .7; cursor: progress; }
+.notify-form__submit:disabled:hover { transform: none; }
+.notify-msg { font-size: var(--fs-sm); font-weight: 500; line-height: 1.5; }
+.notify-msg[data-state="pending"] { color: var(--text-muted); }
+.notify-msg[data-state="success"] { color: var(--cyan); }
+.notify-msg[data-state="error"] { color: var(--notify-error); }
+.notify-note { font-size: var(--fs-xs); line-height: 1.5; color: var(--text-muted); }
+/* Honeypot: kept off-screen so people never see it */
+.hp { position: absolute; left: -9999px; }
+
 /* =================================================================
    5. SECTIONS
    ================================================================= */
@@ -2029,7 +2101,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   letter-spacing: var(--tracking-display);
   line-height: 1;
 }
-.closing .btn { margin-top: var(--s-5); }
+.closing .container > .btn { margin-top: var(--s-5); } /* not the notify-me button */
 
 .site-footer {
   padding-block: var(--s-8) var(--s-4);
@@ -2214,7 +2286,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   .member, .team-group--multi .member { width: calc(50% - 4px); padding: 8px 8px var(--s-2); }
   .member__name { font-size: var(--fs-sm); font-size: clamp(.75rem, 9cqi, var(--fs-sm)); }
   .fact-row { grid-template-columns: 1fr; }
-  .carousel__body, .venue__details { padding: var(--s-3) var(--s-2); }
+  .carousel__body, .venue__details, .notify-form { padding: var(--s-3) var(--s-2); }
   .step { grid-template-columns: 40px 1fr; }
   .member__role { font-size: var(--fs-xs); font-size: clamp(.6875rem, 8.5cqi, var(--fs-xs)); }
   .marquee-wrap { grid-template-columns: minmax(0, 1fr); }

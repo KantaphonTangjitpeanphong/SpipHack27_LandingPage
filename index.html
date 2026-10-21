@@ -29,6 +29,10 @@
   <link rel="preload" as="image" href="assets/posters/hero-banner-16x9.webp" type="image/webp" media="(min-width: 768px)">
 
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Cloudflare Turnstile: the bot check inside the notify-me forms. Cloudflare says to load
+       it from this exact URL — proxying or caching a copy breaks it when they update it. -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body data-view="main">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -111,6 +115,25 @@
                 <span class="visually-hidden">(opens in a new tab)</span>
               </a>
             </div>
+
+            <!-- Notify me: js/notify.js sends the email to the Events Team's Google Sheet.
+                 The footer has a second copy; keep the two in step (ids end -hero / -footer). -->
+            <form class="notify-form glass" data-source="hero" method="post" novalidate aria-labelledby="notify-title-hero">
+              <h2 class="notify-form__title" id="notify-title-hero">Get notified when registration opens</h2>
+              <label class="visually-hidden" for="notify-email-hero">Email address</label>
+              <input class="notify-form__input" id="notify-email-hero" name="email" type="email" required maxlength="254"
+                     placeholder="you@email.com" autocomplete="email" aria-describedby="notify-msg-hero">
+              <!-- honeypot: hidden from people, filled in by bots -->
+              <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <label class="notify-consent">
+                <input type="checkbox" name="consent" value="yes" required>
+                <span>I agree to receive SPIP Hack 2027 updates by email.</span>
+              </label>
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAAFehUYyCcuXOWcOY" data-theme="dark" data-size="flexible" data-appearance="interaction-only"></div>
+              <button class="btn btn--primary notify-form__submit" type="submit">Notify me</button>
+              <p class="notify-msg" id="notify-msg-hero" role="status" aria-live="polite"></p>
+              <p class="notify-note">The SPIP Hack 2027 Events Team will use your email only for event updates and delete it after the event. To opt out, reply “unsubscribe” to any update.</p>
+            </form>
           </div>
         </div>
       </section>
@@ -529,6 +552,24 @@
         Follow @spip.hack for updates
         <span class="visually-hidden">(opens in a new tab)</span>
       </a>
+
+      <!-- Notify me, second copy (see the hero form) -->
+      <form class="notify-form glass" data-source="footer" method="post" novalidate aria-labelledby="notify-title-footer">
+        <h3 class="notify-form__title" id="notify-title-footer">Get notified when registration opens</h3>
+        <label class="visually-hidden" for="notify-email-footer">Email address</label>
+        <input class="notify-form__input" id="notify-email-footer" name="email" type="email" required maxlength="254"
+               placeholder="you@email.com" autocomplete="email" aria-describedby="notify-msg-footer">
+        <!-- honeypot: hidden from people, filled in by bots -->
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="notify-consent">
+          <input type="checkbox" name="consent" value="yes" required>
+          <span>I agree to receive SPIP Hack 2027 updates by email.</span>
+        </label>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAFehUYyCcuXOWcOY" data-theme="dark" data-size="flexible" data-appearance="interaction-only"></div>
+        <button class="btn btn--primary notify-form__submit" type="submit">Notify me</button>
+        <p class="notify-msg" id="notify-msg-footer" role="status" aria-live="polite"></p>
+        <p class="notify-note">The SPIP Hack 2027 Events Team will use your email only for event updates and delete it after the event. To opt out, reply “unsubscribe” to any update.</p>
+      </form>
     </div>
   </section>
 
@@ -583,5 +624,6 @@
   <script src="js/common.js"></script>
   <script src="js/sponsors-data.js"></script>
   <script src="js/home.js"></script>
+  <script src="js/notify.js"></script>
 </body>
 </html>
