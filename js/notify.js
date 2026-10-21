@@ -14,7 +14,8 @@
   // ▼▼▼ ★ APPS SCRIPT WEB APP URL (ends in /exec) ▼▼▼
   // When the script changes, edit the SAME deployment (Deploy → Manage deployments → new
   // version) so this URL stays the same. A brand-new deployment gets a new URL.
-  const NOTIFY_URL = "https://script.google.com/a/macros/student.spip.in.th/s/AKfycbzzpJZNPT6zZNr38LtuezhzIwDfhdkTV0DBg8bGV57cqLLazMVryd0L2AlSWoFF1F4T/exec";
+  // Use this plain /macros/s/ form: the /a/macros/<school domain>/ form sends visitors to a school sign-in.
+  const NOTIFY_URL = "https://script.google.com/macros/s/AKfycbzzpJZNPT6zZNr38LtuezhzIwDfhdkTV0DBg8bGV57cqLLazMVryd0L2AlSWoFF1F4T/exec";
 
   const SEND_TIMEOUT_MS = 20000; // the script can wait up to 5 s for its lock, plus a cold start
   const TOKEN_WAIT_MS = 6000;    // how long to wait for Turnstile to finish its check in the background
