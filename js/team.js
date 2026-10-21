@@ -41,7 +41,6 @@
       lead: [
         {
           title: "Curriculum Planning", members: [
-            { name: "Aimer Sookprasert", role: "Curriculum Planning", photo: "assets/team/Aimer.webp" },
             { name: "Nemo Jentaweepornkul", role: "Curriculum Planning", photo: "assets/team/Nemo.webp" },
           ]
         },
