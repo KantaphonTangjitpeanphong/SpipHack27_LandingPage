@@ -26,9 +26,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Kanit:wght@600;700&display=swap">
 
-  <link rel="preload" as="image" href="assets/posters/hero-banner-16x9.webp" type="image/webp" media="(min-width: 768px)">
+  <!-- The intro's full-screen poster (below) is the first image on the page and carries
+       fetchpriority="high" itself, so there's no separate preload for it. -->
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <!-- Set the js class before first layout, so the scroll-pinned intro has its full height
+       from the start and deep links (index.html#event) land in the right place -->
+  <script>document.documentElement.classList.replace("no-js", "js");</script>
 
   <!-- Cloudflare Turnstile: the bot check inside the notify-me forms. Cloudflare says to load
        it from this exact URL — proxying or caching a copy breaks it when they update it. -->
@@ -68,6 +73,29 @@
 
     <!-- ========================== HOME PAGE ========================== -->
 
+      <!-- 0. Scroll-pinned intro (css/intro.css, js/intro.js). All of it is decorative:
+           the hero's <h1> below stays the page's only heading. -->
+      <section class="intro" aria-label="SPIP Hack 2027 — coming soon">
+        <div class="intro__stage">
+          <!-- Text-free banner exports, made from assets/posters/4-3 Background.png
+               (3200×2000; the phone file is a full-height crop centred on the logo). If they're missing, js/intro.js falls back to the
+               regular banner (data-fallback) and darkens its baked-in "COMING SOON". -->
+          <picture class="intro__bg" aria-hidden="true">
+            <source media="(max-width: 767px)" type="image/webp" srcset="assets/posters/hero-banner-clean-3x4.webp" data-fallback="assets/posters/hero-banner-3x4.webp" width="923" height="2000">
+            <img src="assets/posters/hero-banner-clean-16x9.webp" data-fallback="assets/posters/hero-banner-16x9.webp" width="3200" height="2000" fetchpriority="high" decoding="async" alt="">
+          </picture>
+          <div class="intro__shade" aria-hidden="true"></div>
+          <div class="intro__soon" aria-hidden="true">
+            <span class="intro__soon-title">Coming soon</span>
+            <span class="intro__soon-date" data-intro-date></span>
+          </div>
+          <div class="intro__cutout" aria-hidden="true"></div>
+          <p class="intro__eyebrow" aria-hidden="true">1st SPIP Hack · Cross-school innovation hackathon</p>
+          <p class="intro__hint" aria-hidden="true"><span class="intro__mouse"><span class="intro__dot"></span></span>Scroll</p>
+          <div class="intro__fade" aria-hidden="true"></div>
+        </div>
+      </section>
+
       <!-- 1. Hero + countdown -->
       <section class="hero" id="home" aria-labelledby="hero-title">
         <div class="map-texture" aria-hidden="true"></div>
@@ -78,7 +106,7 @@
               <source media="(max-width: 767px)" type="image/webp" srcset="assets/posters/hero-banner-3x4.webp" width="1080" height="1440">
               <source media="(max-width: 767px)" srcset="assets/posters/hero-banner-3x4.png" width="1080" height="1440">
               <source type="image/webp" srcset="assets/posters/hero-banner-16x9.webp" width="2400" height="1067">
-              <img src="assets/posters/hero-banner-16x9.png" width="2400" height="1067" fetchpriority="high" decoding="async"
+              <img src="assets/posters/hero-banner-16x9.png" width="2400" height="1067" decoding="async"
                    alt="SPIP Hack 2027 — City of Tomorrow. Coming soon. Contact us on Instagram @spip.hack.">
             </picture>
           </div>
@@ -582,7 +610,7 @@
             <li>
               <!-- ★ ADD EVENT EMAIL ★ — replace the span below with:
                    <a href="mailto:hello@example.com">hello@example.com</a> -->
-              <span class="muted">Email — coming soon</span>
+              <span class="muted">Hackathon@SPIP.in.th</span>
             </li>
           </ul>
         </div>
@@ -606,13 +634,14 @@
         </div>
       </div>
 
-      <p class="footer-bottom">© 2027 SPIP Hack · A student-led initiative at Satit Prasarnmit International Programme</p>
+      <p class="footer-bottom">SPIP Hack · A student-led initiative at Satit Prasarnmit International Programme</p>
     </div>
   </footer>
 
   <script src="js/common.js"></script>
   <script src="js/sponsors-data.js"></script>
   <script src="js/home.js"></script>
+  <script src="js/intro.js"></script>
   <script src="js/notify.js"></script>
 </body>
 </html>

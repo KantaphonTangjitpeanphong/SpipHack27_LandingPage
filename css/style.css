@@ -683,6 +683,8 @@ main:focus { outline: none; }
   padding-top: calc(var(--nav-h) + var(--s-3));
   padding-bottom: var(--section-y);
 }
+/* With the intro above it, the hero no longer starts under the fixed navbar */
+.intro + .hero { padding-top: var(--s-8); }
 .hero-banner {
   position: relative;
   max-width: var(--maxw);

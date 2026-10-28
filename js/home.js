@@ -16,6 +16,7 @@
 
   // ▼▼▼ ★ EDIT EVENT DATE HERE (Bangkok time, UTC+7) ▼▼▼
   const EVENT_DATE = "2027-03-06T08:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (6–7 Mar 2027, Participant Rulebook v3); start time TBC
+  window.SPIP_EVENT_DATE = EVENT_DATE; // read by js/intro.js for its date line
 
   // ★ Sponsor logos, names and descriptions are edited in js/sponsors-data.js
 
@@ -321,10 +322,12 @@
   /* ---------- Hero parallax ---------- */
   function initParallax() {
     const banner = $(".hero-banner");
+    const hero = $(".hero");
+    let heroTop = hero.offsetTop; // the intro sits above the hero, so measure from the hero
     let ticking = false;
     function update() {
       ticking = false;
-      const y = window.scrollY;
+      const y = Math.max(0, window.scrollY - heroTop);
       if (isReduced() || y > window.innerHeight * 1.5) return;
       const t = Math.min(1, y / (window.innerHeight * 0.9));
       banner.style.setProperty("--parallax-scale", (1 - t * 0.08).toFixed(4));
@@ -333,7 +336,7 @@
     window.addEventListener("scroll", () => {
       if (!ticking) { ticking = true; requestAnimationFrame(update); }
     }, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("resize", () => { heroTop = hero.offsetTop; update(); });
     update();
   }
 

@@ -1,0 +1,199 @@
+/* =================================================================
+   Scroll-pinned intro above the hero (index.html). Behaviour lives in
+   js/intro.js. Load this after css/style.css.
+
+   Three states:
+   - Static (no JS, or reduced motion): one screen, full-screen poster
+     with COMING SOON on top. This is the default below.
+   - Waiting (JS on, motion allowed, cut-out not drawn yet): 400svh tall,
+     black screen.
+   - Live (.is-live): the cut-out canvases are drawn and js/intro.js
+     drives everything with transform and opacity only.
+   ================================================================= */
+
+.intro {
+  position: relative;
+  height: 100svh;
+  background: var(--bg);
+}
+.intro__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  contain: layout paint; /* nothing inside can make the rest of the page re-layout or repaint */
+  background: var(--bg);
+}
+
+/* ---------- Layers, back to front ---------- */
+.intro__bg,
+.intro__shade,
+.intro__soon,
+.intro__cutout,
+.intro__fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.intro__bg { z-index: 0; display: block; }
+.intro__bg img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.08); /* headroom so the parallax never shows an edge */
+}
+
+/* Only used with the fallback banner (.has-baked-text, set by js/intro.js):
+   pushes its baked-in "COMING SOON" behind the real one */
+.intro:not(.has-baked-text) .intro__shade { display: none; }
+.intro__shade {
+  z-index: 1;
+  background: rgba(10, 10, 16, .45);
+}
+
+.intro__soon {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  padding-inline: var(--gutter);
+  text-align: center;
+  color: #fff;
+}
+.intro__soon-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 1rem + 9vw, 9.5rem);
+  line-height: .95;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  text-shadow: 0 6px 40px rgba(0, 0, 0, .55), 0 1px 2px rgba(0, 0, 0, .4);
+}
+.intro__soon-date {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-md);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .85);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, .6);
+}
+.intro__soon-date:empty { display: none; }
+
+/* The black layer with the letter holes: canvases from js/intro.js */
+.intro__cutout {
+  z-index: 3;
+  display: none;
+}
+.intro__cutout canvas {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+.intro__eyebrow,
+.intro__hint {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding-inline: var(--gutter);
+  text-align: center;
+  pointer-events: none;
+}
+.intro__eyebrow {
+  top: calc(var(--nav-h) + var(--s-4));
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.intro__hint {
+  bottom: max(var(--s-4), env(safe-area-inset-bottom));
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-1);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.intro__mouse {
+  position: relative;
+  width: 22px;
+  height: 34px;
+  border: 2px solid rgba(255, 255, 255, .55);
+  border-radius: 12px;
+}
+.intro__dot {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 7px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: #fff;
+  animation: introDot 1.8s var(--ease) infinite;
+}
+@keyframes introDot {
+  0%   { transform: translateY(0);    opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { transform: translateY(11px); opacity: 0; }
+  100% { transform: translateY(11px); opacity: 0; }
+}
+.intro.is-hint-gone .intro__dot { animation-play-state: paused; }
+
+/* Bottom of the scene melts into the page as the pin releases */
+.intro__fade {
+  z-index: 5;
+  top: auto;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(10, 10, 16, 0) 0%, var(--bg) 100%);
+  opacity: 0;
+}
+
+/* ---------- Scroll-driven version ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js .intro { height: 500svh; } /* ≈ 400svh of pinned scroll */
+  .js .intro .intro__hint { display: flex; }
+  .js .intro .intro__cutout { display: block; background: var(--bg); }
+  .js .intro .intro__soon,
+  .js .intro .intro__shade { opacity: 0; }
+  .js .intro .intro__eyebrow { top: auto; bottom: calc(100% - var(--intro-text-top, 40%) + var(--s-3)); }
+
+  .intro.is-live .intro__cutout {
+    background: none;
+    transform-origin: var(--intro-ox, 50%) var(--intro-oy, 50%);
+    will-change: transform, opacity;
+  }
+  .intro.is-live .intro__cutout canvas { will-change: opacity; }
+  .intro.is-live .intro__bg img,
+  .intro.is-live .intro__soon { will-change: transform; }
+  .intro.is-live .intro__soon,
+  .intro.is-live .intro__shade,
+  .intro.is-live .intro__eyebrow,
+  .intro.is-live .intro__hint,
+  .intro.is-live .intro__fade { will-change: opacity; }
+  /* Past the dive the cut-out is fully transparent: drop it from compositing */
+  .intro.is-dived .intro__cutout { visibility: hidden; }
+}
+
+/* ---------- Navbar while the intro is on screen ----------
+   The glass pill's backdrop-filter (an SVG displacement filter in Chromium)
+   would recompute on every frame of the intro underneath it, so it gets a
+   plain solid fill instead until the intro has scrolled away. */
+body.intro-active .site-header .nav-inner::before {
+  background: rgba(10, 10, 16, .85);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html:has(body.intro-active) { scroll-behavior: auto; }
