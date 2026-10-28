@@ -19,8 +19,8 @@
   /* ---------- Tuning ---------- */
   // Scroll breakpoints, as a fraction (0–1) of the pinned scroll
   const P_HOLD_END   = .10; // first stop: nothing moves until here
-  const P_GLIDE_END  = .28; // SPIP HACK slides so the "I" is centred; 2027 fades to black
-  const P_DIVE_END   = .60; // zoom through the "I" is done, poster fills the screen
+  const P_GLIDE_END  = .28; // SPIP HACK slides so the H's left stem is centred; 2027 fades to black
+  const P_DIVE_END   = .60; // zoom through the H's stem is done, poster fills the screen
   const P_SOON_START = .68; // second stop ends, COMING SOON starts rising in
   const P_SOON_END   = .88; // COMING SOON settled; hold until the pin releases
   const P_FADE_START = .94; // bottom of the scene fades into the page
@@ -139,7 +139,8 @@
     const blockH = block100 * k;
     const textTop = (H - blockH) / 2;
 
-    // Glyph positions; "stays" = SPIP HACK, which stays cut out (we zoom into its "I").
+    // Glyph positions; "stays" = SPIP HACK, which stays cut out (we zoom into the
+    // left stem of its H, which sits next to the title's centre).
     // Only 2027 closes up.
     const glyphs = [];
     let stem = null;
@@ -151,12 +152,14 @@
       Array.from(line).forEach((ch, ci) => {
         const stays = li === 0 && ci < 9; // "SPIP HACK"
         if (ch !== " ") glyphs.push({ ch, x, y, stays });
-        if (li === 0 && ci === 2) { // the "I" in SPIP
-          const g = m.measureText("I");
+        if (li === 0 && ci === 5) { // the H in HACK: dive through its left stem
+          const g = m.measureText("H");
           const left = x - g.actualBoundingBoxLeft;
-          const right = x + g.actualBoundingBoxRight;
           const asc = g.actualBoundingBoxAscent || capH100 * k;
-          stem = { x: (left + right) / 2, y: y - asc / 2, w: Math.max(1, right - left), h: Math.max(1, asc) };
+          // An I is just a stem, so its width is the stem width (both are vertical bars in Kanit)
+          const i = m.measureText("I");
+          const stemW = Math.max(1, i.actualBoundingBoxLeft + i.actualBoundingBoxRight);
+          stem = { x: left + stemW / 2, y: y - asc / 2, w: stemW, h: Math.max(1, asc) };
         }
         x += m.measureText(ch).width + TRACKING * size;
       });
@@ -239,7 +242,7 @@
     set(hint, "opacity", hintO.toFixed(3));
     root.classList.toggle("is-hint-gone", hintO === 0);
 
-    // Glide: SPIP's "I" to the centre while 2027 closes up
+    // Glide: the H's left stem to the centre while 2027 closes up
     const g = easeInOutCubic(ramp(p, P_HOLD_END, P_GLIDE_END));
     set(geo.fill, "opacity", ramp(p, P_HOLD_END, P_HOLD_END + (P_GLIDE_END - P_HOLD_END) * .7).toFixed(3));
 

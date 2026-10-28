@@ -78,10 +78,11 @@
       <section class="intro" aria-label="SPIP Hack 2027 — coming soon">
         <div class="intro__stage">
           <!-- Text-free banner exports, made from assets/posters/4-3 Background.png
-               (3200×2000; the phone file is a full-height crop centred on the logo). If they're missing, js/intro.js falls back to the
+               (3200×2000). The phone file fits the logo area to the phone's width, padded
+               above and below with the poster's own edge colour, so nothing gets cut off. If they're missing, js/intro.js falls back to the
                regular banner (data-fallback) and darkens its baked-in "COMING SOON". -->
           <picture class="intro__bg" aria-hidden="true">
-            <source media="(max-width: 767px)" type="image/webp" srcset="assets/posters/hero-banner-clean-3x4.webp" data-fallback="assets/posters/hero-banner-3x4.webp" width="923" height="2000">
+            <source media="(max-width: 767px)" type="image/webp" srcset="assets/posters/hero-banner-clean-3x4.webp" data-fallback="assets/posters/hero-banner-3x4.webp" width="1080" height="2340">
             <img src="assets/posters/hero-banner-clean-16x9.webp" data-fallback="assets/posters/hero-banner-16x9.webp" width="3200" height="2000" fetchpriority="high" decoding="async" alt="">
           </picture>
           <div class="intro__shade" aria-hidden="true"></div>
