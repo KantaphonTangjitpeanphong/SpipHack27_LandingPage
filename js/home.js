@@ -1,6 +1,6 @@
 /* =================================================================
    Home page (index.html): countdown, poster carousel, theme
-   flashcards, partners marquee and hero parallax.
+   flashcards and partners marquee.
    Needs js/common.js and js/sponsors-data.js loaded first.
    ================================================================= */
 (function () {
@@ -319,27 +319,6 @@
     reducedMotion.addEventListener("change", () => { stop(); offset = 0; build(); start(); });
   }
 
-  /* ---------- Hero parallax ---------- */
-  function initParallax() {
-    const banner = $(".hero-banner");
-    const hero = $(".hero");
-    let heroTop = hero.offsetTop; // the intro sits above the hero, so measure from the hero
-    let ticking = false;
-    function update() {
-      ticking = false;
-      const y = Math.max(0, window.scrollY - heroTop);
-      if (isReduced() || y > window.innerHeight * 1.5) return;
-      const t = Math.min(1, y / (window.innerHeight * 0.9));
-      banner.style.setProperty("--parallax-scale", (1 - t * 0.08).toFixed(4));
-      banner.style.setProperty("--parallax-fade", (1 - t * 0.55).toFixed(3));
-    }
-    window.addEventListener("scroll", () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
-    }, { passive: true });
-    window.addEventListener("resize", () => { heroTop = hero.offsetTop; update(); });
-    update();
-  }
-
   /* ---------- Boot ---------- */
   initNav();
   initLiquidGlass();
@@ -350,5 +329,4 @@
   initPartners();
   initReveal();
   initScrollProgress();
-  initParallax();
 })();
