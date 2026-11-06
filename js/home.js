@@ -15,7 +15,7 @@
   }
 
   // ▼▼▼ ★ EDIT EVENT DATE HERE (Bangkok time, UTC+7) ▼▼▼
-  const EVENT_DATE = "2027-03-06T08:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (6–7 Mar 2027, Participant Rulebook v3); start time TBC
+  const EVENT_DATE = "2027-03-13T08:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (13–14 Mar 2027); start time TBC
   window.SPIP_EVENT_DATE = EVENT_DATE; // read by js/intro.js for its date line
 
   // ★ Sponsor logos, names and descriptions are edited in js/sponsors-data.js
