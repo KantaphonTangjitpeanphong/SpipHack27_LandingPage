@@ -44,7 +44,7 @@
   const SCROLL_LERP = .09; // smooths stepped mouse wheels: lower = more in-between frames per tick
   const SETTLE = .001;
   const MAX_DPR = 2;
-  const EVENT_DAYS = 2; // Hackathon is two days (6–7 March)
+  const EVENT_DAYS = 2; // Hackathon is two days (13–14 March)
 
   /* ---------- Elements ---------- */
   const stage   = $(".intro__stage", root);
