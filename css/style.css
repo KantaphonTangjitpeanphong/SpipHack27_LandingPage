@@ -393,7 +393,7 @@ main:focus { outline: none; }
    js/common.js tracks it. The reset here stops a surface inheriting the
    pointer position of the glass it's nested in. */
 .glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
-.icon-btn, .lead, .sponsor, .countdown__tile, .theme__card {
+.icon-btn, .lead, .sponsor, .hero-banner picture, .theme__card {
   --mx: 30%;
   --my: 0%;
   position: relative;
@@ -404,7 +404,7 @@ main:focus { outline: none; }
    along the rest, so the glass reads as a lens, not an outlined box. */
 .glass::before, .card::before, .frame-grad::before, .btn--ghost::before,
 .btn--grad::before, .btn--primary::before, .icon-btn::before, .lead::before,
-.sponsor::before, .countdown__tile::before, .theme__card::before, .tip::before {
+.sponsor::before, .hero-banner picture::before, .theme__card::before, .tip::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -423,7 +423,7 @@ main:focus { outline: none; }
 }
 .glass::after, .card::after, .frame-grad::after, .btn--ghost::after,
 .btn--grad::after, .btn--primary::after, .icon-btn::after, .lead::after,
-.sponsor::after, .countdown__tile::after, .theme__card::after {
+.sponsor::after, .hero-banner picture::after, .theme__card::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -437,9 +437,9 @@ main:focus { outline: none; }
   transition: opacity .4s var(--ease);
 }
 :is(.glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
-    .icon-btn, .lead, .sponsor, .countdown__tile, .theme__card):hover::before,
+    .icon-btn, .lead, .sponsor, .hero-banner picture, .theme__card):hover::before,
 :is(.glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary,
-    .icon-btn, .lead, .sponsor, .countdown__tile, .theme__card):hover::after { opacity: 1; }
+    .icon-btn, .lead, .sponsor, .hero-banner picture, .theme__card):hover::after { opacity: 1; }
 
 /* Brand-lit glass (the info posters' gradient outlines, reimagined): no
    ring, just the rim picking up the event's magenta/orange light at the
@@ -469,7 +469,7 @@ main:focus { outline: none; }
   background: var(--surface-2);
 }
 
-/* Notify-me form (index.html #notify, the navbar's "Notify me" target; js/notify.js).
+/* Email-updates form (index.html #notify, under the EOI button; js/notify.js).
    The card is a .glass surface and the button a .btn--primary, so they match the page. */
 .notify-form {
   --notify-error: #FF8A8F; /* light enough to read as small text on the glass */
@@ -533,6 +533,188 @@ main:focus { outline: none; }
 .notify-note { font-size: var(--fs-xs); line-height: 1.5; color: var(--text-muted); }
 /* Honeypot: kept off-screen so people never see it */
 .hp { position: absolute; left: -9999px; }
+/* The EOI button above the form, and the form's own heading under it */
+.eoi-cta {
+  display: flex;
+  justify-content: center;
+  margin: calc(-1 * var(--s-2)) 0 var(--s-5);
+}
+.notify-form__title {
+  margin-bottom: 4px;
+  font-size: var(--fs-md);
+  text-align: center;
+}
+
+/* EOI pop-ups (index.html; js/eoi.js) ------------------------------
+   Launch pop-up: a native <dialog> opened with showModal(), so it sits in the
+   browser's top layer above everything, navbar included. The page behind is
+   locked with body.eoi-locked (like the mobile menu's body.is-locked: on <body>
+   so it reaches the viewport without breaking the intro's sticky stage), and
+   padded by the scrollbar's width so nothing shifts when the scrollbar goes. */
+body.eoi-locked { overflow: hidden; padding-right: var(--eoi-sbw, 0px); }
+body.eoi-locked .site-header { right: var(--eoi-sbw, 0px); }
+
+.eoi-modal {
+  /* The poster's largest box. --vh is the visible height: dvh where supported, so on
+     phones the browser's toolbars are taken into account. The height leaves room for
+     the button underneath (16px gap + 48px), the × above the corner and some space
+     around. */
+  --vh: 1vh;
+  --eoi-poster-w: min(1200px, 90vw);
+  --eoi-poster-h: min(calc(86 * var(--vh)), calc(100 * var(--vh) - 144px));
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  overflow: visible;
+}
+@supports (height: 1dvh) { .eoi-modal { --vh: 1dvh; } }
+.eoi-modal[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  animation: eoiIn var(--dur) var(--ease) both;
+}
+.eoi-modal.is-closing { animation: eoiOut var(--dur) var(--ease) both; }
+/* ::backdrop doesn't read custom properties in every browser, so values are written out */
+.eoi-modal::backdrop {
+  background: rgba(10, 10, 16, .72);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.eoi-modal[open]::backdrop { animation: eoiFadeIn 400ms cubic-bezier(.2,.7,.2,1) both; }
+.eoi-modal.is-closing::backdrop { animation: eoiFadeOut 400ms cubic-bezier(.2,.7,.2,1) both; }
+@keyframes eoiIn      { from { opacity: 0; transform: scale(.96); } }
+@keyframes eoiOut     { to   { opacity: 0; transform: scale(.96); } }
+@keyframes eoiFadeIn  { from { opacity: 0; } }
+@keyframes eoiFadeOut { to   { opacity: 0; } }
+
+.eoi-modal__frame {
+  position: relative;
+  border-radius: var(--r);
+  background: var(--surface); /* only seen while the poster is still loading */
+  box-shadow: var(--shadow);
+}
+.eoi-modal__poster {
+  display: block;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.eoi-modal__poster picture { display: block; }
+/* As big as fits in the box above, in the poster's 16:9 shape (5:6 on phones). The
+   size comes from here rather than from the image, so the frame has its final size
+   even before the poster has loaded. */
+.eoi-modal__poster img {
+  width: min(var(--eoi-poster-w), calc(var(--eoi-poster-h) * 16 / 9));
+  max-width: none;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+/* White × on a dark disc, just outside the poster's top-right corner so it stays
+   clear of the poster's own corner (its vertical text and the megaphone). The thin
+   rim keeps it visible over the darkened page. */
+.eoi-modal__close {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(10, 10, 16, .6);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  color: #fff;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background .2s var(--ease), transform .35s var(--ease-spring);
+}
+.eoi-modal__close:hover { background: rgba(10, 10, 16, .85); transform: scale(1.06); }
+.eoi-modal__close:focus-visible { border-radius: 50%; }
+
+/* Corner pop-up (desktop only, js/eoi.js). The <aside> only positions it;
+   the fade and slide are on its children, because opacity on an ancestor
+   would cut the card's backdrop blur off until the fade had finished.
+   z-index sits under the navbar (50), so the 1024–1199px menu covers it. */
+.eoi-corner {
+  position: fixed;
+  right: var(--s-4);
+  bottom: var(--s-4);
+  z-index: 40;
+  width: 300px;
+  visibility: hidden;
+  transition: visibility 0s linear var(--dur);
+}
+.eoi-corner.is-shown { visibility: visible; transition: none; }
+.eoi-corner > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.eoi-corner.is-shown > * { opacity: 1; transform: none; }
+.eoi-corner.is-shown:hover > * { transform: translateY(-2px); }
+/* Denser glass than usual, since page text scrolls underneath it */
+.eoi-corner__link {
+  display: block;
+  padding-bottom: var(--s-2);
+  border-radius: var(--r-sm);
+  background: var(--glass-solid);
+  -webkit-backdrop-filter: var(--glass-blur-thick);
+  backdrop-filter: var(--glass-blur-thick);
+}
+.eoi-corner__link:hover { background: var(--glass-hover), var(--glass-solid); }
+.eoi-corner__link:focus-visible { border-radius: var(--r-sm); }
+/* The poster thumbnail, full width across the top of the card. Its radius is the
+   card's less the card's 1px (transparent) border, so the corners line up. */
+.eoi-corner__media {
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: calc(var(--r-sm) - 1px) calc(var(--r-sm) - 1px) 0 0;
+  overflow: hidden;
+}
+.eoi-corner__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.eoi-corner__text {
+  display: grid;
+  gap: 2px;
+  padding: 12px var(--s-2) 0;
+}
+.eoi-corner__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-display);
+}
+.eoi-corner__sub,
+.eoi-corner__date { font-size: var(--fs-xs); color: var(--text-muted); }
+/* Its own button (not inside the link), so it never opens the form. Like the launch
+   pop-up's ×, it sits just outside the top-right corner, off the thumbnail's
+   vertical text. 32px disc, with a 44px hit area from the ::before. */
+.eoi-corner__close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(10, 10, 16, .6);
+  color: #fff;
+}
+.eoi-corner__close::before { content: ""; position: absolute; inset: -6px; }
+.eoi-corner__close:hover { background: rgba(10, 10, 16, .85); }
+.eoi-corner__close:focus-visible { border-radius: 50%; }
 
 /* =================================================================
    5. SECTIONS
@@ -685,9 +867,46 @@ main:focus { outline: none; }
 }
 /* With the intro above it, the hero no longer starts under the fixed navbar */
 .intro + .hero { padding-top: var(--s-8); }
+/* The 16:9 EOI poster: as wide as the page content (1200px) on big screens, and on
+   shorter screens narrow enough that all of it fits under the navbar (200px = navbar,
+   hero padding and bezel, plus a little space), but never under 560px wide */
+.hero-banner {
+  position: relative;
+  max-width: min(var(--maxw), max(560px, (100vh - 200px) * 16 / 9));
+  margin-inline: auto;
+}
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 10% 8%;
+  z-index: -1;
+  background: var(--grad-brand);
+  filter: blur(72px);
+  opacity: .45;
+}
+/* Thin glass bezel around the banner */
+.hero-banner picture {
+  display: block;
+  padding: 6px;
+  border-radius: calc(var(--r) + 6px);
+  background: var(--glass-fill);
+  border: 1px solid transparent;
+  box-shadow: var(--glass-shine), var(--shadow);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.hero-banner img {
+  width: 100%;
+  border-radius: var(--r);
+}
+/* While the EOI is open the banner is the EOI poster, linking to the form */
+.hero-banner__link {
+  display: block;
+  border-radius: calc(var(--r) + 6px); /* the focus ring follows the bezel */
+}
 .hero-copy {
   max-width: 760px;
-  margin-inline: auto;
+  margin: var(--s-8) auto 0;
   text-align: center;
 }
 .hero-copy .h-display { margin-top: var(--s-2); }
@@ -705,73 +924,140 @@ main:focus { outline: none; }
   margin-top: var(--s-5);
 }
 
-.countdown {
-  margin-top: var(--s-6);
+/* Countdown ("T-minus", from spip-hack-countdown.md): a grid of day squares in the
+   SPIP Hack gradient with a live clock over it, built by js/home.js. Everything inside
+   the card scales with its width (cqw = 1% of .cd's width), so it works from a phone up
+   to the 1100px card on desktop. Its colours and font come from the countdown spec and
+   are its own, so they're set on .cd rather than :root. */
+.hero-countdown {
+  max-width: 1100px;
+  margin: var(--s-6) auto 0;
+  text-align: center;
 }
-.countdown__tiles {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-  align-items: start;
-  gap: 6px;
-  max-width: 600px;
-  margin-inline: auto;
-}
-.countdown__sep {
-  padding-top: var(--s-2);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.875rem, 1.2rem + 3vw, 3.25rem);
-  line-height: 1.1;
-  color: var(--cyan);
-  animation: blink 1s steps(1) infinite;
-}
-@keyframes blink { 50% { opacity: .35; } }
-.countdown__tile {
-  padding: var(--s-2) 0 12px;
-  background: var(--glass-fill);
-  border: 1px solid transparent;
-  border-radius: var(--r);
-  box-shadow: var(--glass-shine), var(--shadow);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  /* Small tiles need their edge to read all the way round (the default rim
-     fades out along the sides and bottom): an even hairline, brightest on
-     the top lip, catching a little light again along the bottom */
-  --glass-rim:
-    linear-gradient(180deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,.09) 26%, rgba(255,255,255,.08) 70%, rgba(255,255,255,.17) 100%);
-}
-.countdown__num {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.875rem, 1.2rem + 3vw, 3.25rem);
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
-}
-.countdown__unit {
-  display: block;
-  margin-top: 4px;
-  font-size: .6875rem;
-  font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.countdown__label {
+.hero-countdown__label {
   margin-top: var(--s-2);
   font-size: var(--fs-xs);
   letter-spacing: .06em;
   color: var(--text-muted);
 }
-.countdown__live {
-  font-family: var(--font-display);
-  font-size: var(--fs-lg);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-display);
-  color: var(--cyan);
+.cd {
+  --cd-1: #5A5FA8;     /* SPIP Hack gradient, left to right: indigo */
+  --cd-2: #B54F9A;     /* magenta */
+  --cd-3: #E04F6A;     /* coral */
+  --cd-4: #EC7A3C;     /* orange */
+  --cd-card: #0B0A0E;
+  --cd-off: #1E1C22;   /* days still to come */
+  --cd-today: #E04F6A;
+  --cd-live: #5DDC8A;
+  --cd-label: #D6D1DA; /* days / hrs / min / sec */
+  --cd-sep: #B9B4BD;   /* the colons */
+  --cd-meta: #8B8790;  /* status bar */
+  container-type: inline-size;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  color: #fff;
+  text-align: left;
 }
+.cd-card {
+  padding: 3cqw 3.5cqw 2.5cqw;
+  border: 3px solid transparent;
+  border-radius: 2cqw;
+  background:
+    linear-gradient(var(--cd-card), var(--cd-card)) padding-box,
+    linear-gradient(90deg, var(--cd-1), var(--cd-2), var(--cd-3), var(--cd-4)) border-box;
+}
+.cd-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px 12px;
+  margin-bottom: 1.6cqw;
+  font-size: max(11px, 1.05cqw);
+  color: var(--cd-meta);
+}
+.cd-status { display: flex; align-items: center; gap: max(6px, .6cqw); }
+.cd-dot {
+  width: max(7px, .6cqw);
+  height: max(7px, .6cqw);
+  border-radius: 50%;
+  background: var(--cd-live);
+}
+.cd-stage { position: relative; }
+/* --cd-cols is set by js/home.js, so the CSS and the script agree on the row length */
+.cd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cd-cols, 19), minmax(0, 1fr));
+  gap: .55cqw;
+}
+.cd-cell {
+  aspect-ratio: 1;
+  border-radius: .3cqw;
+  background: var(--cd-off);
+}
+.cd-cell.is-today { outline: .25cqw solid var(--cd-today); }
+.cd-clock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5cqw;
+  pointer-events: none;
+}
+/* "T-" and the colons are centred on the whole number + label column, so they're
+   raised to line up with the numbers instead: by half the label's height (which
+   stays at 11px on phones), then nudged so their glyphs' middles meet the digits'
+   middle (measured for Roboto Mono; re-measure if the font changes). */
+.cd-clock { --cd-lbl: max(11px, 1cqw); --cd-raise: calc(-.65 * var(--cd-lbl)); }
+.cd-sign {
+  margin-right: 1cqw;
+  font-size: 4.6cqw;
+  font-weight: 500;
+  line-height: 1;
+  transform: translateY(calc(var(--cd-raise) + .08cqw));
+}
+.cd-unit { text-align: center; }
+.cd-num {
+  display: block;
+  font-size: 7cqw;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.cd-lbl {
+  display: block;
+  font-size: var(--cd-lbl);
+  line-height: 1.3;
+  letter-spacing: .08em;
+  color: var(--cd-label);
+}
+.cd-sep {
+  font-size: 5.4cqw;
+  line-height: 1;
+  color: var(--cd-sep);
+  transform: translateY(calc(var(--cd-raise) - .37cqw));
+}
+/* The colons are the only thing that blinks: bright for the first half of each
+   second, dim for the second half. js/home.js adds .is-running and sets the delay so
+   the blink starts as each second turns over, and removes it at zero. */
+.cd-clock.is-running .cd-sep { animation: cdBlink 1s steps(1) var(--cd-blink-delay, 0s) infinite; }
+@keyframes cdBlink { 50% { opacity: .25; } }
+/* Seconds: js/home.js puts each digit in its own window, and when one changes the
+   new digit drops in from the top while the old one slides out of the bottom. The
+   window is trimmed to the digits' own height (in Roboto Mono they sit between
+   about 0.17em and 0.90em of the line), so neither digit shows above or below the
+   row of numbers. */
+.cd-digit {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  clip-path: inset(.14em 0 .07em);
+}
+.cd-digit > span { display: block; }
+.cd-digit > .is-in  { animation: cdDropIn  .45s cubic-bezier(.2, .7, .2, 1) both; }
+.cd-digit > .is-out { position: absolute; inset: 0; animation: cdDropOut .45s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes cdDropIn  { from { transform: translateY(-100%); } }
+@keyframes cdDropOut { to   { transform: translateY(100%); } }
 
 
 /* ---------- 5.2 Poster carousel ---------- */
@@ -2136,6 +2422,13 @@ body[data-view="about"] .container { --maxw: 1400px; }
   pointer-events: none;
 }
 
+/* Hero parallax (values set by JS on scroll) */
+.hero-banner {
+  transform: scale(var(--parallax-scale, 1));
+  transform-origin: 50% 0;
+  opacity: var(--parallax-fade, 1);
+}
+
 /* =================================================================
    7. MEDIA QUERIES
    ================================================================= */
@@ -2210,8 +2503,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
 
 @media (max-width: 767px) {
   :root { --nav-h: 64px; }
-  .countdown__tiles { gap: 2px; }
-  .countdown__sep { font-size: 1.5rem; padding-top: 14px; }
+  .hero-copy { margin-top: var(--s-5); }
   .hero-cta .btn { flex: 1 1 200px; }
   .cross { display: none; }
   .leads {
@@ -2257,10 +2549,16 @@ body[data-view="about"] .container { --maxw: 1400px; }
   .bands { grid-template-columns: minmax(0, 1fr); }
   .faq-item summary { padding: var(--s-2); }
   .faq-item__body { padding: 0 var(--s-2) var(--s-2); }
-}
-
-@media (max-width: 400px) {
-  .countdown__unit { font-size: .5625rem; letter-spacing: .08em; }
+  /* Phones: the 5:6 poster, with the × in a row above it. All of it (the × row
+     52px, the poster, the 16px gap and the 48px button) stays within 80% of the
+     screen's visible height. */
+  .eoi-modal { --eoi-poster-w: 92vw; --eoi-poster-h: calc(80 * var(--vh) - 116px); }
+  .eoi-modal__poster img {
+    width: min(var(--eoi-poster-w), calc(var(--eoi-poster-h) * 5 / 6));
+    aspect-ratio: 5 / 6;
+  }
+  .eoi-modal__frame { margin-top: 52px; }
+  .eoi-modal__close { top: -52px; right: 0; }
 }
 
 /* Reduce Transparency: swap the clear glass for a frosted, near-opaque
@@ -2275,7 +2573,7 @@ body[data-view="about"] .container { --maxw: 1400px; }
   }
   .glass::after, .card::after, .frame-grad::after, .btn--ghost::after,
   .btn--grad::after, .btn--primary::after, .icon-btn::after, .lead::after,
-  .sponsor::after, .countdown__tile::after, .theme__card::after { display: none; }
+  .sponsor::after, .hero-banner picture::after, .theme__card::after { display: none; }
   .btn--primary { background: var(--cyan); }
 }
 @media (prefers-reduced-transparency: reduce) and (max-width: 1199px) {
@@ -2290,6 +2588,8 @@ body[data-view="about"] .container { --maxw: 1400px; }
     scroll-behavior: auto !important;
   }
   .js [data-reveal] { opacity: 1; transform: none; }
-  .countdown__sep { animation: none; }
+  .hero-banner { transform: none; }
+  .cd-clock.is-running .cd-sep { animation: none; }
   .theme__face { transition-delay: 0s !important; } /* no turn, so swap the faces straight away */
+  .eoi-modal::backdrop { animation: none !important; } /* "*" doesn't reach ::backdrop */
 }

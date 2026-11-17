@@ -8,17 +8,26 @@
   <meta name="theme-color" content="#0A0A10">
   <meta name="color-scheme" content="dark">
 
-  <!-- Open Graph / Twitter. Social platforms need absolute URLs:
-       ★ SET SITE URL — once hosted, replace the relative image path below with the full URL -->
+  <!-- Open Graph / Twitter. The image is a full URL because some apps ignore relative paths. -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SPIP Hack 2027">
   <meta property="og:title" content="SPIP Hack 2027 — City of Tomorrow">
   <meta property="og:description" content="The first student-led, cross-school innovation hackathon at SPIP, Bangkok. Pitch ideas that make cities healthier, more sustainable and better places to live.">
-  <meta property="og:image" content="assets/posters/hero-banner-16x9.png">
+  <!-- ★ EOI LINK PREVIEW: while the EOI is open (until 30 Nov 2026), shared links show the EOI
+       poster. It's a JPG because some apps (LINE, older Facebook crawlers) don't show WebP.
+       When the EOI closes, switch og:image and twitter:image back to the hero banner and
+       update og:image:width / height and both alt texts to match. The tags used to point at
+       assets/posters/hero-banner-16x9.png, which isn't in the site folder (only the .webp is),
+       so export a JPG or PNG of it first. Same on all five pages. -->
+  <meta property="og:image" content="https://hackathon.spip.in.th/assets/eoi/eoi-og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SPIP Hack 2027 Expression of Interest: Express your interest. Submit by 30 November 2026. The EOI is non-binding and does not count as registration for the competition.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SPIP Hack 2027 — City of Tomorrow">
   <meta name="twitter:description" content="The first student-led, cross-school innovation hackathon at SPIP, Bangkok.">
-  <meta name="twitter:image" content="assets/posters/hero-banner-16x9.png">
+  <meta name="twitter:image" content="https://hackathon.spip.in.th/assets/eoi/eoi-og.jpg">
+  <meta name="twitter:image:alt" content="SPIP Hack 2027 Expression of Interest: Express your interest. Submit by 30 November 2026. The EOI is non-binding and does not count as registration for the competition.">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0A10'/%3E%3Cpath d='M18 18v28M46 18v28M18 32h28' stroke='white' stroke-width='7' stroke-linecap='square' fill='none'/%3E%3Cpath d='M8 38h48' stroke='%23E8141C' stroke-width='4'/%3E%3Cpath d='M40 50h14' stroke='%232EE6C8' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -27,7 +36,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Kanit:wght@600;700&display=swap">
 
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body data-view="faq">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -50,9 +59,11 @@
           <li><a href="faq.html" data-nav="faq">FAQ</a></li>
           <li><a href="about.html" data-nav="about">About Us</a></li>
         </ul>
-        <a class="btn btn--sm btn--primary" href="index.html#notify">
-          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          Notify me
+        <!-- EOI form (opens in a new tab). The link and its on/off switch are set in js/common.js -->
+        <a class="btn btn--sm btn--primary" href="https://forms.gle/T4Pa6pyx9E69tFyXA" data-eoi="navbar" target="_blank" rel="noopener noreferrer">
+          Register interest
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          <span class="visually-hidden">(opens in a new tab)</span>
         </a>
       </nav>
     </div>
@@ -388,7 +399,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js"></script>
+  <script src="js/common.js?v=2"></script>
   <script src="js/info.js"></script>
 </body>
 </html>

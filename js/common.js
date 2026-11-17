@@ -16,6 +16,44 @@ function escapeHTML(str) {
   return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
+/* ---------- Expression of Interest (EOI) ---------- */
+// ▼▼▼ ★ EOI LINK AND ON/OFF SWITCH ▼▼▼
+// The EOI Google Form. initEoiLinks() below points every EOI link at this URL; the same
+// URL is also written as their href in the HTML (search the .html files for data-eoi), so
+// they work without JavaScript. If the link changes, update it here and there.
+// No utm_ tracking tags: the forms.gle redirect drops them and Google Forms doesn't read them.
+const EOI_URL = "https://forms.gle/T4Pa6pyx9E69tFyXA";
+// false = EOI closed: no pop-ups, and the navbar button goes back to "Notify me"
+const EOI_OPEN = true;
+// The moment the EOI closes on its own, in Bangkok time (the poster says "Submit by 30 Nov.
+// 2026", so this is the end of that day). From then on, with no upload needed, the pop-ups
+// stop and the site goes back to its "Notify me" wording. null = no end date.
+const EOI_CLOSES = "2026-12-01T00:00:00+07:00";
+
+const eoiIsOpen = () => EOI_OPEN && (!EOI_CLOSES || Date.now() < new Date(EOI_CLOSES).getTime());
+
+// Every EOI link (<a data-eoi="navbar" | "hero_banner" | "launch_popup" | "corner_popup" |
+// "notify_section">) goes to EOI_URL. Once the EOI has closed, the navbar button turns
+// back into "Notify me", any other EOI link is hidden (with the hero's poster banner or
+// the #notify button row around it), and text with a data-eoi-closed attribute (the
+// #notify section) switches to that wording.
+function initEoiLinks() {
+  const open = eoiIsOpen();
+  $$("a[data-eoi]").forEach((a) => {
+    if (open) {
+      a.href = EOI_URL;
+    } else if (a.dataset.eoi === "navbar") {
+      a.href = "index.html#notify";
+      a.removeAttribute("target");
+      a.removeAttribute("rel");
+      a.innerHTML = '<svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg> Notify me';
+    } else {
+      (a.closest(".hero-banner, .eoi-cta") || a).hidden = true;
+    }
+  });
+  if (!open) $$("[data-eoi-closed]").forEach((el) => { el.textContent = el.dataset.eoiClosed; });
+}
+
 /* ---------- Nav ---------- */
 // Highlight a navbar link. key = "home" | "sponsors" | "rubric" | "faq" | "about"
 function setActiveNav(key) {
@@ -66,6 +104,8 @@ function initNav() {
     }
   });
   desktop.addEventListener("change", () => { if (desktop.matches && isOpen()) setOpen(false); });
+
+  initEoiLinks(); // the navbar's EOI button is on every page
 
   // Disabled "Register" button
   $$("[data-disabled]").forEach((btn) => btn.addEventListener("click", (e) => e.preventDefault()));
@@ -120,7 +160,7 @@ function initReveal() {
 // Surfaces whose rim glint and specular highlight follow the pointer
 // (their ::before / ::after in style.css; .nav-inner's pill is its pseudos)
 const GLASS_SEL = ".glass, .card, .frame-grad, .btn--ghost, .btn--grad, .btn--primary, " +
-  ".icon-btn, .lead, .sponsor, .countdown__tile, .theme__card, .nav-inner";
+  ".icon-btn, .lead, .sponsor, .hero-banner picture, .theme__card, .nav-inner";
 
 function initLiquidGlass() {
   const root = document.documentElement;

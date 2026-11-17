@@ -88,6 +88,7 @@
   /* ---------- State ---------- */
   let live = false;     // scroll-driven version is set up
   let visible = false;  // intro is on screen
+  let paused = false;   // the EOI launch pop-up (js/eoi.js) is covering the page
   let raf = 0, lastT = 0;
   let geo = null;       // measured layout (see build)
   let secTop = 0, secRange = 1;
@@ -293,14 +294,20 @@
       cur.my = target.my;
     }
     render();
-    if (!settled && visible && live) raf = requestAnimationFrame(frame);
+    if (!settled && visible && live && !paused) raf = requestAnimationFrame(frame);
   }
 
   function wake() {
-    if (raf || !visible || !live) return;
+    if (raf || paused || !visible || !live) return;
     lastT = 0;
     raf = requestAnimationFrame(frame);
   }
+
+  // js/eoi.js sends this with detail true while its launch pop-up is open, false after
+  document.addEventListener("spip:intro-pause", (e) => {
+    paused = !!e.detail;
+    if (paused) { cancelAnimationFrame(raf); raf = 0; } else wake();
+  });
 
   /* ---------- Events (they only store values and wake the loop) ---------- */
   const io = new IntersectionObserver((entries) => {

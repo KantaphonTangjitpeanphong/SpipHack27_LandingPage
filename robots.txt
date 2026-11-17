@@ -1,0 +1,9 @@
+# Upload to the web root of hackathon.spip.in.th so it loads at:
+# https://hackathon.spip.in.th/robots.txt  (must return HTTP 200, plain text)
+# robots.txt only applies to the exact host it is served from, so the file on
+# spip.in.th does not cover this subdomain.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://hackathon.spip.in.th/sitemap.xml

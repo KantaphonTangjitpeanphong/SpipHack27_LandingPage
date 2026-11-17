@@ -1,6 +1,6 @@
 /* =================================================================
    Home page (index.html): countdown, poster carousel, theme
-   flashcards and partners marquee.
+   flashcards, partners marquee and hero parallax.
    Needs js/common.js and js/sponsors-data.js loaded first.
    ================================================================= */
 (function () {
@@ -15,39 +15,135 @@
   }
 
   // ▼▼▼ ★ EDIT EVENT DATE HERE (Bangkok time, UTC+7) ▼▼▼
-  const EVENT_DATE = "2027-03-13T08:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (13–14 Mar 2027); start time TBC
+  const EVENT_DATE = "2027-03-13T09:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (13–14 Mar 2027), 09:00 as in the countdown spec
   window.SPIP_EVENT_DATE = EVENT_DATE; // read by js/intro.js for its date line
+  // The countdown's first square: the first meeting. It shows one square per day from here to EVENT_DATE.
+  const COUNTDOWN_START = "2026-09-17T00:00:00+07:00";
 
   // ★ Sponsor logos, names and descriptions are edited in js/sponsors-data.js
 
-  /* ---------- Countdown ---------- */
+  /* ---------- Countdown ("T-minus", spip-hack-countdown.md) ---------- */
+  // One square per day from COUNTDOWN_START to EVENT_DATE (177 squares, 19 to a row).
+  // Days gone by are lit in the SPIP gradient colour of their column at half brightness,
+  // today's square has a pink outline, and the days to come stay dark. Only the colons
+  // blink, and each seconds digit drops in from the top as it changes. At zero the clock
+  // stops at T- 000:00:00:00 with every square lit; nothing else happens. All the dates
+  // are Bangkok time, so it shows the same on any computer whatever its time zone.
   function initCountdown() {
+    const root = $("#countdown");
     const target = new Date(EVENT_DATE).getTime();
-    const tiles = $("[data-countdown-tiles]");
-    const live = $("[data-countdown-live]");
-    const els = {};
-    $$("[data-unit]", tiles).forEach((el) => { els[el.dataset.unit] = el; });
-    if (Number.isNaN(target)) return;
+    const start = new Date(COUNTDOWN_START).getTime();
+    if (!root || Number.isNaN(target) || Number.isNaN(start)) return;
 
-    const pad = (n) => String(n).padStart(2, "0");
-    let timer = null;
-
-    function tick() {
-      const diff = target - Date.now();
-      if (diff <= 0) {
-        tiles.hidden = true;
-        live.hidden = false;
-        clearInterval(timer);
-        return;
-      }
-      const s = Math.floor(diff / 1000);
-      els.days.textContent = pad(Math.floor(s / 86400));
-      els.hours.textContent = pad(Math.floor((s % 86400) / 3600));
-      els.minutes.textContent = pad(Math.floor((s % 3600) / 60));
-      els.seconds.textContent = pad(s % 60);
+    const DAY = 86400000;
+    const COLS = 19;
+    const total = Math.floor((target - start) / DAY); // 177
+    // The gradient's four stops, the same colours as --cd-1 … --cd-4 in css/style.css
+    const STOPS = [[90, 95, 168], [181, 79, 154], [224, 79, 106], [236, 122, 60]];
+    function colourAt(t) { // t: 0 (left column) … 1 (right column)
+      const x = t * (STOPS.length - 1);
+      const i = Math.min(Math.floor(x), STOPS.length - 2);
+      const f = x - i;
+      return STOPS[i].map((v, k) => Math.round(v + (STOPS[i + 1][k] - v) * f));
     }
-    tick();
-    timer = setInterval(tick, 1000);
+
+    // The squares, built once
+    const grid = $("[data-cd-grid]", root);
+    grid.style.setProperty("--cd-cols", COLS);
+    const cells = Array.from({ length: total }, (_, i) => {
+      const cell = document.createElement("span");
+      cell.className = "cd-cell";
+      const [r, g, b] = colourAt((i % COLS) / (COLS - 1));
+      cell.dataset.past = `rgb(${r >> 1}, ${g >> 1}, ${b >> 1})`; // half brightness
+      return cell;
+    });
+    grid.append(...cells);
+
+    // Status bar date, e.g. "13.03.27 09:00 ICT"
+    const when = $("[data-cd-when]", root);
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Bangkok", day: "2-digit", month: "2-digit", year: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(new Date(target));
+    const part = (type) => parts.find((p) => p.type === type).value;
+    if (when) when.textContent = `${part("day")}.${part("month")}.${part("year")} ${part("hour")}:${part("minute")} ICT`;
+
+    const clock = $("[data-cd-clock]", root);
+    const num = {};
+    $$("[data-cd]", root).forEach((el) => { num[el.dataset.cd] = el; });
+    const pad = (n) => String(n).padStart(2, "0");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let lastDay = -1;
+    let lastLabel = "";
+    let timer = 0;
+
+    // Seconds: each digit in its own window (.cd-digit), so a changed digit can drop in
+    const slots = [0, 1].map(() => {
+      const slot = document.createElement("span");
+      slot.className = "cd-digit";
+      slot.append(document.createElement("span"));
+      return slot;
+    });
+    num.seconds.replaceChildren(...slots);
+    function setSeconds(text, animate) {
+      [...text].forEach((ch, i) => {
+        const slot = slots[i];
+        $$(".is-out", slot).forEach((el) => el.remove()); // one still sliding out from last time
+        const current = slot.lastElementChild;
+        if (current.textContent === ch) return;
+        if (!animate || reduceMotion.matches || document.hidden) { current.textContent = ch; return; }
+        current.className = "is-out";
+        current.setAttribute("aria-hidden", "true");
+        current.addEventListener("animationend", () => current.remove(), { once: true });
+        const next = document.createElement("span");
+        next.className = "is-in";
+        next.textContent = ch;
+        slot.append(next);
+      });
+    }
+
+    function tick(animate) {
+      const now = Date.now();
+      const left = Math.max(0, target - now);
+      const s = Math.floor(left / 1000);
+      const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+      num.days.textContent = String(d).padStart(3, "0");
+      num.hours.textContent = pad(h);
+      num.minutes.textContent = pad(m);
+      setSeconds(pad(s % 60), animate);
+      const label = `${d} days, ${h} hours and ${m} minutes until SPIP Hack 2027`;
+      if (label !== lastLabel) { clock.setAttribute("aria-label", label); lastLabel = label; }
+
+      // Squares before today; repainted only when the day changes
+      const day = left === 0 ? total : Math.min(total, Math.max(0, Math.floor((now - start) / DAY)));
+      if (day !== lastDay) {
+        cells.forEach((cell, i) => {
+          cell.style.background = i < day ? cell.dataset.past : "";
+          cell.classList.toggle("is-today", i === day);
+        });
+        lastDay = day;
+      }
+      if (left === 0) {
+        clearTimeout(timer);
+        clock.classList.remove("is-running"); // the colons stop blinking at zero
+      }
+    }
+
+    // Tick just after each second turns over (EVENT_DATE is on a whole second, so that's
+    // when Date.now() is a whole second too), so the digits change in time with the colons
+    function next() {
+      timer = setTimeout(() => {
+        tick(true);
+        if (target > Date.now()) next();
+      }, 1000 - (Date.now() % 1000) + 15);
+    }
+    tick(false);
+    if (target > Date.now()) {
+      // Start the colons' blink at the turn of a second
+      clock.style.setProperty("--cd-blink-delay", -(Date.now() % 1000) + "ms");
+      clock.classList.add("is-running");
+      next();
+    }
   }
 
   /* ---------- Poster carousel ---------- */
@@ -319,6 +415,27 @@
     reducedMotion.addEventListener("change", () => { stop(); offset = 0; build(); start(); });
   }
 
+  /* ---------- Hero parallax ---------- */
+  function initParallax() {
+    const banner = $(".hero-banner");
+    const hero = $(".hero");
+    let heroTop = hero.offsetTop; // the intro sits above the hero, so measure from the hero
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const y = Math.max(0, window.scrollY - heroTop);
+      if (isReduced() || y > window.innerHeight * 1.5) return;
+      const t = Math.min(1, y / (window.innerHeight * 0.9));
+      banner.style.setProperty("--parallax-scale", (1 - t * 0.08).toFixed(4));
+      banner.style.setProperty("--parallax-fade", (1 - t * 0.55).toFixed(3));
+    }
+    window.addEventListener("scroll", () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", () => { heroTop = hero.offsetTop; update(); });
+    update();
+  }
+
   /* ---------- Boot ---------- */
   initNav();
   initLiquidGlass();
@@ -329,4 +446,5 @@
   initPartners();
   initReveal();
   initScrollProgress();
+  initParallax();
 })();

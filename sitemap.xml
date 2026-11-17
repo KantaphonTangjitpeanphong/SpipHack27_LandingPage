@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Upload to the web root of hackathon.spip.in.th so it loads at:
+  https://hackathon.spip.in.th/sitemap.xml
+  URLs here must match each page's rel="canonical" exactly (see head-snippets.html).
+  <lastmod> is deliberately omitted: Google only trusts it when it is consistently accurate.
+  Add it later (YYYY-MM-DD) only if you will keep it truthful when pages change.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://hackathon.spip.in.th/</loc></url>
+  <url><loc>https://hackathon.spip.in.th/about.html</loc></url>
+  <url><loc>https://hackathon.spip.in.th/sponsors.html</loc></url>
+  <url><loc>https://hackathon.spip.in.th/rubric.html</loc></url>
+  <url><loc>https://hackathon.spip.in.th/faq.html</loc></url>
+</urlset>
