@@ -15,8 +15,7 @@
   }
 
   // ▼▼▼ ★ EDIT EVENT DATE HERE (Bangkok time, UTC+7) ▼▼▼
-  const EVENT_DATE = "2027-03-13T09:00:00+07:00"; // TENTATIVE — Hackathon Day 1 (13–14 Mar 2027), 09:00 as in the countdown spec
-  window.SPIP_EVENT_DATE = EVENT_DATE; // read by js/intro.js for its date line
+  const EVENT_DATE = "2027-03-13T09:00:00+07:00"; // Hackathon Day 1 (13–14 Mar 2027), 09:00 as in the countdown spec
   // The countdown's first square: the first meeting. It shows one square per day from here to EVENT_DATE.
   const COUNTDOWN_START = "2026-09-17T00:00:00+07:00";
 
@@ -438,7 +437,6 @@
 
   /* ---------- Boot ---------- */
   initNav();
-  initLiquidGlass();
   setActiveNav("home");
   initCountdown();
   initCarousel();

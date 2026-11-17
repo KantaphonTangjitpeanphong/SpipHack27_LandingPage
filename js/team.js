@@ -197,7 +197,6 @@
 
   /* ---------- Boot ---------- */
   initNav();
-  initLiquidGlass();
   setActiveNav("about");
   initTeam();
   initReveal();

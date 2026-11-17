@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Kanit:wght@600;700&display=swap">
 
 
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body data-view="sponsors">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -74,7 +74,6 @@
 
     <!-- ======================== SPONSORS PAGE ======================== -->
       <section class="page-head" aria-labelledby="sponsors-title">
-        <div class="map-texture" aria-hidden="true"></div>
         <div class="container">
           <p class="eyebrow">Supported by</p>
           <h1 class="h-display" id="sponsors-title">Our Sponsors</h1>
@@ -94,11 +93,17 @@
               <h2 class="h-section">Support the City of Tomorrow</h2>
               <p>Interested in backing SPIP Hack 2027? Get in touch and we'll tell you how your organisation can be involved.</p>
             </div>
-            <a class="btn btn--grad" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">
-              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
-              Message @spip.hack
-              <span class="visually-hidden">(opens in a new tab)</span>
-            </a>
+            <div class="sponsors-cta__actions">
+              <a class="btn btn--grad" href="mailto:hackathon@spip.in.th">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg>
+                Email hackathon@spip.in.th
+              </a>
+              <a class="btn btn--ghost" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+                Message @spip.hack
+                <span class="visually-hidden">(opens in a new tab)</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -126,28 +131,39 @@
         <div class="footer-brand">
           <a class="brand brand--footer" href="index.html" aria-label="SPIP Hack 2027 — home"><img src="assets/logo/spip-hack-logo.svg" width="800" height="230" alt="SPIP Hack 2027" loading="lazy" decoding="async"></a>
           <p>The first student-led, cross-school innovation hackathon at Satit Prasarnmit International Programme, Bangkok.</p>
+          <!-- Venue (this used to be its own column) -->
+          <address class="footer-venue">
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Satit+Prasarnmit+International+Programme+Bangkok" target="_blank" rel="noopener noreferrer">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+              <span>SPIP, 4th floor Mini Theatre<br>176 Sukhumvit 23, Wattana, Bangkok 10110<span class="visually-hidden"> (Google Maps, opens in a new tab)</span></span>
+            </a>
+          </address>
         </div>
 
         <div class="footer-col">
           <h3>Contact us</h3>
-          <ul>
+          <!-- Same on every page: one line per channel, icon + handle or address.
+               ★ The Facebook link is set in js/common.js (SOCIAL_LINKS); its line stays hidden until it is. -->
+          <ul class="contact-list">
             <li>
               <a href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">
                 <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
-                @spip.hack<span class="visually-hidden"> on Instagram (opens in a new tab)</span>
+                <span>@spip.hack<span class="visually-hidden"> on Instagram (opens in a new tab)</span></span>
               </a>
             </li>
             <li>
-              <!-- ★ ADD EVENT EMAIL ★ — replace the span below with:
-                   <a href="mailto:hello@example.com">hello@example.com</a> -->
-              <span class="muted">Email — coming soon</span>
+              <a href="mailto:hackathon@spip.in.th">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg>
+                <span><span class="visually-hidden">Email </span>hackathon@spip.in.th</span>
+              </a>
+            </li>
+            <li data-social="facebook" hidden>
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                <span><span data-social-label>SPIP Hack</span><span class="visually-hidden"> on Facebook (opens in a new tab)</span></span>
+              </a>
             </li>
           </ul>
-        </div>
-
-        <div class="footer-col">
-          <h3>Venue</h3>
-          <address>SPIP, 4th floor Mini Theatre<br>176 Sukhumvit 23, Wattana<br>Bangkok 10110</address>
         </div>
 
         <div class="footer-col">
@@ -160,6 +176,14 @@
             <li><a href="rubric.html">Judging rubric</a></li>
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="about.html">About us</a></li>
+            <!-- ★ The Linktree link is set in js/common.js (SOCIAL_LINKS); hidden until it is -->
+            <li data-social="linktree" hidden>
+              <a href="https://linktr.ee/" target="_blank" rel="noopener noreferrer">
+                <span data-social-label>Linktree</span>
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+                <span class="visually-hidden">(opens in a new tab)</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -168,8 +192,8 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2"></script>
+  <script src="js/common.js?v=4"></script>
   <script src="js/sponsors-data.js"></script>
-  <script src="js/sponsors.js"></script>
+  <script src="js/sponsors.js?v=2"></script>
 </body>
 </html>

@@ -3,8 +3,8 @@
    js/intro.js. Load this after css/style.css.
 
    Three states:
-   - Static (no JS, or reduced motion): one screen, full-screen poster
-     with COMING SOON on top. This is the default below.
+   - Static (no JS, or reduced motion): one screen with the banner
+     (its "COMING SOON" is part of the artwork). This is the default below.
    - Waiting (JS on, motion allowed, cut-out not drawn yet): 400svh tall,
      black screen.
    - Live (.is-live): the cut-out canvases are drawn and js/intro.js
@@ -28,64 +28,61 @@
 
 /* ---------- Layers, back to front ---------- */
 .intro__bg,
-.intro__shade,
-.intro__soon,
 .intro__cutout,
 .intro__fade {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
-.intro__bg { z-index: 0; display: block; }
+
+/* The banner (Landing Page Fixes v2). It's much wider than most screens (2560×1138),
+   so plain "cover" would cut "COMING" and "SOON" off its left and right ends. Instead
+   it's as big as it can be while losing at most 2% off each side (the black margin
+   outside its corner crosses):
+   - very wide screens: it covers the whole screen;
+   - most desktops: it fills the width, with a little of the page above and below;
+   - phones: a band across the middle, with all of its text.
+   It's shown at 60% over the page's near-black, so it's noticeably darker than the
+   artwork, and its edges fade into the page, so there's no seam. */
+.intro__bg {
+  z-index: 0;
+  display: block;
+  container-type: size; /* cqw / cqh below = the stage's width / height */
+}
+/* Behind it, the same artwork stretched over the whole stage, blurred and faint, so
+   the space above and below the banner (a lot of it on phones) picks up its colours
+   and fades out toward the top and bottom of the screen. Static: the blur is drawn
+   once, nothing animates it. ★ Uses the same file as the <img> in index.html; if the
+   artwork's file name or ?v= changes, change it here too. */
+.intro__bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/posters/CS%20Banner.webp?v=1") center / 100% 100% no-repeat;
+  filter: blur(48px);
+  opacity: .32;
+  -webkit-mask-image: linear-gradient(180deg, transparent 4%, #000 32%, #000 68%, transparent 96%);
+  mask-image: linear-gradient(180deg, transparent 4%, #000 32%, #000 68%, transparent 96%);
+}
 .intro__bg img {
-  width: 100%;
-  height: 100%;
+  --intro-ar: 2.2496; /* the banner's width ÷ height (2560 / 1138) */
+  --bw: min(max(100cqw, 100cqh * var(--intro-ar)), 100cqw / .96);
+  position: absolute;
+  left: calc(50% - var(--bw) / 2);
+  top: calc(50% - var(--bw) / var(--intro-ar) / 2);
+  width: var(--bw);
   max-width: none;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.08); /* headroom so the parallax never shows an edge */
+  height: calc(var(--bw) / var(--intro-ar));
+  opacity: .6;
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent, #000 13%, #000 87%, transparent),
+    linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, transparent, #000 13%, #000 87%, transparent),
+    linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent);
+  mask-composite: intersect;
 }
-
-/* Only used with the fallback banner (.has-baked-text, set by js/intro.js):
-   pushes its baked-in "COMING SOON" behind the real one */
-.intro:not(.has-baked-text) .intro__shade { display: none; }
-.intro__shade {
-  z-index: 1;
-  background: rgba(10, 10, 16, .45);
-}
-
-.intro__soon {
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-2);
-  padding-inline: var(--gutter);
-  text-align: center;
-  color: #fff;
-}
-.intro__soon-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  /* The second value keeps it on one line on small phones ("COMING SOON" is about 6.8em wide) */
-  font-size: min(clamp(3rem, 1rem + 9vw, 9.5rem), calc((100vw - 2 * var(--gutter)) / 6.9));
-  line-height: .95;
-  white-space: nowrap;
-  letter-spacing: .02em;
-  text-transform: uppercase;
-  text-shadow: 0 6px 40px rgba(0, 0, 0, .55), 0 1px 2px rgba(0, 0, 0, .4);
-}
-.intro__soon-date {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--fs-md);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .85);
-  text-shadow: 0 2px 16px rgba(0, 0, 0, .6);
-}
-.intro__soon-date:empty { display: none; }
 
 /* The black layer with the letter holes: canvases from js/intro.js */
 .intro__cutout {
@@ -165,11 +162,9 @@
 
 /* ---------- Scroll-driven version ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .js .intro { height: 500svh; } /* ≈ 400svh of pinned scroll */
+  .js .intro { height: 420svh; } /* ≈ 320svh of pinned scroll (was 500svh while a separate COMING SOON rose in) */
   .js .intro .intro__hint { display: flex; }
   .js .intro .intro__cutout { display: block; background: var(--bg); }
-  .js .intro .intro__soon,
-  .js .intro .intro__shade { opacity: 0; }
   .js .intro .intro__eyebrow { top: auto; bottom: calc(100% - var(--intro-text-top, 40%) + var(--s-3)); }
 
   .intro.is-live .intro__cutout {
@@ -178,10 +173,7 @@
     will-change: transform, opacity;
   }
   .intro.is-live .intro__cutout canvas { will-change: opacity; }
-  .intro.is-live .intro__bg img,
-  .intro.is-live .intro__soon { will-change: transform; }
-  .intro.is-live .intro__soon,
-  .intro.is-live .intro__shade,
+  .intro.is-live .intro__bg img { will-change: transform; }
   .intro.is-live .intro__eyebrow,
   .intro.is-live .intro__hint,
   .intro.is-live .intro__fade { will-change: opacity; }
@@ -190,9 +182,9 @@
 }
 
 /* ---------- Navbar while the intro is on screen ----------
-   The glass pill's backdrop-filter (an SVG displacement filter in Chromium)
-   would recompute on every frame of the intro underneath it, so it gets a
-   plain solid fill instead until the intro has scrolled away. */
+   The pill's backdrop-filter blur would recompute on every frame of the intro
+   underneath it, so it gets a plain solid fill instead until the intro has
+   scrolled away. */
 body.intro-active .site-header .nav-inner::before {
   background: rgba(10, 10, 16, .85);
   -webkit-backdrop-filter: none;

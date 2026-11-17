@@ -29,7 +29,6 @@
 
   /* ---------- Boot ---------- */
   initNav();
-  initLiquidGlass();
   setActiveNav("sponsors");
   initSponsors();
   initReveal();

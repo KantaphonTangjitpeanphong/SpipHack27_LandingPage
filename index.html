@@ -39,8 +39,8 @@
   <!-- The intro's full-screen poster (below) is the first image on the page and carries
        fetchpriority="high" itself, so there's no separate preload for it. -->
 
-  <link rel="stylesheet" href="css/style.css?v=2">
-  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="css/intro.css?v=2">
   <!-- Set the js class before first layout, so the scroll-pinned intro has its full height
        from the start and deep links (index.html#event) land in the right place -->
   <script>document.documentElement.classList.replace("no-js", "js");</script>
@@ -86,25 +86,22 @@
     <!-- ========================== HOME PAGE ========================== -->
 
       <!-- 0. Scroll-pinned intro (css/intro.css, js/intro.js). All of it is decorative:
-           the hero's <h1> below stays the page's only heading. -->
+           the hero's <h1> below stays the page's only heading.
+
+           ★ BANNER: Kasira's "CS Banner" artwork (Landing Page Fixes v2, 17 Nov 2026), seen
+           through the "SPIP HACK 2027" letters and then full screen. "COMING SOON" and
+           "1ST "CITY OF TOMORROW"" are part of the picture, so there's no separate text layer.
+           css/intro.css sizes it so those words are never cut off, darkens it (60%) and fades
+           its edges into the page. To swap the artwork, save the new file over
+           assets/posters/CS Banner.webp and change ?v=1 to ?v=2 below so browsers fetch it; a
+           different shape also needs its width/height here and in css/intro.css (--intro-ar). -->
       <section class="intro" aria-label="SPIP Hack 2027 — coming soon">
         <div class="intro__stage">
-          <!-- Text-free banner exports, made from assets/posters/4-3 Background.png
-               (3200×2000). The phone file is the poster's middle strip, centred on its centre
-               line ("1ST", "CITY OF TOMORROW"), fitted to the phone's width and blended into
-               the poster's edge colour above and below, so nothing gets cut off. If they're missing, js/intro.js falls back to the
-               regular banner (data-fallback) and darkens its baked-in "COMING SOON". -->
           <picture class="intro__bg" aria-hidden="true">
-            <source media="(max-width: 767px)" type="image/webp" srcset="assets/posters/hero-banner-clean-3x4.webp" data-fallback="assets/posters/hero-banner-3x4.webp" width="1080" height="2340">
-            <img src="assets/posters/hero-banner-clean-16x9.webp" data-fallback="assets/posters/hero-banner-16x9.webp" width="3200" height="2000" fetchpriority="high" decoding="async" alt="">
+            <img src="assets/posters/CS%20Banner.webp?v=1" width="2560" height="1138" fetchpriority="high" decoding="async" alt="">
           </picture>
-          <div class="intro__shade" aria-hidden="true"></div>
-          <div class="intro__soon" aria-hidden="true">
-            <span class="intro__soon-title">Coming soon</span>
-            <span class="intro__soon-date" data-intro-date></span>
-          </div>
           <div class="intro__cutout" aria-hidden="true"></div>
-          <p class="intro__eyebrow" aria-hidden="true">1st SPIP Hack · Cross-school innovation hackathon</p>
+          <p class="intro__eyebrow" aria-hidden="true">1st SPIP Hack · <span class="nowrap">Student-led,</span> <span class="nowrap">cross-school</span> hackathon</p>
           <p class="intro__hint" aria-hidden="true"><span class="intro__mouse"><span class="intro__dot"></span></span>Scroll</p>
           <div class="intro__fade" aria-hidden="true"></div>
         </div>
@@ -112,7 +109,6 @@
 
       <!-- 1. Hero + countdown -->
       <section class="hero" id="home" aria-labelledby="hero-title">
-        <div class="map-texture" aria-hidden="true"></div>
 
         <div class="container">
           <!-- EOI poster, the same files as the launch pop-up (so they download once), linking
@@ -133,15 +129,20 @@
           </div>
 
           <div class="hero-copy">
-            <p class="eyebrow">1st SPIP Hack · Cross-school innovation hackathon</p>
-            <h1 class="h-display" id="hero-title"><span class="visually-hidden">SPIP Hack 2027 — </span>City of Tomorrow</h1>
-            <p class="hero-sub">How can we use innovation to make cities healthier, more sustainable, and better places to live?</p>
+            <p class="eyebrow hero-copy__eyebrow">1st SPIP Hack · <span class="nowrap">Cross-school</span> hackathon</p>
+            <p class="hero-led">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></svg>
+              <span><strong>Student-led:</strong> organised entirely by students at SPIP.</span>
+              <a class="hero-led__link" href="about.html">Meet the team<span aria-hidden="true"> →</span></a>
+            </p>
           </div>
 
-          <!-- Countdown ("T-minus", spip-hack-countdown.md): a live clock over one square per day
-               from the first meeting (17 Sep 2026) to the Hackathon. js/home.js builds the squares
-               and runs the clock from EVENT_DATE and COUNTDOWN_START, and writes the date in the
-               status bar. At zero it stops at T- 000:00:00:00 with every square lit.
+          <!-- The title and the countdown ("T-minus", spip-hack-countdown.md), as one unit: the
+               title sits on the grid of day squares with the clock under it (Landing Page Fixes,
+               17 Nov 2026). One square per day from the first meeting (17 Sep 2026) to the
+               Hackathon; js/home.js builds the squares and runs the clock from EVENT_DATE and
+               COUNTDOWN_START, and writes the date in the status bar. At zero it stops at
+               T- 000:00:00:00 with every square lit.
                id="countdown" is also what js/eoi.js watches before showing the corner pop-up. -->
           <div class="hero-countdown">
             <div class="cd" id="countdown">
@@ -152,21 +153,28 @@
                 </div>
                 <div class="cd-stage">
                   <div class="cd-grid" data-cd-grid aria-hidden="true"></div>
-                  <div class="cd-clock" role="timer" aria-label="Time remaining until SPIP Hack 2027" data-cd-clock>
-                    <span class="cd-sign" aria-hidden="true">T-</span>
-                    <div class="cd-unit"><b class="cd-num" data-cd="days">---</b><span class="cd-lbl">days</span></div>
-                    <span class="cd-sep" aria-hidden="true">:</span>
-                    <div class="cd-unit"><b class="cd-num" data-cd="hours">--</b><span class="cd-lbl">hrs</span></div>
-                    <span class="cd-sep" aria-hidden="true">:</span>
-                    <div class="cd-unit"><b class="cd-num" data-cd="minutes">--</b><span class="cd-lbl">min</span></div>
-                    <span class="cd-sep" aria-hidden="true">:</span>
-                    <div class="cd-unit"><b class="cd-num" data-cd="seconds">--</b><span class="cd-lbl">sec</span></div>
+                  <div class="cd-overlay">
+                    <h1 class="cd-title" id="hero-title"><span class="visually-hidden">SPIP Hack 2027 — </span>City of <span class="nowrap">Tomorrow</span></h1>
+                    <div class="cd-clock" role="timer" aria-label="Time remaining until SPIP Hack 2027" data-cd-clock>
+                      <span class="cd-sign" aria-hidden="true">T-</span>
+                      <div class="cd-unit"><b class="cd-num" data-cd="days">---</b><span class="cd-lbl">days</span></div>
+                      <span class="cd-sep" aria-hidden="true">:</span>
+                      <div class="cd-unit"><b class="cd-num" data-cd="hours">--</b><span class="cd-lbl">hrs</span></div>
+                      <span class="cd-sep" aria-hidden="true">:</span>
+                      <div class="cd-unit"><b class="cd-num" data-cd="minutes">--</b><span class="cd-lbl">min</span></div>
+                      <span class="cd-sep" aria-hidden="true">:</span>
+                      <div class="cd-unit"><b class="cd-num" data-cd="seconds">--</b><span class="cd-lbl">sec</span></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- ★ Dates follow Participant Rulebook v3 (tentative). Update together with EVENT_DATE in js/home.js -->
-            <p class="hero-countdown__label">Hackathon · 13–14 March 2027 (tentative)</p>
+            <!-- ★ Dates follow Participant Rulebook v3. Update together with EVENT_DATE in js/home.js -->
+            <p class="hero-countdown__label">Hackathon · 13–14 March 2027</p>
+          </div>
+
+          <div class="hero-copy hero-copy--after">
+            <p class="hero-sub">How can we use innovation to make cities healthier, more sustainable, and better places to live?</p>
           </div>
 
           <div class="hero-cta">
@@ -488,14 +496,14 @@
                 <span class="step__num" aria-hidden="true">03</span>
                 <div>
                   <h3>Submit your proposal online</h3>
-                  <p>Write up your idea as an initial proposal and submit it online, in English, by <strong>13 February 2027</strong> (tentative). Submission details will be announced when registration opens — follow <a class="text-link-inline" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">@spip.hack<span class="visually-hidden"> (opens in a new tab)</span></a> so you don't miss it.</p>
+                  <p>Write up your idea as an initial proposal and submit it online, in English, by <strong>13 February 2027</strong>. Submission details will be announced when registration opens — follow <a class="text-link-inline" href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">@spip.hack<span class="visually-hidden"> (opens in a new tab)</span></a> so you don't miss it.</p>
                 </div>
               </li>
               <li class="step" data-reveal>
                 <span class="step__num" aria-hidden="true">04</span>
                 <div>
                   <h3>Judging &amp; selection</h3>
-                  <p>A panel of judges scores every eligible proposal with the same <a class="text-link-inline" href="rubric.html#round-1">Pre-Hack rubric</a>, and <strong>judges don't see which school you're from</strong> while they score. Proposals are ranked, with a target of <strong>15 finalist teams</strong> (the number may be adjusted). Up to <strong>3 teams from the same school</strong> can qualify — a limit applied only after ranking. Finalists are announced on 21 February 2027 (tentative) — see <a class="text-link-inline" href="rubric.html#selection-title">how they're chosen</a>.</p>
+                  <p>A panel of judges scores every eligible proposal with the same <a class="text-link-inline" href="rubric.html#round-1">Pre-Hack rubric</a>, and <strong>judges don't see which school you're from</strong> while they score. Proposals are ranked, with a target of <strong>15 finalist teams</strong> (the number may be adjusted). Up to <strong>3 teams from the same school</strong> can qualify — a limit applied only after ranking. Finalists are announced on 21 February 2027 — see <a class="text-link-inline" href="rubric.html#selection-title">how they're chosen</a>.</p>
                 </div>
               </li>
             </ol>
@@ -526,13 +534,12 @@
             </aside>
           </div>
 
-          <p class="round1__next glass" data-reveal><b>Then · Round 2</b> Finalists spend two days on-site at SPIP for the Hackathon, 13–14 March 2027 (tentative): mentoring and building on Day 1, ending in Project Lock, then presentations, Q&amp;A, judging and awards on Day 2.</p>
+          <p class="round1__next glass" data-reveal><b>Then · Round 2</b> Finalists spend two days on-site at SPIP for the Hackathon, 13–14 March 2027: mentoring and building on Day 1, ending in Project Lock, then presentations, Q&amp;A, judging and awards on Day 2.</p>
         </div>
       </section>
 
       <!-- 4. Hosted at SPIP -->
       <section class="section venue" id="venue" aria-labelledby="venue-title">
-        <div class="map-texture" aria-hidden="true"></div>
         <div class="container venue__grid">
           <div class="map glass" data-reveal>
             <iframe src="https://www.google.com/maps?q=Satit+Prasarnmit+International+Programme,+Bangkok&amp;output=embed"
@@ -664,28 +671,39 @@
         <div class="footer-brand">
           <a class="brand brand--footer" href="index.html" aria-label="SPIP Hack 2027 — home"><img src="assets/logo/spip-hack-logo.svg" width="800" height="230" alt="SPIP Hack 2027" loading="lazy" decoding="async"></a>
           <p>The first student-led, cross-school innovation hackathon at Satit Prasarnmit International Programme, Bangkok.</p>
+          <!-- Venue (this used to be its own column) -->
+          <address class="footer-venue">
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Satit+Prasarnmit+International+Programme+Bangkok" target="_blank" rel="noopener noreferrer">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+              <span>SPIP, 4th floor Mini Theatre<br>176 Sukhumvit 23, Wattana, Bangkok 10110<span class="visually-hidden"> (Google Maps, opens in a new tab)</span></span>
+            </a>
+          </address>
         </div>
 
         <div class="footer-col">
           <h3>Contact us</h3>
-          <ul>
+          <!-- Same on every page: one line per channel, icon + handle or address.
+               ★ The Facebook link is set in js/common.js (SOCIAL_LINKS); its line stays hidden until it is. -->
+          <ul class="contact-list">
             <li>
               <a href="https://instagram.com/spip.hack" target="_blank" rel="noopener noreferrer">
                 <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
-                @spip.hack<span class="visually-hidden"> on Instagram (opens in a new tab)</span>
+                <span>@spip.hack<span class="visually-hidden"> on Instagram (opens in a new tab)</span></span>
               </a>
             </li>
             <li>
-              <!-- ★ ADD EVENT EMAIL ★ — replace the span below with:
-                   <a href="mailto:hello@example.com">hello@example.com</a> -->
-              <span class="muted">Hackathon@SPIP.in.th</span>
+              <a href="mailto:hackathon@spip.in.th">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg>
+                <span><span class="visually-hidden">Email </span>hackathon@spip.in.th</span>
+              </a>
+            </li>
+            <li data-social="facebook" hidden>
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                <span><span data-social-label>SPIP Hack</span><span class="visually-hidden"> on Facebook (opens in a new tab)</span></span>
+              </a>
             </li>
           </ul>
-        </div>
-
-        <div class="footer-col">
-          <h3>Venue</h3>
-          <address>SPIP, 4th floor Mini Theatre<br>176 Sukhumvit 23, Wattana<br>Bangkok 10110</address>
         </div>
 
         <div class="footer-col">
@@ -698,6 +716,14 @@
             <li><a href="rubric.html">Judging rubric</a></li>
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="about.html">About us</a></li>
+            <!-- ★ The Linktree link is set in js/common.js (SOCIAL_LINKS); hidden until it is -->
+            <li data-social="linktree" hidden>
+              <a href="https://linktr.ee/" target="_blank" rel="noopener noreferrer">
+                <span data-social-label>Linktree</span>
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+                <span class="visually-hidden">(opens in a new tab)</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -707,8 +733,9 @@
   </footer>
 
   <!-- ======================= EOI LAUNCH POP-UP =======================
-       Opened by js/eoi.js every time the home page loads (?eoi=1 on the URL is still
-       accepted but no longer needed). The poster is 16:9 (1920×1080) on tablets and up and
+       Opened by js/eoi.js on someone's first visit, then again only after they've stayed on
+       the home page for more than 10 minutes (rules at the top of js/eoi.js; ?eoi=1 on the URL
+       always opens it). The poster is 16:9 (1920×1080) on tablets and up and
        5:6 (1000×1200) on phones; if either file changes shape, update width / height here
        and the aspect-ratio in the "EOI pop-ups" block of css/style.css. The × sits just
        outside the poster's top-right corner, clear of its vertical "EXPRESSION OF INTEREST"
@@ -737,11 +764,11 @@
     </a>
   </dialog>
 
-  <script src="js/common.js?v=2"></script>
+  <script src="js/common.js?v=4"></script>
   <script src="js/sponsors-data.js"></script>
-  <script src="js/home.js?v=3"></script>
-  <script src="js/intro.js?v=3"></script>
+  <script src="js/home.js?v=6"></script>
+  <script src="js/intro.js?v=5"></script>
   <script src="js/notify.js"></script>
-  <script src="js/eoi.js"></script>
+  <script src="js/eoi.js?v=2"></script>
 </body>
 </html>
