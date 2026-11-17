@@ -1,6 +1,6 @@
 /* =================================================================
-   Notify-me form (index.html #notify, where the navbar's "Notify me"
-   button on every page links). Checks the form, then
+   Email-updates form (index.html #notify, under the EOI button; it was
+   the navbar's "Notify me" target before the EOI opened). Checks the form, then
    sends the email to the Events Team's Google Sheet through their
    Google Apps Script web app. That script checks everything again, so
    the checks here are only for quick feedback; it lives in the team's

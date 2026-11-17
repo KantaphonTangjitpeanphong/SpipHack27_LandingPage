@@ -55,7 +55,6 @@
         {
           title: "Marketing", members: [
             { name: "Love Chitsophon", role: "Marketing", photo: "assets/team/Love.webp" },
-            { name: "Win Sukapiriya", role: "Marketing", photo: "assets/team/Win.webp" },
             { name: "Peter Kriengkomol", role: "Marketing", photo: "assets/team/Peter.webp" },
             { name: "Namsai Kamlangmark", role: "Marketing", photo: "assets/team/Namsai.webp" },
           ]
