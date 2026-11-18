@@ -23,7 +23,7 @@
   const P_HOLD_END   = .125;  // first stop: nothing moves until here
   const P_GLIDE_END  = .35;   // SPIP HACK slides so the H's left stem is centred; 2027 fades to black
   const P_DIVE_END   = .75;   // zoom through the H's stem is done, the banner is on screen
-  const P_FADE_START = .925;  // second stop until here, then the bottom fades into the page
+  const P_FADE_START = .88;   // second stop until here, then the bottom fades into the page
 
   const P_COPY_FADE_END = .20;   // eyebrow gone by here
   const P_HINT_FADE_END = .0375; // scroll hint gone almost as soon as scrolling starts

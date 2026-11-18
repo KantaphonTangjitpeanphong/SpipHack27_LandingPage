@@ -35,15 +35,19 @@
   pointer-events: none;
 }
 
-/* The banner (Landing Page Fixes v2). It's much wider than most screens (2560×1138),
-   so plain "cover" would cut "COMING" and "SOON" off its left and right ends. Instead
-   it's as big as it can be while losing at most 2% off each side (the black margin
-   outside its corner crosses):
-   - very wide screens: it covers the whole screen;
-   - most desktops: it fills the width, with a little of the page above and below;
-   - phones: a band across the middle, with all of its text.
+/* The banner (Kasira's "CS Banner", 1440×1080, 4:3). It covers the screen like
+   object-fit: cover, except that it never loses more than --crop-x off each side or
+   --crop-y off the top and bottom, so none of its words get cut off (they sit
+   between about 8% and 90% across and 15% and 85% down). Past that it stops growing
+   and the page shows beside or above/below it instead:
+   - 4:3 to 16:10 screens: it covers the whole screen;
+   - 16:9 and wider: it fills the height, with a little of the page at the sides;
+   - phones: a band across the middle, with all of its words.
    It's shown at 60% over the page's near-black, so it's noticeably darker than the
-   artwork, and its edges fade into the page, so there's no seam. */
+   artwork, and its edges fade into the page, so there's no seam.
+   ★ If the artwork changes shape, update --intro-ar (width ÷ height) below and the
+   <img>'s width/height in index.html; if its words sit closer to the edges, lower
+   --crop-x / --crop-y. */
 .intro__bg {
   z-index: 0;
   display: block;
@@ -58,15 +62,22 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url("../assets/posters/CS%20Banner.webp?v=1") center / 100% 100% no-repeat;
+  background: url("../assets/posters/CS%20Banner.webp?v=2") center / 100% 100% no-repeat;
   filter: blur(48px);
   opacity: .32;
   -webkit-mask-image: linear-gradient(180deg, transparent 4%, #000 32%, #000 68%, transparent 96%);
   mask-image: linear-gradient(180deg, transparent 4%, #000 32%, #000 68%, transparent 96%);
 }
 .intro__bg img {
-  --intro-ar: 2.2496; /* the banner's width ÷ height (2560 / 1138) */
-  --bw: min(max(100cqw, 100cqh * var(--intro-ar)), 100cqw / .96);
+  --intro-ar: 1.3333; /* the banner's width ÷ height (1440 / 1080) */
+  --crop-x: .05;      /* the most it may lose off each side (5% of its width)... */
+  --crop-y: .12;      /* ...and off the top and the bottom (12% of its height) */
+  /* its width: enough to cover the stage, but no more than the crop limits allow */
+  --bw: min(
+    max(100cqw, 100cqh * var(--intro-ar)),
+    100cqw / (1 - 2 * var(--crop-x)),
+    100cqh * var(--intro-ar) / (1 - 2 * var(--crop-y))
+  );
   position: absolute;
   left: calc(50% - var(--bw) / 2);
   top: calc(50% - var(--bw) / var(--intro-ar) / 2);
@@ -75,12 +86,12 @@
   height: calc(var(--bw) / var(--intro-ar));
   opacity: .6;
   -webkit-mask-image:
-    linear-gradient(180deg, transparent, #000 13%, #000 87%, transparent),
-    linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent);
+    linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent),
+    linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(180deg, transparent, #000 13%, #000 87%, transparent),
-    linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent);
+    linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent),
+    linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
   mask-composite: intersect;
 }
 
@@ -151,13 +162,31 @@
 }
 .intro.is-hint-gone .intro__dot { animation-play-state: paused; }
 
-/* Bottom of the scene melts into the page as the pin releases */
+/* Bottom of the scene melts into the page as the pin releases (js/intro.js fades it
+   in over the last part of the scroll; without the scroll effect it's always on).
+   Eased stops, so there's no visible line where the fade starts. */
 .intro__fade {
   z-index: 5;
   top: auto;
-  height: 40%;
-  background: linear-gradient(180deg, rgba(10, 10, 16, 0) 0%, var(--bg) 100%);
-  opacity: 0;
+  height: 50%;
+  background: linear-gradient(180deg,
+    rgba(10, 10, 16, 0) 0%, rgba(10, 10, 16, .12) 25%, rgba(10, 10, 16, .4) 50%,
+    rgba(10, 10, 16, .75) 75%, var(--bg) 100%);
+}
+/* ...and the page under it starts in the same dark colour, then fades into its usual
+   glow and map lines, so there's no edge where the intro ends and the hero begins. */
+.intro + .hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: min(60svh, 560px);
+  background: linear-gradient(180deg,
+    var(--bg) 0%, rgba(10, 10, 16, .75) 25%, rgba(10, 10, 16, .4) 50%,
+    rgba(10, 10, 16, .12) 75%, rgba(10, 10, 16, 0) 100%);
+  pointer-events: none;
 }
 
 /* ---------- Scroll-driven version ---------- */
