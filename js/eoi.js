@@ -1,8 +1,14 @@
 /* =================================================================
    EOI pop-ups (index.html):
    - Launch pop-up: the EOI poster covers the page shortly after it opens,
-     every time the home page loads (a first visit, a refresh, coming back
-     with the Back button, a new tab).
+     but not on every load (Landing Page Fixes, 17 Nov 2026):
+       · the first time someone opens the home page in this browser;
+       · after that, only if they stayed on the home page for more than
+         10 minutes: then it shows once more on their next refresh / visit
+         (or when they come back to it with the Back button);
+       · otherwise not at all. Add ?eoi=1 to the URL to see it anyway.
+     Remembered in localStorage; if the browser blocks that, every load
+     counts as a first visit.
    - Corner pop-up: desktop only, bottom right, once the hero's poster and
      countdown have scrolled past (so never during the SPIP HACK intro). Its ×
      hides it for the rest of the browser session.
@@ -19,6 +25,9 @@
   const LAUNCH_DELAY = 600;  // ms, so the page paints before the pop-up covers it
   const POSTER_WAIT = 3000;  // ms: on a slow connection, open after this even if the poster is still loading
   const CORNER_KEY = "spip_eoi_corner_dismissed";
+  const SEEN_KEY = "spip_eoi_launch_seen_v2";  // localStorage: the launch pop-up has been shown in this browser
+  const DUE_KEY = "spip_eoi_launch_due";       // localStorage: they stayed long enough to see it again next time
+  const STAY_MS = 10 * 60 * 1000;              // "longer than 10 minutes" on the home page
 
   // Storage can be blocked (private windows, strict settings): then the
   // corner's × lasts until the page is reloaded
@@ -26,10 +35,47 @@
     has(key) { try { return sessionStorage.getItem(key) === "1"; } catch (e) { return false; } },
     set(key) { try { sessionStorage.setItem(key, "1"); } catch (e) { /* not remembered */ } },
   };
+  const local = {
+    has(key) { try { return localStorage.getItem(key) === "1"; } catch (e) { return false; } },
+    set(key) { try { localStorage.setItem(key, "1"); } catch (e) { /* not remembered */ } },
+    remove(key) { try { localStorage.removeItem(key); } catch (e) { /* nothing stored */ } },
+  };
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   // The launch pop-up used to show once per session and remember that here; clear it
   try { sessionStorage.removeItem("spip_eoi_launch_seen"); } catch (e) { /* nothing stored */ }
+
+  // Whether this load should open the launch pop-up (see the rules at the top)
+  function launchWanted() {
+    if (new URLSearchParams(location.search).has("eoi")) return true;
+    return !local.has(SEEN_KEY) || local.has(DUE_KEY);
+  }
+
+  // Time on the home page: once it passes STAY_MS, the pop-up is due again on the next load.
+  // Counted while the page is open (in a background tab too), not while it sits in the
+  // browser's Back/Forward cache. Checked on a timer and again when the page is left,
+  // because browsers can hold timers back in background tabs.
+  function trackStay() {
+    let spent = 0;
+    let shownAt = Date.now();
+    let timer = 0;
+    const markIfLong = () => {
+      if (spent + (shownAt ? Date.now() - shownAt : 0) >= STAY_MS) local.set(DUE_KEY);
+    };
+    const arm = () => { clearTimeout(timer); timer = setTimeout(markIfLong, Math.max(0, STAY_MS - spent) + 50); };
+    arm();
+    document.addEventListener("visibilitychange", () => { if (document.hidden) markIfLong(); });
+    window.addEventListener("pagehide", () => {
+      markIfLong();
+      if (shownAt) { spent += Date.now() - shownAt; shownAt = 0; }
+      clearTimeout(timer);
+    });
+    window.addEventListener("pageshow", (e) => {
+      if (!e.persisted) return;
+      shownAt = Date.now();
+      arm();
+    });
+  }
 
   let launchActive = false;    // launch pop-up is waiting to open, or open
   let updateCorner = () => {}; // set by initCorner
@@ -85,6 +131,9 @@
     }
 
     function open() {
+      // Shown: no more until they've stayed on the page for STAY_MS again
+      local.set(SEEN_KEY);
+      local.remove(DUE_KEY);
       returnFocus = document.activeElement;
       scrollTop = window.scrollY;
       lockPage(true);
@@ -131,10 +180,10 @@
       else if (e.target.closest(".eoi-modal__close")) requestClose();
     });
 
-    launch();
+    if (launchWanted()) launch();
     // Back / Forward can bring the page back from the browser's cache exactly as it was
-    // left, without running this file again, so open the pop-up again from here
-    window.addEventListener("pageshow", (e) => { if (e.persisted) launch(); });
+    // left, without running this file again, so check again from here
+    window.addEventListener("pageshow", (e) => { if (e.persisted && launchWanted()) launch(); });
   }
 
   /* ---------- Corner pop-up (desktop only) ---------- */
@@ -192,4 +241,5 @@
 
   initCorner(); // first, so the launch pop-up can keep the corner one hidden while it's up
   initLaunch();
+  trackStay();
 })();

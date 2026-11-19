@@ -1,6 +1,6 @@
 /* =================================================================
    Scroll-pinned intro above the hero (index.html). Styles: css/intro.css.
-   Needs js/common.js (helpers) and js/home.js (event date) loaded first.
+   Needs js/common.js (helpers) loaded first.
 
    How it stays fast:
    - The black layer with the "SPIP HACK 2027" holes is drawn ONCE into
@@ -17,16 +17,16 @@
   if (!root) return;
 
   /* ---------- Tuning ---------- */
-  // Scroll breakpoints, as a fraction (0–1) of the pinned scroll
-  const P_HOLD_END   = .10; // first stop: nothing moves until here
-  const P_GLIDE_END  = .28; // SPIP HACK slides so the H's left stem is centred; 2027 fades to black
-  const P_DIVE_END   = .60; // zoom through the H's stem is done, poster fills the screen
-  const P_SOON_START = .68; // second stop ends, COMING SOON starts rising in
-  const P_SOON_END   = .88; // COMING SOON settled; hold until the pin releases
-  const P_FADE_START = .94; // bottom of the scene fades into the page
+  // Scroll breakpoints, as a fraction (0–1) of the pinned scroll (320svh: see .intro's
+  // height in css/intro.css). The banner has "COMING SOON" in the artwork, so after the
+  // dive it simply holds on the banner; there's no separate COMING SOON layer any more.
+  const P_HOLD_END   = .125;  // first stop: nothing moves until here
+  const P_GLIDE_END  = .35;   // SPIP HACK slides so the H's left stem is centred; 2027 fades to black
+  const P_DIVE_END   = .75;   // zoom through the H's stem is done, the banner is on screen
+  const P_FADE_START = .88;   // second stop until here, then the bottom fades into the page
 
-  const P_COPY_FADE_END = .16; // eyebrow gone by here
-  const P_HINT_FADE_END = .03; // scroll hint gone almost as soon as scrolling starts
+  const P_COPY_FADE_END = .20;   // eyebrow gone by here
+  const P_HINT_FADE_END = .0375; // scroll hint gone almost as soon as scrolling starts
   const DIVE_FADE    = .15;    // last share of the dive over which the black layer fades out
   const OUTLINE_FADE = .35;    // share of the dive over which the letter outlines fade out
   const ZOOM_OVERSHOOT = 1.3;  // final zoom = (scale that just covers the screen) × this
@@ -36,54 +36,20 @@
   const TRACKING   = .01; // letter spacing, in em
   const LINE_GAP   = 1.02; // baseline to baseline when stacked, in em
 
-  const BG_SHIFT   = 12; // px, poster parallax
-  const SOON_SHIFT = 20; // px, COMING SOON moves the other way
-  const SOON_TILT  = 6;  // degrees
-  const SOON_RISE  = 80; // px it rises from
+  const BG_SHIFT   = 12; // px, banner parallax (its edges fade into the page, so no headroom is needed)
   const MOUSE_LERP  = .1; // per 60 Hz frame
   const SCROLL_LERP = .09; // smooths stepped mouse wheels: lower = more in-between frames per tick
   const SETTLE = .001;
   const MAX_DPR = 2;
-  const EVENT_DAYS = 2; // Hackathon is two days (13–14 March)
 
   /* ---------- Elements ---------- */
   const stage   = $(".intro__stage", root);
   const bgImg   = $(".intro__bg img", root);
-  const shade   = $(".intro__shade", root);
-  const soon    = $(".intro__soon", root);
   const cutout  = $(".intro__cutout", root);
   const eyebrow = $(".intro__eyebrow", root);
   const hint    = $(".intro__hint", root);
   const fade    = $(".intro__fade", root);
   const finePointer = window.matchMedia("(pointer: fine)");
-
-  /* ---------- Poster: text-free export, or the regular banner as a fallback ---------- */
-  function useFallbackBanner() {
-    if (root.classList.contains("has-baked-text")) return;
-    root.classList.add("has-baked-text");
-    $$(".intro__bg [data-fallback]", root).forEach((el) => {
-      if (el.tagName === "IMG") el.src = el.dataset.fallback;
-      else el.srcset = el.dataset.fallback;
-    });
-  }
-  if (bgImg.complete && bgImg.naturalWidth === 0) useFallbackBanner(); // failed before this script ran
-  else bgImg.addEventListener("error", useFallbackBanner, { once: true });
-
-  /* ---------- Date line under COMING SOON (from EVENT_DATE in home.js) ---------- */
-  (function writeDate() {
-    const el = $("[data-intro-date]", root);
-    const start = new Date(window.SPIP_EVENT_DATE);
-    if (!el || Number.isNaN(start.getTime())) return;
-    const end = new Date(start.getTime() + (EVENT_DAYS - 1) * 86400000);
-    const opt = (o) => new Intl.DateTimeFormat("en-GB", Object.assign({ timeZone: "Asia/Bangkok" }, o));
-    const day = opt({ day: "numeric" });
-    const monthYear = opt({ month: "long", year: "numeric" });
-    const sameMonth = monthYear.format(start) === monthYear.format(end);
-    const range = sameMonth
-      ? `${day.format(start)}–${day.format(end)} ${monthYear.format(end)}`
-      : `${opt({ day: "numeric", month: "long" }).format(start)} – ${opt({ day: "numeric", month: "long", year: "numeric" }).format(end)}`;
-    el.textContent = `Hackathon · ${range} (tentative)`;
-  })();
 
   /* ---------- State ---------- */
   let live = false;     // scroll-driven version is set up
@@ -100,7 +66,6 @@
   const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
   const ramp = (v, a, b) => clamp01((v - a) / (b - a));
   const easeInOutCubic = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
   function set(el, prop, value) {
     let w = written.get(el);
@@ -254,17 +219,9 @@
     set(cutout, "opacity", (1 - ramp(t, 1 - DIVE_FADE, 1)).toFixed(3));
     set(geo.line, "opacity", (1 - ramp(t, 0, OUTLINE_FADE)).toFixed(3));
     root.classList.toggle("is-dived", p >= P_DIVE_END);
-    set(shade, "opacity", ramp(t, .7, 1).toFixed(3));
 
-    // Poster parallax
-    set(bgImg, "transform", `translate3d(${(-cur.mx * BG_SHIFT).toFixed(2)}px, ${(-cur.my * BG_SHIFT).toFixed(2)}px, 0) scale(1.08)`);
-
-    // COMING SOON: rises in, then follows the mouse the other way with a tilt
-    const e = easeOutCubic(ramp(p, P_SOON_START, P_SOON_END));
-    const sx = cur.mx * SOON_SHIFT * e;
-    const sy = cur.my * SOON_SHIFT * e + (1 - e) * SOON_RISE;
-    set(soon, "opacity", e.toFixed(3));
-    set(soon, "transform", `perspective(900px) translate3d(${sx.toFixed(2)}px, ${sy.toFixed(2)}px, 0) rotateX(${(-cur.my * SOON_TILT * e).toFixed(2)}deg) rotateY(${(cur.mx * SOON_TILT * e).toFixed(2)}deg)`);
+    // Banner parallax
+    set(bgImg, "transform", `translate3d(${(-cur.mx * BG_SHIFT).toFixed(2)}px, ${(-cur.my * BG_SHIFT).toFixed(2)}px, 0)`);
 
     // Hand-off to the hero
     set(fade, "opacity", ramp(p, P_FADE_START, 1).toFixed(3));
